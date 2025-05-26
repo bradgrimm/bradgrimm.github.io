@@ -832,11 +832,12 @@
             const usedPlayers = new Set();
             let backupCount = 0;
             
-            // Always put Vox first, then others
-            const instrumentOrder = ['Vox', 'Guitar 1', 'Guitar 2', 'Bass', 'Drums', 'Keys', 'Guitar 3'];
+            // Always put Vox first, then others - G3 at end since it's optional
+            const essentialInstruments = ['Vox', 'Guitar 1', 'Guitar 2', 'Bass', 'Drums', 'Keys'];
+            const optionalInstruments = ['Guitar 3'];
             
-            // First pass: assign all the people who already know their parts
-            for (const instrument of instrumentOrder) {
+            // First pass: assign all the people who already know their parts (essential instruments only)
+            for (const instrument of essentialInstruments) {
                 if (!song.instruments[instrument]) continue; // Skip if no assignment needed
                 
                 const availablePlayers = song.instruments[instrument];
@@ -851,8 +852,8 @@
                 }
             }
             
-            // Second pass: handle instruments that still need assignment (learning required)
-            for (const instrument of instrumentOrder) {
+            // Second pass: handle essential instruments that still need assignment (learning required)
+            for (const instrument of essentialInstruments) {
                 if (!song.instruments[instrument]) continue; // Skip if no assignment needed
                 if (assignments[instrument]) continue; // Skip if already assigned
                 
@@ -875,20 +876,57 @@
                     learningNeeded.push({ instrument, players: possibleLearners });
                     backupCount++;
                 } else {
-                    // If we can't assign anyone, this song can't be played
+                    // If we can't assign anyone to essential instruments, this song can't be played
                     return { canPlay: false, reason: `No one available for ${instrument}` };
                 }
             }
             
-            // Reject songs with too many people learning
+            // Third pass: handle optional instruments (Guitar 3) - these don't count toward learning limits
+            for (const instrument of optionalInstruments) {
+                if (!song.instruments[instrument]) continue; // Skip if no assignment needed
+                
+                const availablePlayers = song.instruments[instrument];
+                
+                // Try to assign someone who already knows it first
+                for (const player of availablePlayers) {
+                    if (cast.includes(player) && !usedPlayers.has(player)) {
+                        assignments[instrument] = player;
+                        usedPlayers.add(player);
+                        break;
+                    }
+                }
+                
+                // If no one knows G3, try to find someone who could learn it (but don't count it toward limits)
+                if (!assignments[instrument]) {
+                    const possibleLearners = [];
+                    songsData.forEach(otherSong => {
+                        if (otherSong.instruments[instrument]) {
+                            otherSong.instruments[instrument].forEach(player => {
+                                if (cast.includes(player) && !usedPlayers.has(player) && !possibleLearners.includes(player)) {
+                                    possibleLearners.push(player);
+                                }
+                            });
+                        }
+                    });
+                    
+                    if (possibleLearners.length > 0) {
+                        assignments[instrument] = `${possibleLearners.join('/')} (learn)`;
+                        // Mark as used but don't count toward learning limits
+                        usedPlayers.add(possibleLearners[0]);
+                    }
+                    // If no one can play G3, that's OK - it's optional, so we don't fail the song
+                }
+            }
+            
+            // Reject songs with too many people learning (only counting essential instruments)
             if (learningNeeded.length > maxLearning) {
                 return { canPlay: false, reason: `Too many people need to learn (${learningNeeded.length} > ${maxLearning})` };
             }
             
-            // Reject songs where more than half the parts need to be learned
-            const totalParts = Object.keys(assignments).length;
-            if (backupCount > Math.floor(totalParts / 2)) {
-                return { canPlay: false, reason: `Too many parts need learning (${backupCount}/${totalParts} parts)` };
+            // Reject songs where more than half the essential parts need to be learned
+            const essentialParts = essentialInstruments.filter(inst => song.instruments[inst]).length;
+            if (backupCount > Math.floor(essentialParts / 2)) {
+                return { canPlay: false, reason: `Too many essential parts need learning (${backupCount}/${essentialParts} parts)` };
             }
             
             return {

@@ -66,6 +66,9 @@
 <body>
 <h1>Setlist Tracker</h1>
 <div id="navControls">
+    <input type="file" id="csvFile" accept=".csv">
+    <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
+    <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
     <button id="startBtn">Start</button>
     <button id="prevBtn">&lt;</button>
     <button id="nextBtn">&gt;</button>
@@ -86,6 +89,15 @@ let songs = [];
 let timer = null;
 let startTime = null;
 let currentIndex = 0;
+let speedFactor = 1;
+let songStart = 0; // actual start time (sec) of the current song
+const startDiff = []; // difference of actual start vs scheduled start per song
+
+// Check query string for a debugging speed multiplier, e.g. ?debugspeed=5
+// This is intentionally hidden so regular users don't accidentally change it.
+const params = new URLSearchParams(window.location.search);
+const dbg = parseFloat(params.get('debugspeed'));
+if(dbg && dbg > 0) speedFactor = dbg;
 
 function parseDuration(str){
     if(!str) return 0;
@@ -183,7 +195,7 @@ function renderSetlist(){
 }
 
 function updateDisplay(){
-    const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000) : 0;
+    const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000*speedFactor) : 0;
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
     document.getElementById('timeRemaining').textContent='Remaining: '+formatTime(maxSec-elapsed);
@@ -201,6 +213,12 @@ function updateDisplay(){
         if(curSong){
             const diff=elapsed-curSong.start;
             diffEl.style.color='';
+
+            const progress=Math.max(0,elapsed-songStart);
+            const delta=startDiff[currentIndex] ?? (elapsed-curSong.start);
+            const frac=curSong.duration?Math.min(progress/curSong.duration,1):1;
+            const diff=delta*frac;
+
             if(Math.abs(diff)<1){
                 diffEl.textContent='On time';
             }else if(diff>0){
@@ -232,16 +250,24 @@ function updateDisplay(){
 function startTimer(){
     if(timer) return;
     startTime=Date.now();
-    timer=setInterval(updateDisplay,1000);
+    songStart=0;
+    startDiff[0]=0;
+    timer=setInterval(updateDisplay,1000/speedFactor);
 }
 
 document.getElementById('startBtn').addEventListener('click', startTimer);
 document.getElementById('prevBtn').addEventListener('click', ()=>{
     currentIndex=Math.max(0,currentIndex-1);
+    const elapsed=startTime?Math.floor((Date.now()-startTime)/1000):0;
+    songStart=elapsed;
+    startDiff[currentIndex]=elapsed - songs[currentIndex].start;
     updateDisplay();
 });
 document.getElementById('nextBtn').addEventListener('click', ()=>{
     currentIndex=Math.min(songs.length-1,currentIndex+1);
+    const elapsed=startTime?Math.floor((Date.now()-startTime)/1000):0;
+    songStart=elapsed;
+    startDiff[currentIndex]=elapsed - songs[currentIndex].start;
     updateDisplay();
 });
 document.getElementById('transitionTime').addEventListener('change', renderSetlist);

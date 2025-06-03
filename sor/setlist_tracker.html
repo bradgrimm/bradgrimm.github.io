@@ -8,17 +8,19 @@
  <style>
   body { font-family: Arial, sans-serif; padding:20px; background:#f4f4f4; }
   h1 { text-align:center; }
-  #controls { margin-bottom:15px; }
+  #fileControls { margin-bottom:15px; }
   #timerDisplay {
-      font-size:2em;
-      font-weight:bold;
-      margin-left:10px;
-  }
-  #currentSongDisplay {
-      font-size:1.5em;
+      font-size:3em;
       font-weight:bold;
       text-align:center;
+      display:block;
       margin:10px 0;
+  }
+  #currentSongDisplay {
+      font-size:2.5em;
+      font-weight:bold;
+      text-align:center;
+      margin:20px 0;
   }
   #progressContainer {
       height:20px;
@@ -34,8 +36,8 @@
   }
   #aheadBehind {
       text-align:center;
-      font-size:1.2em;
-      margin-top:5px;
+      font-size:1.5em;
+      margin:10px 0;
   }
   #setlist { list-style:none; padding:0; }
   #setlist li { padding:8px; background:#fff; margin-bottom:4px; border-radius:4px; display:flex; align-items:center; justify-content:space-between; }
@@ -46,24 +48,39 @@
 .time { width:60px; text-align:right; margin-left:10px; }
  .runtime { width:60px; text-align:right; margin-left:10px; }
 .remove { margin-left:10px; }
- </style>
+  #navControls{
+      text-align:center;
+      margin-bottom:15px;
+  }
+  #navControls button{
+      font-size:2em;
+      padding:10px 20px;
+      margin:0 5px;
+  }
+  #fileControls{
+      margin-top:20px;
+      text-align:center;
+  }
+</style>
 </head>
 <body>
 <h1>Setlist Tracker</h1>
-<div id="controls">
-    <input type="file" id="csvFile" accept=".csv">
-    <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
-    <label>Transition (sec): <input type="number" id="transitionTime" value="0" min="0"></label>
+<div id="navControls">
     <button id="startBtn">Start</button>
     <button id="prevBtn">&lt;</button>
     <button id="nextBtn">&gt;</button>
-    <span id="timerDisplay">00:00</span>
-    <span id="timeRemaining"></span>
 </div>
 <div id="currentSongDisplay"></div>
 <div id="progressContainer"><div id="progressBar"></div></div>
+<span id="timerDisplay">00:00</span>
+<div id="timeRemaining" style="text-align:center;margin-bottom:10px;"></div>
 <div id="aheadBehind"></div>
 <ul id="setlist"></ul>
+<div id="fileControls">
+    <input type="file" id="csvFile" accept=".csv">
+    <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
+    <label>Transition (sec): <input type="number" id="transitionTime" value="0" min="0"></label>
+</div>
 <script>
 let songs = [];
 let timer = null;
@@ -169,7 +186,7 @@ function updateDisplay(){
     const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000) : 0;
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
-    document.getElementById('timeRemaining').textContent=' | remaining: '+formatTime(maxSec-elapsed);
+    document.getElementById('timeRemaining').textContent='Remaining: '+formatTime(maxSec-elapsed);
     const progress=document.getElementById('progressBar');
     if(progress){
         progress.style.width=Math.min(100,elapsed/maxSec*100)+"%";
@@ -183,12 +200,15 @@ function updateDisplay(){
     if(diffEl){
         if(curSong){
             const diff=elapsed-curSong.start;
+            diffEl.style.color='';
             if(Math.abs(diff)<1){
                 diffEl.textContent='On time';
             }else if(diff>0){
                 diffEl.textContent=`Behind ${formatTime(diff)}`;
+                diffEl.style.color='goldenrod';
             }else{
                 diffEl.textContent=`Ahead ${formatTime(-diff)}`;
+                diffEl.style.color='blue';
             }
         }else{
             diffEl.textContent='';

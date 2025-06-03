@@ -204,6 +204,12 @@
         .btn-clear:hover {
             background: #4a5568;
         }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
         
         .stats {
             display: grid;
@@ -483,6 +489,9 @@
                         <button class="btn btn-clear" onclick="resetToOriginal()">Reset</button>
                         <button class="btn" onclick="lookupSongDurations()" style="background: #48bb78;">🎵 Try Duration Lookup</button>
                         <button class="btn" onclick="exportOptimizedCsv()" id="exportBtn" style="display: none;">📊 Download CSV</button>
+                        <label class="control-group" id="summaryOption" style="display: none;">
+                            <input type="checkbox" id="includeSummaryRows" checked> Include summary rows
+                        </label>
                     </div>
                     <div style="margin-top: 10px; font-size: 0.9rem; color: #718096;">
                         <strong>Note:</strong> This uses heuristic optimization (greedy + 2-opt improvement). 
@@ -902,6 +911,7 @@
             displaySongList(optimizedOrder, 'Optimized Order');
             
             document.getElementById('exportBtn').style.display = 'block';
+            document.getElementById('summaryOption').style.display = 'flex';
             showStatus('✅ Setlist optimized!', 'success');
         }
         
@@ -1190,6 +1200,7 @@
             // Hide stats and export button
             document.getElementById('statsContainer').style.display = 'none';
             document.getElementById('exportBtn').style.display = 'none';
+            document.getElementById('summaryOption').style.display = 'none';
         }
         
         function exportOptimizedCsv() {
@@ -1238,9 +1249,15 @@
                 createSummaryRow('TOTAL TRANSITION TIME', formatDuration(timeBreakdown.transitionTime)),
                 createSummaryRow('ESTIMATED TOTAL TIME', formatDuration(timeBreakdown.totalTime))
             ];
-            
+
+            const includeSummary = document.getElementById('includeSummaryRows').checked;
+
             // Combine headers and rows
-            const csvContent = [headers.join(','), ...rows, ...summaryRows].join('\n');
+            let csvContentArr = [headers.join(','), ...rows];
+            if (includeSummary) {
+                csvContentArr = [...csvContentArr, ...summaryRows];
+            }
+            const csvContent = csvContentArr.join('\n');
             
             // Create and download file
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });

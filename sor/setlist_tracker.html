@@ -15,6 +15,7 @@
  .song-info { flex:1; }
  .drop-label { margin-left:10px; font-size:0.9em; }
  .time { width:60px; text-align:right; margin-left:10px; }
+ .remove { margin-left:10px; }
 </style>
 </head>
 <body>
@@ -65,13 +66,24 @@ document.getElementById('csvFile').addEventListener('change', e=>{
 });
 
 function loadSongs(data){
-    songs = data.map(row=>({
-        title: row['Song'] || row['Title'] || row[Object.keys(row)[1]],
-        artist: row['Artist'] || row[Object.keys(row)[2]],
-        duration: parseDuration(row['Duration'] || row[Object.keys(row)[3]]),
-        dropFirst:false,
-        start:0
-    })).filter(s=>s.title);
+    songs = [];
+    data.forEach(row=>{
+        const normalized = {};
+        Object.keys(row).forEach(k=>{
+            normalized[k.trim().toLowerCase()] = row[k];
+        });
+        const title = normalized['song'] || normalized['title'];
+        const artist = normalized['artist'];
+        const durField = normalized['duration'] || normalized['time'];
+        if(!title && !artist) return; // ignore note rows
+        songs.push({
+            title: title || '',
+            artist: artist || '',
+            duration: parseDuration(durField),
+            dropFirst:false,
+            start:0
+        });
+    });
     renderSetlist();
 }
 
@@ -86,13 +98,21 @@ function renderSetlist(){
         li.dataset.index=i;
         li.innerHTML=`<span class="song-info">${i+1}. ${song.title} - ${song.artist}</span>
             <span class="time">${formatTime(song.duration)}</span>
-            <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}"> drop first</label>`;
+            <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}"> drop first</label>
+            <button class="remove" data-idx="${i}">Remove</button>`;
         list.appendChild(li);
     });
     document.querySelectorAll('.drop').forEach(cb=>{
         cb.addEventListener('change',e=>{
             const idx=parseInt(e.target.dataset.idx);
             songs[idx].dropFirst=e.target.checked;
+        });
+    });
+    document.querySelectorAll('.remove').forEach(btn=>{
+        btn.addEventListener('click',e=>{
+            const idx=parseInt(e.target.dataset.idx);
+            songs.splice(idx,1);
+            renderSetlist();
         });
     });
     document.getElementById('timeRemaining').textContent='';

@@ -69,6 +69,13 @@ let songs = [];
 let timer = null;
 let startTime = null;
 let currentIndex = 0;
+let speedFactor = 1;
+
+// Check query string for a debugging speed multiplier, e.g. ?debugspeed=5
+// This is intentionally hidden so regular users don't accidentally change it.
+const params = new URLSearchParams(window.location.search);
+const dbg = parseFloat(params.get('debugspeed'));
+if(dbg && dbg > 0) speedFactor = dbg;
 
 function parseDuration(str){
     if(!str) return 0;
@@ -166,7 +173,7 @@ function renderSetlist(){
 }
 
 function updateDisplay(){
-    const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000) : 0;
+    const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000*speedFactor) : 0;
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
     document.getElementById('timeRemaining').textContent=' | remaining: '+formatTime(maxSec-elapsed);
@@ -212,7 +219,7 @@ function updateDisplay(){
 function startTimer(){
     if(timer) return;
     startTime=Date.now();
-    timer=setInterval(updateDisplay,1000);
+    timer=setInterval(updateDisplay,1000/speedFactor);
 }
 
 document.getElementById('startBtn').addEventListener('click', startTimer);

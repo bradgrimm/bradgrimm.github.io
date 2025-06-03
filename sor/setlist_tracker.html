@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>School of Rock Setlist Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<style>
+ body { font-family: Arial, sans-serif; padding:20px; background:#f4f4f4; }
+ h1 { text-align:center; }
+ #controls { margin-bottom:15px; }
+ #setlist { list-style:none; padding:0; }
+ #setlist li { padding:8px; background:#fff; margin-bottom:4px; border-radius:4px; display:flex; align-items:center; justify-content:space-between; }
+ #setlist li.current { background:#d1e7dd; }
+ .song-info { flex:1; }
+ .drop-label { margin-left:10px; font-size:0.9em; }
+ .time { width:60px; text-align:right; margin-left:10px; }
+</style>
+</head>
+<body>
+<h1>Setlist Tracker</h1>
+<div id="controls">
+    <input type="file" id="csvFile" accept=".csv">
+    <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
+    <button id="startBtn">Start</button>
+    <span id="timerDisplay">00:00</span>
+    <span id="timeRemaining"></span>
+</div>
+<ul id="setlist"></ul>
+<script>
+let songs = [];
+let timer = null;
+let startTime = null;
+
+function parseDuration(str){
+    if(!str) return 0;
+    str = String(str).trim();
+    if(str.includes(':')){
+        const parts = str.split(':').map(Number);
+        if(parts.length===2){
+            return parts[0]*60 + parts[1];
+        } else if(parts.length===3){
+            return parts[0]*3600 + parts[1]*60 + parts[2];
+        }
+    }
+    if(/^[0-9.]+$/.test(str)) return parseFloat(str)*60;
+    return 0;
+}
+
+function formatTime(sec){
+    sec = Math.max(0, Math.floor(sec));
+    const m = Math.floor(sec/60);
+    const s = sec%60;
+    return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+document.getElementById('csvFile').addEventListener('change', e=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    Papa.parse(file, {
+        header:true,
+        skipEmptyLines:true,
+        complete: res => { loadSongs(res.data); }
+    });
+});
+
+function loadSongs(data){
+    songs = data.map(row=>({
+        title: row['Song'] || row['Title'] || row[Object.keys(row)[1]],
+        artist: row['Artist'] || row[Object.keys(row)[2]],
+        duration: parseDuration(row['Duration'] || row[Object.keys(row)[3]]),
+        dropFirst:false,
+        start:0
+    })).filter(s=>s.title);
+    renderSetlist();
+}
+
+function renderSetlist(){
+    const list=document.getElementById('setlist');
+    list.innerHTML='';
+    let cumulative=0;
+    songs.forEach((song,i)=>{
+        song.start=cumulative;
+        cumulative+=song.duration;
+        const li=document.createElement('li');
+        li.dataset.index=i;
+        li.innerHTML=`<span class="song-info">${i+1}. ${song.title} - ${song.artist}</span>
+            <span class="time">${formatTime(song.duration)}</span>
+            <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}"> drop first</label>`;
+        list.appendChild(li);
+    });
+    document.querySelectorAll('.drop').forEach(cb=>{
+        cb.addEventListener('change',e=>{
+            const idx=parseInt(e.target.dataset.idx);
+            songs[idx].dropFirst=e.target.checked;
+        });
+    });
+    document.getElementById('timeRemaining').textContent='';
+}
+
+function highlightCurrent(){
+    const elapsed=Math.floor((Date.now()-startTime)/1000);
+    document.getElementById('timerDisplay').textContent=formatTime(elapsed);
+    const maxSec=parseInt(document.getElementById('maxTime').value)*60;
+    document.getElementById('timeRemaining').textContent=' | remaining: '+formatTime(maxSec-elapsed);
+    let currentIndex=null;
+    for(let i=0;i<songs.length;i++){
+        if(elapsed < songs[i].start + songs[i].duration){
+            currentIndex=i;break;
+        }
+    }
+    document.querySelectorAll('#setlist li').forEach(li=>li.classList.remove('current'));
+    if(currentIndex!==null){
+        document.querySelector(`#setlist li[data-index="${currentIndex}"]`).classList.add('current');
+    }
+}
+
+function startTimer(){
+    if(timer) return;
+    startTime=Date.now();
+    timer=setInterval(highlightCurrent,1000);
+}
+
+document.getElementById('startBtn').addEventListener('click', startTimer);
+</script>
+</body>
+</html>

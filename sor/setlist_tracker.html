@@ -8,7 +8,6 @@
  <style>
   body { font-family: Arial, sans-serif; padding:20px; background:#f4f4f4; }
   h1 { text-align:center; }
-  #fileControls { margin-bottom:15px; }
   #timerDisplay {
       font-size:3em;
       font-weight:bold;
@@ -67,9 +66,6 @@
 <body>
 <h1>Setlist Tracker</h1>
 <div id="navControls">
-    <input type="file" id="csvFile" accept=".csv">
-    <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
-    <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
     <button id="startBtn">Start</button>
     <button id="prevBtn">&lt;</button>
     <button id="nextBtn">&gt;</button>
@@ -263,13 +259,11 @@ function updateDisplay(){
     const diffEl=document.getElementById('aheadBehind');
     if(diffEl){
         if(curSong){
-            const diff=elapsed-curSong.start;
             diffEl.style.color='';
 
             const progress=Math.max(0,elapsed-songStart);
             const delta=startDiff[currentIndex] ?? (elapsed-curSong.start);
-            const frac=curSong.duration?Math.min(progress/curSong.duration,1):1;
-            const diff=delta*frac;
+            const diff=delta*(curSong.duration?Math.min(progress/curSong.duration,1):1);
 
             if(Math.abs(diff)<1){
                 diffEl.textContent='On time';

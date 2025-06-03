@@ -5,3 +5,5 @@ _site
 vendor
 .swp
 .swo
+.DS_Store
+.idea/

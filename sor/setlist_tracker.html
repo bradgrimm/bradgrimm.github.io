@@ -69,8 +69,15 @@ let songs = [];
 let timer = null;
 let startTime = null;
 let currentIndex = 0;
+let speedFactor = 1;
 let songStart = 0; // actual start time (sec) of the current song
 const startDiff = []; // difference of actual start vs scheduled start per song
+
+// Check query string for a debugging speed multiplier, e.g. ?debugspeed=5
+// This is intentionally hidden so regular users don't accidentally change it.
+const params = new URLSearchParams(window.location.search);
+const dbg = parseFloat(params.get('debugspeed'));
+if(dbg && dbg > 0) speedFactor = dbg;
 
 function parseDuration(str){
     if(!str) return 0;
@@ -168,7 +175,7 @@ function renderSetlist(){
 }
 
 function updateDisplay(){
-    const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000) : 0;
+    const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000*speedFactor) : 0;
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
     document.getElementById('timeRemaining').textContent=' | remaining: '+formatTime(maxSec-elapsed);
@@ -219,7 +226,7 @@ function startTimer(){
     startTime=Date.now();
     songStart=0;
     startDiff[0]=0;
-    timer=setInterval(updateDisplay,1000);
+    timer=setInterval(updateDisplay,1000/speedFactor);
 }
 
 document.getElementById('startBtn').addEventListener('click', startTimer);

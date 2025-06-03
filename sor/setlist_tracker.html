@@ -8,7 +8,6 @@
  <style>
   body { font-family: Arial, sans-serif; padding:20px; background:#f4f4f4; }
   h1 { text-align:center; }
-  #fileControls { margin-bottom:15px; }
   #timerDisplay {
       font-size:3em;
       font-weight:bold;
@@ -67,9 +66,6 @@
 <body>
 <h1>Setlist Tracker</h1>
 <div id="navControls">
-    <input type="file" id="csvFile" accept=".csv">
-    <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
-    <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
     <button id="startBtn">Start</button>
     <button id="prevBtn">&lt;</button>
     <button id="nextBtn">&gt;</button>

@@ -43,6 +43,7 @@
   #setlist li { padding:8px; background:#fff; margin-bottom:4px; border-radius:4px; display:flex; align-items:center; justify-content:space-between; }
   #setlist li.playing { background:#cfe2ff; }
   #setlist li.should { background:#d1e7dd; }
+  #setlist li.dropped { text-decoration: line-through; opacity:0.6; }
 .song-info { flex:1; }
 .drop-label { margin-left:10px; font-size:0.9em; }
 .time { width:60px; text-align:right; margin-left:10px; }
@@ -153,6 +154,7 @@ function loadSongs(data){
             artist: artist || '',
             duration: parseDuration(durField),
             dropFirst:false,
+            dropNum:1,
             start:0
         });
     });
@@ -173,7 +175,7 @@ function renderSetlist(){
         li.innerHTML=`<span class="song-info">${i+1}. ${song.title} - ${song.artist}</span>
             <span class="runtime">${formatTime(song.start)}</span>
             <span class="time">${formatTime(song.duration)}</span>
-            <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}"> drop first</label>
+            <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}" ${song.dropFirst?'checked':''}> drop <input type="number" class="drop-num" data-idx="${i}" min="1" value="${song.dropNum}" style="width:3em" ${song.dropFirst?'':'disabled'}></label>
             <button class="remove" data-idx="${i}">Remove</button>`;
         list.appendChild(li);
     });
@@ -181,6 +183,18 @@ function renderSetlist(){
         cb.addEventListener('change',e=>{
             const idx=parseInt(e.target.dataset.idx);
             songs[idx].dropFirst=e.target.checked;
+            const num=document.querySelector(`.drop-num[data-idx="${idx}"]`);
+            if(num){
+                num.disabled=!e.target.checked;
+                if(e.target.checked && !num.value) num.value=songs[idx].dropNum;
+            }
+        });
+    });
+    document.querySelectorAll('.drop-num').forEach(inp=>{
+        inp.addEventListener('change',e=>{
+            const idx=parseInt(e.target.dataset.idx);
+            const val=parseInt(e.target.value);
+            if(!isNaN(val)) songs[idx].dropNum=val;
         });
     });
     document.querySelectorAll('.remove').forEach(btn=>{
@@ -194,8 +208,46 @@ function renderSetlist(){
     updateDisplay();
 }
 
+function computeDroppedSongs(elapsed){
+    const maxSec=parseInt(document.getElementById('maxTime').value)*60;
+    const remaining=maxSec-elapsed;
+    const transition=parseInt(document.getElementById('transitionTime').value)||0;
+
+    songs.forEach(s=>s.dropped=false);
+
+    const pending=[];
+    for(let i=currentIndex;i<songs.length;i++) pending.push(i);
+
+    const totalDur=idxs=>{
+        let t=0;
+        for(let j=0;j<idxs.length;j++){
+            t+=songs[idxs[j]].duration;
+            if(j<idxs.length-1) t+=transition;
+        }
+        return t;
+    };
+
+    let keep=[...pending];
+    if(totalDur(keep)<=remaining) return;
+
+    const dropFirst=pending.filter(i=>i!==0 && i!==songs.length-1 && songs[i].dropFirst)
+        .sort((a,b)=>(songs[a].dropNum||0)-(songs[b].dropNum||0));
+    const untagged=pending.filter(i=>i!==0 && i!==songs.length-1 && !songs[i].dropFirst);
+    const anchors=pending.filter(i=>i===0 || i===songs.length-1);
+
+    const lists=[dropFirst,untagged,anchors];
+    for(const list of lists){
+        while(list.length && totalDur(keep)>remaining){
+            const idx=list.shift();
+            keep=keep.filter(k=>k!==idx);
+            songs[idx].dropped=true;
+        }
+    }
+}
+
 function updateDisplay(){
     const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000*speedFactor) : 0;
+    computeDroppedSongs(elapsed);
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
     document.getElementById('timeRemaining').textContent='Remaining: '+formatTime(maxSec-elapsed);
@@ -238,13 +290,17 @@ function updateDisplay(){
             shouldIndex=i;break;
         }
     }
-    document.querySelectorAll('#setlist li').forEach(li=>li.classList.remove('playing','should'));
+    document.querySelectorAll('#setlist li').forEach(li=>li.classList.remove('playing','should','dropped'));
     const playLi=document.querySelector(`#setlist li[data-index="${currentIndex}"]`);
     if(playLi) playLi.classList.add('playing');
     if(shouldIndex!==null){
         const shouldLi=document.querySelector(`#setlist li[data-index="${shouldIndex}"]`);
         if(shouldLi) shouldLi.classList.add('should');
     }
+    songs.forEach((song,i)=>{
+        const li=document.querySelector(`#setlist li[data-index="${i}"]`);
+        if(li && song.dropped) li.classList.add('dropped');
+    });
 }
 
 function startTimer(){

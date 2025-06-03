@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>School of Rock Setlist Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+ <style>
+  body { font-family: Arial, sans-serif; padding:20px; background:#f4f4f4; }
+  h1 { text-align:center; }
+  #controls { margin-bottom:15px; }
+  #timerDisplay {
+      font-size:2em;
+      font-weight:bold;
+      margin-left:10px;
+  }
+  #currentSongDisplay {
+      font-size:1.5em;
+      font-weight:bold;
+      text-align:center;
+      margin:10px 0;
+  }
+  #progressContainer {
+      height:20px;
+      background:#ddd;
+      border-radius:10px;
+      overflow:hidden;
+      margin:10px 0;
+  }
+  #progressBar {
+      height:100%;
+      width:0%;
+      background:#4caf50;
+  }
+  #aheadBehind {
+      text-align:center;
+      font-size:1.2em;
+      margin-top:5px;
+  }
+  #setlist { list-style:none; padding:0; }
+  #setlist li { padding:8px; background:#fff; margin-bottom:4px; border-radius:4px; display:flex; align-items:center; justify-content:space-between; }
+  #setlist li.playing { background:#cfe2ff; }
+  #setlist li.should { background:#d1e7dd; }
+.song-info { flex:1; }
+.drop-label { margin-left:10px; font-size:0.9em; }
+.time { width:60px; text-align:right; margin-left:10px; }
+ .runtime { width:60px; text-align:right; margin-left:10px; }
+.remove { margin-left:10px; }
+ </style>
+</head>
+<body>
+<h1>Setlist Tracker</h1>
+<div id="controls">
+    <input type="file" id="csvFile" accept=".csv">
+    <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
+    <label>Transition (sec): <input type="number" id="transitionTime" value="0" min="0"></label>
+    <button id="startBtn">Start</button>
+    <button id="prevBtn">&lt;</button>
+    <button id="nextBtn">&gt;</button>
+    <span id="timerDisplay">00:00</span>
+    <span id="timeRemaining"></span>
+</div>
+<div id="currentSongDisplay"></div>
+<div id="progressContainer"><div id="progressBar"></div></div>
+<div id="aheadBehind"></div>
+<ul id="setlist"></ul>
+<script>
+let songs = [];
+let timer = null;
+let startTime = null;
+let currentIndex = 0;
+
+function parseDuration(str){
+    if(!str) return 0;
+    str = String(str).trim();
+    if(str.includes(':')){
+        const parts = str.split(':').map(Number);
+        if(parts.length===2){
+            return parts[0]*60 + parts[1];
+        } else if(parts.length===3){
+            return parts[0]*3600 + parts[1]*60 + parts[2];
+        }
+    }
+    if(/^[0-9.]+$/.test(str)) return parseFloat(str)*60;
+    return 0;
+}
+
+function formatTime(sec){
+    sec = Math.max(0, Math.floor(sec));
+    const m = Math.floor(sec/60);
+    const s = sec%60;
+    return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+document.getElementById('csvFile').addEventListener('change', e=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    Papa.parse(file, {
+        header:true,
+        skipEmptyLines:true,
+        complete: res => { loadSongs(res.data); }
+    });
+});
+
+function loadSongs(data){
+    songs = [];
+    if(timer){
+        clearInterval(timer);
+        timer=null;
+    }
+    startTime=null;
+    currentIndex=0;
+    data.forEach(row=>{
+        const normalized = {};
+        Object.keys(row).forEach(k=>{
+            normalized[k.trim().toLowerCase()] = row[k];
+        });
+        const title = normalized['song'] || normalized['title'];
+        const artist = normalized['artist'];
+        const durField = normalized['duration'] || normalized['time'];
+        if(!title && !artist) return; // ignore note rows
+        songs.push({
+            title: title || '',
+            artist: artist || '',
+            duration: parseDuration(durField),
+            dropFirst:false,
+            start:0
+        });
+    });
+    renderSetlist();
+    updateDisplay();
+}
+
+function renderSetlist(){
+    const list=document.getElementById('setlist');
+    list.innerHTML='';
+    let cumulative=0;
+    const transition=parseInt(document.getElementById('transitionTime').value)||0;
+    songs.forEach((song,i)=>{
+        song.start=cumulative;
+        cumulative+=song.duration+transition;
+        const li=document.createElement('li');
+        li.dataset.index=i;
+        li.innerHTML=`<span class="song-info">${i+1}. ${song.title} - ${song.artist}</span>
+            <span class="runtime">${formatTime(song.start)}</span>
+            <span class="time">${formatTime(song.duration)}</span>
+            <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}"> drop first</label>
+            <button class="remove" data-idx="${i}">Remove</button>`;
+        list.appendChild(li);
+    });
+    document.querySelectorAll('.drop').forEach(cb=>{
+        cb.addEventListener('change',e=>{
+            const idx=parseInt(e.target.dataset.idx);
+            songs[idx].dropFirst=e.target.checked;
+        });
+    });
+    document.querySelectorAll('.remove').forEach(btn=>{
+        btn.addEventListener('click',e=>{
+            const idx=parseInt(e.target.dataset.idx);
+            songs.splice(idx,1);
+            renderSetlist();
+        });
+    });
+    document.getElementById('timeRemaining').textContent='';
+    updateDisplay();
+}
+
+function updateDisplay(){
+    const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000) : 0;
+    document.getElementById('timerDisplay').textContent=formatTime(elapsed);
+    const maxSec=parseInt(document.getElementById('maxTime').value)*60;
+    document.getElementById('timeRemaining').textContent=' | remaining: '+formatTime(maxSec-elapsed);
+    const progress=document.getElementById('progressBar');
+    if(progress){
+        progress.style.width=Math.min(100,elapsed/maxSec*100)+"%";
+    }
+    const curSong=songs[currentIndex];
+    const songEl=document.getElementById('currentSongDisplay');
+    if(songEl){
+        songEl.textContent=curSong?`${currentIndex+1}. ${curSong.title} - ${curSong.artist}`:'';
+    }
+    const diffEl=document.getElementById('aheadBehind');
+    if(diffEl){
+        if(curSong){
+            const diff=elapsed-curSong.start;
+            if(Math.abs(diff)<1){
+                diffEl.textContent='On time';
+            }else if(diff>0){
+                diffEl.textContent=`Behind ${formatTime(diff)}`;
+            }else{
+                diffEl.textContent=`Ahead ${formatTime(-diff)}`;
+            }
+        }else{
+            diffEl.textContent='';
+        }
+    }
+    let shouldIndex=null;
+    for(let i=0;i<songs.length;i++){
+        if(elapsed < songs[i].start + songs[i].duration){
+            shouldIndex=i;break;
+        }
+    }
+    document.querySelectorAll('#setlist li').forEach(li=>li.classList.remove('playing','should'));
+    const playLi=document.querySelector(`#setlist li[data-index="${currentIndex}"]`);
+    if(playLi) playLi.classList.add('playing');
+    if(shouldIndex!==null){
+        const shouldLi=document.querySelector(`#setlist li[data-index="${shouldIndex}"]`);
+        if(shouldLi) shouldLi.classList.add('should');
+    }
+}
+
+function startTimer(){
+    if(timer) return;
+    startTime=Date.now();
+    timer=setInterval(updateDisplay,1000);
+}
+
+document.getElementById('startBtn').addEventListener('click', startTimer);
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+    currentIndex=Math.max(0,currentIndex-1);
+    updateDisplay();
+});
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+    currentIndex=Math.min(songs.length-1,currentIndex+1);
+    updateDisplay();
+});
+document.getElementById('transitionTime').addEventListener('change', renderSetlist);
+</script>
+</body>
+</html>

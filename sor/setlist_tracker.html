@@ -45,6 +45,7 @@
   #setlist li.dropped { text-decoration: line-through; opacity:0.6; }
 .song-info { flex:1; }
 .drop-label { margin-left:10px; font-size:0.9em; }
+.protect-label { margin-left:10px; font-size:0.9em; }
 .time { width:60px; text-align:right; margin-left:10px; }
  .runtime { width:60px; text-align:right; margin-left:10px; }
 .remove { margin-left:10px; }
@@ -79,7 +80,7 @@
 <div id="fileControls">
     <input type="file" id="csvFile" accept=".csv">
     <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
-    <label>Transition (sec): <input type="number" id="transitionTime" value="0" min="0"></label>
+    <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
 </div>
 <script>
 let songs = [];
@@ -151,7 +152,8 @@ function loadSongs(data){
             duration: parseDuration(durField),
             dropFirst:false,
             dropNum:1,
-            start:0
+            start:0,
+            protect:false
         });
     });
     renderSetlist();
@@ -172,6 +174,7 @@ function renderSetlist(){
             <span class="runtime">${formatTime(song.start)}</span>
             <span class="time">${formatTime(song.duration)}</span>
             <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}" ${song.dropFirst?'checked':''}> drop <input type="number" class="drop-num" data-idx="${i}" min="1" value="${song.dropNum}" style="width:3em" ${song.dropFirst?'':'disabled'}></label>
+            <label class="protect-label"><input type="checkbox" class="protect" data-idx="${i}" ${song.protect?'checked':''}> keep</label>
             <button class="remove" data-idx="${i}">Remove</button>`;
         list.appendChild(li);
     });
@@ -184,6 +187,12 @@ function renderSetlist(){
                 num.disabled=!e.target.checked;
                 if(e.target.checked && !num.value) num.value=songs[idx].dropNum;
             }
+        });
+    });
+    document.querySelectorAll('.protect').forEach(cb=>{
+        cb.addEventListener('change',e=>{
+            const idx=parseInt(e.target.dataset.idx);
+            songs[idx].protect=e.target.checked;
         });
     });
     document.querySelectorAll('.drop-num').forEach(inp=>{
@@ -213,6 +222,7 @@ function computeDroppedSongs(elapsed){
 
     const pending=[];
     for(let i=currentIndex;i<songs.length;i++) pending.push(i);
+    const droppable=pending.filter(i=>!songs[i].protect);
 
     const totalDur=idxs=>{
         let t=0;
@@ -226,10 +236,15 @@ function computeDroppedSongs(elapsed){
     let keep=[...pending];
     if(totalDur(keep)<=remaining) return;
 
-    const dropFirst=pending.filter(i=>i!==0 && i!==songs.length-1 && songs[i].dropFirst)
-        .sort((a,b)=>(songs[a].dropNum||0)-(songs[b].dropNum||0));
-    const untagged=pending.filter(i=>i!==0 && i!==songs.length-1 && !songs[i].dropFirst);
-    const anchors=pending.filter(i=>i===0 || i===songs.length-1);
+    const dropFirst=droppable.filter(i=>i!==0 && i!==songs.length-1 && songs[i].dropFirst)
+        .sort((a,b)=>{
+            const d=(songs[a].dropNum||0)-(songs[b].dropNum||0);
+            return d!==0?d:b-a;
+        });
+    const untagged=droppable.filter(i=>i!==0 && i!==songs.length-1 && !songs[i].dropFirst)
+        .sort((a,b)=>b-a);
+    const anchors=droppable.filter(i=>i===0 || i===songs.length-1)
+        .sort((a,b)=>b-a);
 
     const lists=[dropFirst,untagged,anchors];
     for(const list of lists){

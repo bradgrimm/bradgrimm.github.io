@@ -11,11 +11,13 @@
  #controls { margin-bottom:15px; }
  #setlist { list-style:none; padding:0; }
  #setlist li { padding:8px; background:#fff; margin-bottom:4px; border-radius:4px; display:flex; align-items:center; justify-content:space-between; }
- #setlist li.current { background:#d1e7dd; }
- .song-info { flex:1; }
- .drop-label { margin-left:10px; font-size:0.9em; }
- .time { width:60px; text-align:right; margin-left:10px; }
- .remove { margin-left:10px; }
+ #setlist li.playing { background:#cfe2ff; }
+ #setlist li.should { background:#d1e7dd; }
+.song-info { flex:1; }
+.drop-label { margin-left:10px; font-size:0.9em; }
+.time { width:60px; text-align:right; margin-left:10px; }
+ .runtime { width:60px; text-align:right; margin-left:10px; }
+.remove { margin-left:10px; }
 </style>
 </head>
 <body>
@@ -23,7 +25,10 @@
 <div id="controls">
     <input type="file" id="csvFile" accept=".csv">
     <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
+    <label>Transition (sec): <input type="number" id="transitionTime" value="0" min="0"></label>
     <button id="startBtn">Start</button>
+    <button id="prevBtn">&lt;</button>
+    <button id="nextBtn">&gt;</button>
     <span id="timerDisplay">00:00</span>
     <span id="timeRemaining"></span>
 </div>
@@ -32,6 +37,7 @@
 let songs = [];
 let timer = null;
 let startTime = null;
+let currentIndex = 0;
 
 function parseDuration(str){
     if(!str) return 0;
@@ -67,6 +73,12 @@ document.getElementById('csvFile').addEventListener('change', e=>{
 
 function loadSongs(data){
     songs = [];
+    if(timer){
+        clearInterval(timer);
+        timer=null;
+    }
+    startTime=null;
+    currentIndex=0;
     data.forEach(row=>{
         const normalized = {};
         Object.keys(row).forEach(k=>{
@@ -85,18 +97,21 @@ function loadSongs(data){
         });
     });
     renderSetlist();
+    updateDisplay();
 }
 
 function renderSetlist(){
     const list=document.getElementById('setlist');
     list.innerHTML='';
     let cumulative=0;
+    const transition=parseInt(document.getElementById('transitionTime').value)||0;
     songs.forEach((song,i)=>{
         song.start=cumulative;
-        cumulative+=song.duration;
+        cumulative+=song.duration+transition;
         const li=document.createElement('li');
         li.dataset.index=i;
         li.innerHTML=`<span class="song-info">${i+1}. ${song.title} - ${song.artist}</span>
+            <span class="runtime">${formatTime(song.start)}</span>
             <span class="time">${formatTime(song.duration)}</span>
             <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}"> drop first</label>
             <button class="remove" data-idx="${i}">Remove</button>`;
@@ -116,32 +131,45 @@ function renderSetlist(){
         });
     });
     document.getElementById('timeRemaining').textContent='';
+    updateDisplay();
 }
 
-function highlightCurrent(){
-    const elapsed=Math.floor((Date.now()-startTime)/1000);
+function updateDisplay(){
+    const elapsed=startTime ? Math.floor((Date.now()-startTime)/1000) : 0;
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
     document.getElementById('timeRemaining').textContent=' | remaining: '+formatTime(maxSec-elapsed);
-    let currentIndex=null;
+    let shouldIndex=null;
     for(let i=0;i<songs.length;i++){
         if(elapsed < songs[i].start + songs[i].duration){
-            currentIndex=i;break;
+            shouldIndex=i;break;
         }
     }
-    document.querySelectorAll('#setlist li').forEach(li=>li.classList.remove('current'));
-    if(currentIndex!==null){
-        document.querySelector(`#setlist li[data-index="${currentIndex}"]`).classList.add('current');
+    document.querySelectorAll('#setlist li').forEach(li=>li.classList.remove('playing','should'));
+    const playLi=document.querySelector(`#setlist li[data-index="${currentIndex}"]`);
+    if(playLi) playLi.classList.add('playing');
+    if(shouldIndex!==null){
+        const shouldLi=document.querySelector(`#setlist li[data-index="${shouldIndex}"]`);
+        if(shouldLi) shouldLi.classList.add('should');
     }
 }
 
 function startTimer(){
     if(timer) return;
     startTime=Date.now();
-    timer=setInterval(highlightCurrent,1000);
+    timer=setInterval(updateDisplay,1000);
 }
 
 document.getElementById('startBtn').addEventListener('click', startTimer);
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+    currentIndex=Math.max(0,currentIndex-1);
+    updateDisplay();
+});
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+    currentIndex=Math.min(songs.length-1,currentIndex+1);
+    updateDisplay();
+});
+document.getElementById('transitionTime').addEventListener('change', renderSetlist);
 </script>
 </body>
 </html>

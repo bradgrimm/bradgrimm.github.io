@@ -504,6 +504,7 @@
         let songsData = [];
         let originalOrder = [];
         let optimizedOrder = [];
+        let originalHeaders = [];
         let transitionWeights = {
             vox: 2,
             guitar: 7,
@@ -554,6 +555,8 @@
                 skipEmptyLines: true,
                 complete: function(results) {
                     try {
+                        originalHeaders = results.meta && results.meta.fields ?
+                            results.meta.fields : Object.keys(results.data[0] || {});
                         processCsvData(results.data);
                         setupSongSelectors();
                         
@@ -656,7 +659,8 @@
                     title: title,
                     artist: artist,
                     instruments: {},
-                    duration: null // Will be populated by API lookup
+                    duration: null, // Will be populated by API lookup
+                    originalRow: row
                 };
                 
                 // Process instrument assignments
@@ -1194,22 +1198,16 @@
                 return;
             }
             
-            // Create CSV headers - use original headers if available
-            const headers = ['Order', 'Song', 'Artist', 'Duration', 'Vox', 'Guitar 1', 'Guitar 2', 'Guitar 3', 'Bass', 'Keys', 'Drums', 'Transition Cost'];
-            
-            // Create CSV rows
+            // Create CSV headers using original columns if available
+            const headers = ['Order', ...originalHeaders, 'Transition Cost'];
+
+            // Create CSV rows preserving original columns
             const rows = optimizedOrder.map((song, index) => {
-                const row = [
-                    index + 1,
-                    `"${song.title}"`,
-                    `"${song.artist}"`,
-                    `"${song.duration ? formatDuration(song.duration) : ''}"`
-                ];
-                
-                // Add instrument assignments
-                ['Vox', 'Guitar 1', 'Guitar 2', 'Guitar 3', 'Bass', 'Keys', 'Drums'].forEach(instrument => {
-                    const players = song.instruments[instrument] || [];
-                    row.push(`"${players.join(', ')}"`);
+                const row = [index + 1];
+
+                originalHeaders.forEach(col => {
+                    const value = song.originalRow && song.originalRow[col] !== undefined ? song.originalRow[col] : '';
+                    row.push(`"${String(value).trim()}"`);
                 });
                 
                 // Add transition cost to next song
@@ -1226,11 +1224,19 @@
             const totalCost = calculateTotalCost(optimizedOrder);
             const timeBreakdown = calculateTotalSetTime(optimizedOrder);
             
+            const columnCount = headers.length;
+            const createSummaryRow = (label, value) => {
+                const arr = new Array(columnCount).fill('');
+                arr[1] = `"${label}"`;
+                arr[2] = `"${value}"`;
+                return arr.join(',');
+            };
+
             const summaryRows = [
-                ['', '"TOTAL TRANSITION COST"', `"${totalCost.toFixed(1)}"`, '', '', '', '', '', '', '', '', ''].join(','),
-                ['', '"TOTAL SONG TIME"', `"${formatDuration(timeBreakdown.songTime)}"`, '', '', '', '', '', '', '', '', ''].join(','),
-                ['', '"TOTAL TRANSITION TIME"', `"${formatDuration(timeBreakdown.transitionTime)}"`, '', '', '', '', '', '', '', '', ''].join(','),
-                ['', '"ESTIMATED TOTAL TIME"', `"${formatDuration(timeBreakdown.totalTime)}"`, '', '', '', '', '', '', '', '', ''].join(',')
+                createSummaryRow('TOTAL TRANSITION COST', totalCost.toFixed(1)),
+                createSummaryRow('TOTAL SONG TIME', formatDuration(timeBreakdown.songTime)),
+                createSummaryRow('TOTAL TRANSITION TIME', formatDuration(timeBreakdown.transitionTime)),
+                createSummaryRow('ESTIMATED TOTAL TIME', formatDuration(timeBreakdown.totalTime))
             ];
             
             // Combine headers and rows

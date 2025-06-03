@@ -69,6 +69,8 @@ let songs = [];
 let timer = null;
 let startTime = null;
 let currentIndex = 0;
+let songStart = 0; // actual start time (sec) of the current song
+const startDiff = []; // difference of actual start vs scheduled start per song
 
 function parseDuration(str){
     if(!str) return 0;
@@ -182,7 +184,10 @@ function updateDisplay(){
     const diffEl=document.getElementById('aheadBehind');
     if(diffEl){
         if(curSong){
-            const diff=elapsed-curSong.start;
+            const progress=Math.max(0,elapsed-songStart);
+            const delta=startDiff[currentIndex] ?? (elapsed-curSong.start);
+            const frac=curSong.duration?Math.min(progress/curSong.duration,1):1;
+            const diff=delta*frac;
             if(Math.abs(diff)<1){
                 diffEl.textContent='On time';
             }else if(diff>0){
@@ -212,16 +217,24 @@ function updateDisplay(){
 function startTimer(){
     if(timer) return;
     startTime=Date.now();
+    songStart=0;
+    startDiff[0]=0;
     timer=setInterval(updateDisplay,1000);
 }
 
 document.getElementById('startBtn').addEventListener('click', startTimer);
 document.getElementById('prevBtn').addEventListener('click', ()=>{
     currentIndex=Math.max(0,currentIndex-1);
+    const elapsed=startTime?Math.floor((Date.now()-startTime)/1000):0;
+    songStart=elapsed;
+    startDiff[currentIndex]=elapsed - songs[currentIndex].start;
     updateDisplay();
 });
 document.getElementById('nextBtn').addEventListener('click', ()=>{
     currentIndex=Math.min(songs.length-1,currentIndex+1);
+    const elapsed=startTime?Math.floor((Date.now()-startTime)/1000):0;
+    songStart=elapsed;
+    startDiff[currentIndex]=elapsed - songs[currentIndex].start;
     updateDisplay();
 });
 document.getElementById('transitionTime').addEventListener('change', renderSetlist);

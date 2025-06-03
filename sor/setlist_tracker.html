@@ -259,13 +259,11 @@ function updateDisplay(){
     const diffEl=document.getElementById('aheadBehind');
     if(diffEl){
         if(curSong){
-            const diff=elapsed-curSong.start;
             diffEl.style.color='';
 
             const progress=Math.max(0,elapsed-songStart);
             const delta=startDiff[currentIndex] ?? (elapsed-curSong.start);
-            const frac=curSong.duration?Math.min(progress/curSong.duration,1):1;
-            const diff=delta*frac;
+            const diff=delta*(curSong.duration?Math.min(progress/curSong.duration,1):1);
 
             if(Math.abs(diff)<1){
                 diffEl.textContent='On time';

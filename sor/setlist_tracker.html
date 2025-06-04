@@ -38,6 +38,11 @@
       font-size:1.5em;
       margin:10px 0;
   }
+  #clockTime,#projectedEnd,#droppedInfo,#transitionInfo{
+      text-align:center;
+      margin:4px 0;
+      font-size:1em;
+  }
   #setlist { list-style:none; padding:0; }
   #setlist li { padding:8px; background:#fff; margin-bottom:4px; border-radius:4px; display:flex; align-items:center; justify-content:space-between; }
   #setlist li.playing { background:#cfe2ff; }
@@ -78,10 +83,15 @@
 <span id="timerDisplay">00:00</span>
 <div id="timeRemaining" style="text-align:center;margin-bottom:10px;"></div>
 <div id="aheadBehind"></div>
+<div id="clockTime"></div>
+<div id="projectedEnd"></div>
+<div id="droppedInfo"></div>
+<div id="transitionInfo"></div>
 <ul id="setlist"></ul>
 <div id="fileControls">
     <input type="file" id="csvFile" accept=".csv">
     <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
+    <label>End By: <input type="time" id="endBy"></label>
     <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
 </div>
 <script>
@@ -95,6 +105,8 @@ const startDiff = []; // difference of actual start vs scheduled start per song
 let isPaused = false;
 let pauseStart = 0;
 let totalPause = 0; // accumulated pause time in ms
+const actualStart = [];
+const transitionDurations = [];
 
 // Check query string for a debugging speed multiplier, e.g. ?debugspeed=5
 // This is intentionally hidden so regular users don't accidentally change it.
@@ -129,6 +141,11 @@ function getElapsedMs(){
     let paused = totalPause;
     if(isPaused) paused += Date.now()-pauseStart;
     return Date.now() - startTime - paused;
+}
+  
+
+function formatClock(date){
+    return date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 
 document.getElementById('csvFile').addEventListener('change', e=>{
@@ -270,6 +287,24 @@ function computeDroppedSongs(elapsed){
     }
 }
 
+function remainingDuration(withDrops, elapsed){
+    const transition=parseInt(document.getElementById('transitionTime').value)||0;
+    const remainIdx=[];
+    for(let i=currentIndex;i<songs.length;i++){
+        if(withDrops && songs[i].dropped) continue;
+        remainIdx.push(i);
+    }
+    let t=0;
+    const progress=Math.max(0, elapsed - songStart);
+    remainIdx.forEach((idx,j)=>{
+        let dur=songs[idx].duration;
+        if(idx===currentIndex) dur=Math.max(0,dur-progress);
+        t+=dur;
+        if(j<remainIdx.length-1) t+=transition;
+    });
+    return t;
+}
+
 function updateDisplay(){
     const elapsed=startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
     computeDroppedSongs(elapsed);
@@ -307,6 +342,28 @@ function updateDisplay(){
             diffEl.textContent='';
         }
     }
+    const clockEl=document.getElementById('clockTime');
+    if(clockEl){
+        clockEl.textContent='Current: '+formatClock(new Date());
+    }
+    const endEl=document.getElementById('projectedEnd');
+    if(endEl){
+        const rd=remainingDuration(true, elapsed);
+        const ra=remainingDuration(false, elapsed);
+        const endDrop=new Date(Date.now()+rd*1000/speedFactor);
+        const endAll=new Date(Date.now()+ra*1000/speedFactor);
+        endEl.textContent=`End w/drops: ${formatClock(endDrop)} | w/out: ${formatClock(endAll)}`;
+    }
+    const dropEl=document.getElementById('droppedInfo');
+    if(dropEl){
+        const count=songs.filter(s=>s.dropped).length;
+        dropEl.textContent=`Dropped songs: ${count}`;
+    }
+    const transEl=document.getElementById('transitionInfo');
+    if(transEl){
+        const avg=transitionDurations.length?transitionDurations.reduce((a,b)=>a+b,0)/transitionDurations.length:0;
+        transEl.textContent=`Avg transition: ${formatTime(avg)}`;
+    }
     let shouldIndex=null;
     for(let i=0;i<songs.length;i++){
         if(elapsed < songs[i].start + songs[i].duration){
@@ -331,9 +388,25 @@ function startTimer(){
     startTime=Date.now();
     isPaused=false;
     totalPause=0;
+
+    const endInput=document.getElementById('endBy');
+    if(endInput && endInput.value){
+        const parts=endInput.value.split(':').map(Number);
+        if(parts.length===2){
+            const target=new Date(startTime);
+            target.setHours(parts[0], parts[1], 0, 0);
+            if(target.getTime()<startTime) target.setDate(target.getDate()+1);
+            const minutes=Math.round((target.getTime()-startTime)/60000);
+            const max=document.getElementById('maxTime');
+            if(max) max.value=minutes;
+        }
+    }
+
     songStart=0;
     startDiff[0]=0;
+    actualStart[0]=0;
     timer=setInterval(updateDisplay,1000/speedFactor);
+    updateDisplay();
 }
 
 function togglePause(){
@@ -384,6 +457,7 @@ document.getElementById('prevBtn').addEventListener('click', ()=>{
     const elapsed=startTime?Math.floor(getElapsedMs()/1000):0;
     songStart=elapsed;
     startDiff[currentIndex]=elapsed - songs[currentIndex].start;
+    actualStart[currentIndex]=elapsed;
     updateDisplay();
 });
 document.getElementById('nextBtn').addEventListener('click', ()=>{
@@ -391,6 +465,19 @@ document.getElementById('nextBtn').addEventListener('click', ()=>{
     const elapsed=startTime?Math.floor(getElapsedMs()/1000):0;
     songStart=elapsed;
     startDiff[currentIndex]=elapsed - songs[currentIndex].start;
+
+    const elapsed=startTime?Math.floor((Date.now()-startTime)/1000):0;
+    if(currentIndex<songs.length-1){
+        if(actualStart[currentIndex]!==undefined){
+            const trans=elapsed - actualStart[currentIndex] - songs[currentIndex].duration;
+            if(trans>=0) transitionDurations[currentIndex]=trans;
+        }
+        currentIndex=Math.min(songs.length-1,currentIndex+1);
+        songStart=elapsed;
+        startDiff[currentIndex]=elapsed - songs[currentIndex].start;
+        actualStart[currentIndex]=elapsed;
+    }
+
     updateDisplay();
 });
 document.getElementById('transitionTime').addEventListener('change', renderSetlist);

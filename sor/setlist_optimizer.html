@@ -881,20 +881,24 @@
             Object.keys(instrumentWeights).forEach(instrument => {
                 const players1 = getPlayers(song1, instrument);
                 const players2 = getPlayers(song2, instrument);
-                
+
                 // Normalize player names for comparison (remove stars)
                 const normalizedPlayers1 = new Set(normalizePlayerList(players1));
                 const normalizedPlayers2 = new Set(normalizePlayerList(players2));
-                
-                // If different players are assigned to this instrument, add transition cost
-                const intersection = new Set([...normalizedPlayers1].filter(x => normalizedPlayers2.has(x)));
-                
-                // If no players in common for this instrument, full transition cost
-                if (intersection.size === 0 && (players1.length > 0 || players2.length > 0)) {
+
+                // If both songs have no players for this instrument, no cost
+                if (normalizedPlayers1.size === 0 && normalizedPlayers2.size === 0) {
+                    return;
+                }
+
+                // Determine if the set of players changed
+                const setsAreEqual =
+                    normalizedPlayers1.size === normalizedPlayers2.size &&
+                    [...normalizedPlayers1].every(p => normalizedPlayers2.has(p));
+
+                if (!setsAreEqual) {
+                    // Any change in the player lineup for this instrument counts as a transition
                     totalCost += instrumentWeights[instrument];
-                } else if (normalizedPlayers1.size !== normalizedPlayers2.size || players1.length !== players2.length) {
-                    // Partial transition cost for partial changes
-                    totalCost += instrumentWeights[instrument] * 0.5;
                 }
             });
             

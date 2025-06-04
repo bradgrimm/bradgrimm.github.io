@@ -897,8 +897,17 @@
                     [...normalizedPlayers1].every(p => normalizedPlayers2.has(p));
 
                 if (!setsAreEqual) {
-                    // Any change in the player lineup for this instrument counts as a transition
-                    totalCost += instrumentWeights[instrument];
+                    if (instrument === 'Guitar') {
+                        // Calculate how many guitarists actually changed
+                        const changes = new Set(
+                            [...normalizedPlayers1].filter(p => !normalizedPlayers2.has(p))
+                                .concat([...normalizedPlayers2].filter(p => !normalizedPlayers1.has(p)))
+                        ).size;
+                        totalCost += instrumentWeights[instrument] * changes;
+                    } else {
+                        // Any change in the player lineup for this instrument counts as a transition
+                        totalCost += instrumentWeights[instrument];
+                    }
                 }
             });
             

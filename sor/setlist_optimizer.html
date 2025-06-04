@@ -675,6 +675,7 @@
                 // Process instrument assignments
                 const instrumentMapping = {
                     'Vox': ['Vox', 'Vocals', 'Singer', 'Voice'],
+                    'Guitar': ['Guitar'],
                     'Guitar 1': ['Guitar 1', 'Gtr 1', 'Lead Guitar'],
                     'Guitar 2': ['Guitar 2', 'Gtr 2', 'Rhythm Guitar'],
                     'Guitar 3': ['Guitar 3', 'Gtr 3'],
@@ -870,6 +871,7 @@
             function getPlayers(song, instrument) {
                 if (instrument === 'Guitar') {
                     return []
+                        .concat(song.instruments['Guitar'] || [])
                         .concat(song.instruments['Guitar 1'] || [])
                         .concat(song.instruments['Guitar 2'] || [])
                         .concat(song.instruments['Guitar 3'] || []);

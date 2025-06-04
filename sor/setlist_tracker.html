@@ -511,6 +511,13 @@ function stopTimer(){
     for(let i=0;i<=currentIndex && i<songs.length;i++) playedDur+=songs[i].duration;
     const transitionSec=Math.max(0,elapsedSec-playedDur);
     alert(`Songs played: ${currentIndex+1}\nEstimated transition time: ${formatTime(transitionSec)}\nTime paused: ${formatTime(pauseSec)}`);
+    currentIndex = 0;
+    songStart = 0;
+    startDiff.length = 0;
+    actualStart.length = 0;
+    startTime = null;
+    totalPause = 0;
+    updateDisplay();
 }
 
 document.getElementById('startBtn').addEventListener('click', startTimer);

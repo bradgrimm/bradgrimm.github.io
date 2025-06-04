@@ -496,6 +496,7 @@
         let allPlayers = [];
         let selectedCast = new Set();
         let currentResults = [];
+        let originalHeaders = [];
         
         // Setup drag and drop
         function setupDragAndDrop() {
@@ -538,6 +539,23 @@
                 skipEmptyLines: true,
                 complete: function(results) {
                     try {
+                        originalHeaders = results.meta && results.meta.fields ?
+                            results.meta.fields : Object.keys(results.data[0] || {});
+
+                        const lowerHeaders = originalHeaders.map(h => h.toLowerCase());
+                        const requiredMap = {
+                            Vocals: ['vox', 'vocals', 'vocal', 'singer'],
+                            Guitar: ['g1', 'g2', 'g3', 'guitar', 'guitar 1', 'guitar1', 'guitar 2', 'guitar2', 'guitar 3', 'guitar3', 'gtr 1', 'gtr 2', 'gtr 3'],
+                            Bass: ['bass', 'bass guitar'],
+                            Drums: ['drums', 'drummer', 'percussion']
+                        };
+                        const missing = Object.entries(requiredMap).filter(([, cols]) =>
+                            !cols.some(c => lowerHeaders.includes(c))
+                        ).map(([name]) => name);
+                        if (missing.length > 0) {
+                            showStatus(`⚠️ Possible missing columns for: ${missing.join(', ')}`, 'error');
+                        }
+
                         processCsvData(results.data);
                         setupPlayerGrid();
                         setupEventListeners();
@@ -578,6 +596,17 @@
                 return true;
             });
             
+            // Mapping of instrument columns to handle naming variations
+            const instrumentMapping = {
+                'Guitar 1': ['Guitar 1', 'Guitar1', 'G1', 'Gtr 1'],
+                'Guitar 2': ['Guitar 2', 'Guitar2', 'G2', 'Gtr 2'],
+                'Guitar 3': ['Guitar 3', 'Guitar3', 'G3', 'Gtr 3'],
+                'Bass': ['Bass', 'Bass Guitar'],
+                'Keys': ['Keys', 'Keyboard', 'Piano'],
+                'Drums': ['Drums', 'Drummer', 'Percussion'],
+                'Vox': ['Vox', 'Vocals', 'Vocal', 'Singer']
+            };
+
             // Extract song data - only include songs with at least 3 people assigned
             const songs = dataRows.filter(row => {
                 const firstColumn = Object.keys(row)[0]; // Get the actual first column name
@@ -590,8 +619,14 @@
                 
                 // Count how many people are assigned to this song
                 let peopleCount = 0;
-                ['Guitar 1', 'Guitar 2', 'Guitar 3', 'Bass', 'Keys', 'Drums', 'Vox'].forEach(instrument => {
-                    const instrumentValue = getString(row[instrument]);
+                Object.entries(instrumentMapping).forEach(([inst, cols]) => {
+                    let instrumentValue = '';
+                    for (const col of cols) {
+                        if (row[col] && getString(row[col]) !== '') {
+                            instrumentValue = getString(row[col]);
+                            break;
+                        }
+                    }
                     if (instrumentValue !== '') {
                         // Count the number of people assigned to this instrument
                         const names = instrumentValue.split(/[,\/]/).map(name => {
@@ -613,8 +648,14 @@
                 };
                 
                 // Process each instrument - only add if there's actually someone assigned
-                ['Guitar 1', 'Guitar 2', 'Guitar 3', 'Bass', 'Keys', 'Drums', 'Vox'].forEach(instrument => {
-                    const instrumentValue = getString(row[instrument]);
+                Object.entries(instrumentMapping).forEach(([instrument, cols]) => {
+                    let instrumentValue = '';
+                    for (const col of cols) {
+                        if (row[col] && getString(row[col]) !== '') {
+                            instrumentValue = getString(row[col]);
+                            break;
+                        }
+                    }
                     if (instrumentValue !== '') {
                         // Parse multiple names and clean them carefully
                         const names = instrumentValue.split(/[,\/]/).map(name => {

@@ -566,6 +566,21 @@
                     try {
                         originalHeaders = results.meta && results.meta.fields ?
                             results.meta.fields : Object.keys(results.data[0] || {});
+
+                        const lowerHeaders = originalHeaders.map(h => h.toLowerCase());
+                        const requiredMap = {
+                            Vocals: ['vox', 'vocals', 'vocal', 'singer'],
+                            Guitar: ['g1', 'g2', 'g3', 'guitar', 'guitar 1', 'guitar1', 'guitar 2', 'guitar2', 'guitar 3', 'guitar3', 'gtr 1', 'gtr 2', 'gtr 3'],
+                            Bass: ['bass', 'bass guitar'],
+                            Drums: ['drums', 'drummer', 'percussion']
+                        };
+                        const missing = Object.entries(requiredMap).filter(([, cols]) =>
+                            !cols.some(c => lowerHeaders.includes(c))
+                        ).map(([name]) => name);
+                        if (missing.length > 0) {
+                            showStatus(`⚠️ Possible missing columns for: ${missing.join(', ')}`, 'error');
+                        }
+
                         processCsvData(results.data);
                         setupSongSelectors();
                         
@@ -674,11 +689,11 @@
                 
                 // Process instrument assignments
                 const instrumentMapping = {
-                    'Vox': ['Vox', 'Vocals', 'Singer', 'Voice'],
+                    'Vox': ['Vox', 'Vocals', 'Vocal', 'Singer', 'Voice'],
                     'Guitar': ['Guitar'],
-                    'Guitar 1': ['Guitar 1', 'Gtr 1', 'Lead Guitar'],
-                    'Guitar 2': ['Guitar 2', 'Gtr 2', 'Rhythm Guitar'],
-                    'Guitar 3': ['Guitar 3', 'Gtr 3'],
+                    'Guitar 1': ['Guitar 1', 'Guitar1', 'G1', 'Gtr 1', 'Lead Guitar'],
+                    'Guitar 2': ['Guitar 2', 'Guitar2', 'G2', 'Gtr 2', 'Rhythm Guitar'],
+                    'Guitar 3': ['Guitar 3', 'Guitar3', 'G3', 'Gtr 3'],
                     'Bass': ['Bass', 'Bass Guitar'],
                     'Keys': ['Keys', 'Keyboard', 'Piano'],
                     'Drums': ['Drums', 'Drummer', 'Percussion']

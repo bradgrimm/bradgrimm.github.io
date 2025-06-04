@@ -214,7 +214,7 @@
         <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
         <label>End By: <input type="time" id="endBy"></label>
         <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
-        <label><input type="checkbox" id="autoDrop" checked> Auto Drop</label>
+        <label><input type="checkbox" id="autoDrop"> Auto Drop</label>
     </div>
 </div>
 </div>
@@ -231,7 +231,7 @@ let pauseStart = 0;
 let totalPause = 0; // accumulated pause time in ms
 const actualStart = [];
 const transitionDurations = [];
-let autoDrop = true;
+let autoDrop = false;
 let currentBpm = 120;
 let metronomeTimer = null;
 let lastSongAppliedBpm = -1;

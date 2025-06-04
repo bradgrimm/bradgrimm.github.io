@@ -857,20 +857,30 @@
             }
             
             // Map instruments to weight categories
+            // Guitars are treated as a single group so switching between
+            // G1/G2/G3 for the same player does not incur a penalty
             const instrumentWeights = {
                 'Vox': transitionWeights.vox,
-                'Guitar 1': transitionWeights.guitar,
-                'Guitar 2': transitionWeights.guitar,
-                'Guitar 3': transitionWeights.guitar,
+                'Guitar': transitionWeights.guitar,
                 'Bass': transitionWeights.bass,
                 'Keys': transitionWeights.keys,
                 'Drums': transitionWeights.drums
             };
+
+            function getPlayers(song, instrument) {
+                if (instrument === 'Guitar') {
+                    return []
+                        .concat(song.instruments['Guitar 1'] || [])
+                        .concat(song.instruments['Guitar 2'] || [])
+                        .concat(song.instruments['Guitar 3'] || []);
+                }
+                return song.instruments[instrument] || [];
+            }
             
             // Check each instrument position for changes
             Object.keys(instrumentWeights).forEach(instrument => {
-                const players1 = song1.instruments[instrument] || [];
-                const players2 = song2.instruments[instrument] || [];
+                const players1 = getPlayers(song1, instrument);
+                const players2 = getPlayers(song2, instrument);
                 
                 // Normalize player names for comparison (remove stars)
                 const normalizedPlayers1 = new Set(normalizePlayerList(players1));

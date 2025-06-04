@@ -111,8 +111,15 @@
       margin-top:20px;
       text-align:center;
   }
+  #fileControls .file-row{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+      margin-top:10px;
+  }
   #fileControls label{
-      margin-left:10px;
+      margin:5px 10px;
       font-size:1.1em;
   }
   #fileControls input[type="number"]{
@@ -151,11 +158,15 @@
 <div id="transitionInfo"></div>
 <ul id="setlist"></ul>
 <div id="fileControls">
-    <input type="file" id="csvFile" accept=".csv">
-    <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
-    <label>End By: <input type="time" id="endBy"></label>
-    <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
-    <label><input type="checkbox" id="autoDrop" checked> Auto Drop</label>
+    <div class="file-row">
+        <input type="file" id="csvFile" accept=".csv">
+    </div>
+    <div class="file-row">
+        <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
+        <label>End By: <input type="time" id="endBy"></label>
+        <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
+        <label><input type="checkbox" id="autoDrop" checked> Auto Drop</label>
+    </div>
 </div>
 </div>
 <script>

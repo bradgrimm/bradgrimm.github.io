@@ -98,6 +98,9 @@
   #navControls button:active{
       transform:scale(0.97);
   }
+  .highlight{
+      background:#ff9800 !important;
+  }
   #fileControls{
       margin-top:20px;
       text-align:center;
@@ -127,6 +130,7 @@
     <button id="stopBtn">Stop</button>
     <button id="prevBtn">&lt;</button>
     <button id="nextBtn">&gt;</button>
+    <button id="dropBtn">Drop Songs</button>
 </div>
 <div id="currentSongDisplay"></div>
 <div id="progressContainer"><div id="progressBar"></div></div>
@@ -143,6 +147,7 @@
     <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
     <label>End By: <input type="time" id="endBy"></label>
     <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
+    <label><input type="checkbox" id="autoDrop" checked> Auto Drop</label>
 </div>
 </div>
 <script>
@@ -158,6 +163,7 @@ let pauseStart = 0;
 let totalPause = 0; // accumulated pause time in ms
 const actualStart = [];
 const transitionDurations = [];
+let autoDrop = true;
 
 // Check query string for a debugging speed multiplier, e.g. ?debugspeed=5
 // This is intentionally hidden so regular users don't accidentally change it.
@@ -338,6 +344,13 @@ function computeDroppedSongs(elapsed){
     }
 }
 
+function updateDropBtnHighlight(){
+    const btn=document.getElementById('dropBtn');
+    if(!btn) return;
+    if(autoDrop) btn.classList.remove('highlight');
+    else btn.classList.add('highlight');
+}
+
 function remainingDuration(withDrops, elapsed){
     const transition=parseInt(document.getElementById('transitionTime').value)||0;
     const remainIdx=[];
@@ -358,7 +371,7 @@ function remainingDuration(withDrops, elapsed){
 
 function updateDisplay(){
     const elapsed=startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
-    computeDroppedSongs(elapsed);
+    if(autoDrop) computeDroppedSongs(elapsed);
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
     document.getElementById('timeRemaining').textContent='Remaining: '+formatTime(maxSec-elapsed);
@@ -526,6 +539,19 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     updateDisplay();
 });
 document.getElementById('transitionTime').addEventListener('change', renderSetlist);
+document.getElementById('dropBtn').addEventListener('click', ()=>{
+    const elapsed=startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
+    computeDroppedSongs(elapsed);
+    updateDisplay();
+});
+document.getElementById('autoDrop').addEventListener('change', e=>{
+    autoDrop=e.target.checked;
+    const elapsed=startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
+    if(autoDrop) computeDroppedSongs(elapsed);
+    updateDropBtnHighlight();
+    updateDisplay();
+});
+updateDropBtnHighlight();
 </script>
 </body>
 </html>

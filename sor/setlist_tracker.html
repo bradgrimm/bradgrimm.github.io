@@ -352,7 +352,7 @@ function loadSongs(data){
             duration: parseDuration(durField),
             bpm: bpmField ? parseInt(bpmField) : null,
             notes: notesField || '',
-            keepOrder:1,
+            dropOrder:0,
             start:0,
             protect:false,
             dropped:false,
@@ -383,7 +383,7 @@ function renderSetlist(){
                 <span class="runtime">${formatTime(song.start)}</span>
                 <span class="time">${formatTime(song.duration)}</span>
                 <span class="bpm">${song.bpm?song.bpm+' BPM':''}</span>
-                <label class="priority-label">keep <input type="number" class="keep-order" data-idx="${i}" min="1" value="${song.keepOrder}" style="width:3em"></label>
+                <label class="priority-label">Drop <input type="number" class="drop-order" data-idx="${i}" min="0" value="${song.dropOrder}" style="width:3em"></label>
             </div>`;
         list.appendChild(li);
     });
@@ -400,11 +400,11 @@ function renderSetlist(){
             updateDisplay();
         });
     });
-    document.querySelectorAll('.keep-order').forEach(inp=>{
+    document.querySelectorAll('.drop-order').forEach(inp=>{
         inp.addEventListener('change',e=>{
             const idx=parseInt(e.target.dataset.idx);
             const val=parseInt(e.target.value);
-            if(!isNaN(val) && val>=1) songs[idx].keepOrder=val;
+            if(!isNaN(val) && val>=0) songs[idx].dropOrder=val;
         });
     });
     document.getElementById('timeRemaining').textContent='';
@@ -436,11 +436,16 @@ function computeDroppedSongs(elapsed){
     let keep=[...pending];
     if(totalDur(keep)<=remaining) return;
 
+    const closerIdx=songs.length-1;
     const order=droppable.sort((a,b)=>{
-        const da=songs[a].keepOrder||1;
-        const db=songs[b].keepOrder||1;
-        if(da!==db) return db-da;
-        return b-a;
+        if(a===closerIdx && b!==closerIdx) return 1;
+        if(b===closerIdx && a!==closerIdx) return -1;
+        const da=songs[a].dropOrder??0;
+        const db=songs[b].dropOrder??0;
+        const pa=da===0?Infinity:da;
+        const pb=db===0?Infinity:db;
+        if(pa!==pb) return pa-pb;
+        return a-b;
     });
 
     for(const idx of order){

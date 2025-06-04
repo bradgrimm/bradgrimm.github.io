@@ -38,6 +38,11 @@
       text-align:center;
       margin:20px 0 5px;
   }
+  #songNotesDisplay {
+      text-align:center;
+      font-size:1.1em;
+      margin-bottom:5px;
+  }
   #nextSongDisplay {
       font-size:1.3em;
       text-align:center;
@@ -164,6 +169,7 @@
     <button id="dropBtn">Drop Songs</button>
 </div>
 <div id="currentSongDisplay"></div>
+<div id="songNotesDisplay" style="text-align:center;margin-bottom:5px;"></div>
 <div id="nextSongDisplay"></div>
   <div id="progressContainer"><div id="progressBar"></div></div>
   <span id="timerDisplay">00:00</span>
@@ -313,12 +319,14 @@ function loadSongs(data){
         const artist = normalized['artist'];
         const durField = normalized['duration'] || normalized['time'];
         const bpmField = normalized['bpm'] || normalized['tempo'];
+        const notesField = normalized['notes'] || normalized['note'];
         if(!title && !artist) return; // ignore note rows
         songs.push({
             title: title || '',
             artist: artist || '',
             duration: parseDuration(durField),
             bpm: bpmField ? parseInt(bpmField) : null,
+            notes: notesField || '',
             dropFirst:false,
             dropNum:1,
             start:0,
@@ -471,6 +479,10 @@ function updateDisplay(){
     const songEl=document.getElementById('currentSongDisplay');
     if(songEl){
         songEl.textContent=curSong?`${currentIndex+1}. ${curSong.title} - ${curSong.artist}`:'';
+    }
+    const notesEl=document.getElementById('songNotesDisplay');
+    if(notesEl){
+        notesEl.textContent=curSong && curSong.notes?curSong.notes:'';
     }
     const nextEl=document.getElementById('nextSongDisplay');
     if(nextEl){

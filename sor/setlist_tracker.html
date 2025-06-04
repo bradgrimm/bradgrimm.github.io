@@ -354,7 +354,9 @@ function loadSongs(data){
             notes: notesField || '',
             keepOrder:1,
             start:0,
-            protect:false
+            protect:false,
+            dropped:false,
+            manualDrop:false
         });
     });
     lastSongAppliedBpm=-1;
@@ -376,7 +378,7 @@ function renderSetlist(){
         cumulative+=song.duration+transition;
         const li=document.createElement('li');
         li.dataset.index=i;
-        li.innerHTML=`<div class="song-info"><label class="protect-label"><input type="checkbox" class="protect" data-idx="${i}" ${song.protect?'checked':''}></label> ${i+1}. ${song.title} - ${song.artist}</div>
+        li.innerHTML=`<div class="song-info"><label class="protect-label"><input type="checkbox" class="drop-toggle" data-idx="${i}" ${song.dropped?'':'checked'}></label> ${i+1}. ${song.title} - ${song.artist}</div>
             <div class="song-controls">
                 <span class="runtime">${formatTime(song.start)}</span>
                 <span class="time">${formatTime(song.duration)}</span>
@@ -385,10 +387,17 @@ function renderSetlist(){
             </div>`;
         list.appendChild(li);
     });
-    document.querySelectorAll('.protect').forEach(cb=>{
+    document.querySelectorAll('.drop-toggle').forEach(cb=>{
         cb.addEventListener('change',e=>{
             const idx=parseInt(e.target.dataset.idx);
-            songs[idx].protect=e.target.checked;
+            const checked=e.target.checked;
+            songs[idx].dropped=!checked;
+            songs[idx].manualDrop=!checked;
+            if(autoDrop){
+                const elapsed=startTime?Math.floor(getElapsedMs()/1000*speedFactor):0;
+                computeDroppedSongs(elapsed);
+            }
+            updateDisplay();
         });
     });
     document.querySelectorAll('.keep-order').forEach(inp=>{
@@ -407,10 +416,12 @@ function computeDroppedSongs(elapsed){
     const remaining=maxSec-elapsed;
     const transition=parseInt(document.getElementById('transitionTime').value)||0;
 
-    songs.forEach(s=>s.dropped=false);
+    songs.forEach(s=>{ if(!s.manualDrop) s.dropped=false; });
 
     const pending=[];
-    for(let i=currentIndex;i<songs.length;i++) pending.push(i);
+    for(let i=currentIndex;i<songs.length;i++){
+        if(!songs[i].manualDrop) pending.push(i);
+    }
     const droppable=pending.filter(i=>!songs[i].protect);
 
     const totalDur=idxs=>{
@@ -436,6 +447,7 @@ function computeDroppedSongs(elapsed){
         if(totalDur(keep)<=remaining) break;
         keep=keep.filter(k=>k!==idx);
         songs[idx].dropped=true;
+        songs[idx].manualDrop=false;
     }
 }
 
@@ -471,6 +483,7 @@ function remainingDuration(withDrops, elapsed){
 
 function updateDisplay(){
     const elapsed=startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
+    const realElapsed=startTime ? Math.floor(getElapsedMs()/1000) : 0;
     if(autoDrop) computeDroppedSongs(elapsed);
     updateDropBtn(elapsed);
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
@@ -556,7 +569,7 @@ function updateDisplay(){
     const endEl=document.getElementById('projectedEnd');
     if(endEl){
         const rd=remainingDuration(true, elapsed);
-        const endTime=new Date(Date.now()+rd*1000/speedFactor);
+        const endTime=new Date(Date.now()+rd*1000);
         endEl.textContent=`Setlist End: ${formatClock(endTime)}`;
     }
     const dropEl=document.getElementById('droppedInfo');

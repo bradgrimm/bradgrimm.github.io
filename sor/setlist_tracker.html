@@ -142,6 +142,21 @@
   #fileControls input[type="number"]{
       width:4em;
   }
+
+  #contentWrapper{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+  }
+  #songsColumn{
+      overflow-y:auto;
+      max-height:60vh;
+  }
+  @media (min-width:800px){
+      #contentWrapper{ flex-direction:row; align-items:flex-start; }
+      #infoColumn{ flex:1; padding-right:20px; }
+      #songsColumn{ flex:1; max-height:80vh; }
+  }
   @media (max-width:600px){
       #navControls button{
           font-size:1.2em;
@@ -155,6 +170,8 @@
 <body>
 <div class="container">
 <h1>Setlist Tracker</h1>
+<div id="contentWrapper">
+<div id="infoColumn">
 <div id="navControls">
     <button id="startBtn">Start</button>
     <button id="pauseBtn">Pause</button>
@@ -178,7 +195,6 @@
 <div id="projectedEnd"></div>
 <div id="droppedInfo"></div>
 <div id="transitionInfo"></div>
-<ul id="setlist"></ul>
 <div id="fileControls">
     <div class="file-row">
         <input type="file" id="csvFile" accept=".csv">
@@ -190,6 +206,11 @@
         <label><input type="checkbox" id="autoDrop" checked> Auto Drop</label>
     </div>
 </div>
+</div> <!-- infoColumn -->
+<div id="songsColumn">
+<ul id="setlist"></ul>
+</div>
+</div> <!-- contentWrapper -->
 </div>
 <script>
 let songs = [];

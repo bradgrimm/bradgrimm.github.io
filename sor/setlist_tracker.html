@@ -511,24 +511,18 @@ document.getElementById('prevBtn').addEventListener('click', ()=>{
     actualStart[currentIndex]=elapsed;
     updateDisplay();
 });
-document.getElementById('nextBtn').addEventListener('click', ()=>{
-    currentIndex=Math.min(songs.length-1,currentIndex+1);
-    const elapsed=startTime?Math.floor(getElapsedMs()/1000):0;
-    songStart=elapsed;
-    startDiff[currentIndex]=elapsed - songs[currentIndex].start;
-
-    const elapsed=startTime?Math.floor((Date.now()-startTime)/1000):0;
-    if(currentIndex<songs.length-1){
-        if(actualStart[currentIndex]!==undefined){
-            const trans=elapsed - actualStart[currentIndex] - songs[currentIndex].duration;
-            if(trans>=0) transitionDurations[currentIndex]=trans;
+document.getElementById('nextBtn').addEventListener('click', () => {
+    const elapsed = startTime ? Math.floor(getElapsedMs() / 1000) : 0;
+    if (currentIndex < songs.length - 1) {
+        if (actualStart[currentIndex] !== undefined) {
+            const trans = elapsed - actualStart[currentIndex] - songs[currentIndex].duration;
+            if (trans >= 0) transitionDurations[currentIndex] = trans;
         }
-        currentIndex=Math.min(songs.length-1,currentIndex+1);
-        songStart=elapsed;
-        startDiff[currentIndex]=elapsed - songs[currentIndex].start;
-        actualStart[currentIndex]=elapsed;
+        currentIndex = Math.min(songs.length - 1, currentIndex + 1);
+        songStart = elapsed;
+        startDiff[currentIndex] = elapsed - songs[currentIndex].start;
+        actualStart[currentIndex] = elapsed;
     }
-
     updateDisplay();
 });
 document.getElementById('transitionTime').addEventListener('change', renderSetlist);

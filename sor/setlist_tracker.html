@@ -72,6 +72,10 @@
       margin:4px 0;
       font-size:1em;
   }
+  #clockTime,#projectedEnd{
+      display:inline-block;
+      margin:4px 8px;
+  }
   #setlist { list-style:none; padding:0; }
   #setlist li {
       padding:12px;
@@ -484,7 +488,13 @@ function updateDisplay(){
     updateDropBtn(elapsed);
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
-    document.getElementById('timeRemaining').textContent='Remaining: '+formatTime(maxSec-elapsed);
+    const setRemain=remainingDuration(true, elapsed);
+    const gigRemain=Math.max(0, maxSec-elapsed);
+    const remEl=document.getElementById('timeRemaining');
+    if(remEl){
+        remEl.textContent=`${formatTime(setRemain)} of ${formatTime(gigRemain)}`;
+        remEl.style.color=setRemain>gigRemain?'red':'blue';
+    }
     const progress=document.getElementById('progressBar');
     if(progress){
         progress.style.width=Math.min(100,elapsed/maxSec*100)+"%";
@@ -554,15 +564,13 @@ function updateDisplay(){
     }
     const clockEl=document.getElementById('clockTime');
     if(clockEl){
-        clockEl.textContent='Current: '+formatClock(new Date());
+        clockEl.textContent=`Now: ${formatClock(new Date())}`;
     }
     const endEl=document.getElementById('projectedEnd');
     if(endEl){
-        const rd=remainingDuration(true, realElapsed);
-        const ra=remainingDuration(false, realElapsed);
-        const endDrop=new Date(Date.now()+rd*1000);
-        const endAll=new Date(Date.now()+ra*1000);
-        endEl.textContent=`End w/drops: ${formatClock(endDrop)} | w/out: ${formatClock(endAll)}`;
+        const rd=remainingDuration(true, elapsed);
+        const endTime=new Date(Date.now()+rd*1000);
+        endEl.textContent=`Setlist End: ${formatClock(endTime)}`;
     }
     const dropEl=document.getElementById('droppedInfo');
     if(dropEl){

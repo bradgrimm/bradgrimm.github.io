@@ -441,6 +441,7 @@ function computeDroppedSongs(elapsed){
     if(totalDur(keep)<=remaining) return;
 
     const closerIdx=songs.length-1;
+    // Sort drop candidates so we always drop from the bottom first.
     const order=droppable.sort((a,b)=>{
         if(a===closerIdx && b!==closerIdx) return 1;
         if(b===closerIdx && a!==closerIdx) return -1;
@@ -449,7 +450,7 @@ function computeDroppedSongs(elapsed){
         const pa=da===0?Infinity:da;
         const pb=db===0?Infinity:db;
         if(pa!==pb) return pa-pb;
-        return a-b;
+        return b-a;
     });
 
     for(const idx of order){

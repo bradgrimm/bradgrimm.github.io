@@ -163,6 +163,9 @@
       display:flex;
       flex-direction:column;
   }
+  #infoSpacer{
+      flex-grow:1;
+  }
   @media (min-width:800px){
       #contentWrapper{ flex-direction:row; align-items:flex-start; }
       #infoColumn{ flex:1; padding-right:20px; }
@@ -200,6 +203,7 @@
 <div id="projectedEnd"></div>
 <div id="droppedInfo"></div>
 <div id="transitionInfo"></div>
+<div id="infoSpacer"></div>
   <div id="metronomeControls">
       <label><input type="checkbox" id="metronomeToggle"></label>
       <label>BPM: <input type="number" id="bpmInput" value="120" min="30" style="width:5em"></label>

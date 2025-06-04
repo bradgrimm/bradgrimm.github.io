@@ -80,6 +80,7 @@
 <div id="fileControls">
     <input type="file" id="csvFile" accept=".csv">
     <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
+    <label>End By: <input type="time" id="endBy"></label>
     <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
 </div>
 <script>
@@ -315,9 +316,24 @@ function updateDisplay(){
 function startTimer(){
     if(timer) return;
     startTime=Date.now();
+
+    const endInput=document.getElementById('endBy');
+    if(endInput && endInput.value){
+        const parts=endInput.value.split(':').map(Number);
+        if(parts.length===2){
+            const target=new Date(startTime);
+            target.setHours(parts[0], parts[1], 0, 0);
+            if(target.getTime()<startTime) target.setDate(target.getDate()+1);
+            const minutes=Math.round((target.getTime()-startTime)/60000);
+            const max=document.getElementById('maxTime');
+            if(max) max.value=minutes;
+        }
+    }
+
     songStart=0;
     startDiff[0]=0;
     timer=setInterval(updateDisplay,1000/speedFactor);
+    updateDisplay();
 }
 
 document.getElementById('startBtn').addEventListener('click', startTimer);

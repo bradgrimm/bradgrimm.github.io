@@ -85,12 +85,11 @@
   #setlist li.dropped { background:#f8d7da; text-decoration: line-through; opacity:0.6; }
 .song-info { font-weight:bold; margin-bottom:5px; }
 .song-controls{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
-.drop-label { font-size:0.9em; }
+.priority-label { font-size:0.9em; }
 .protect-label { font-size:0.9em; }
 .time { width:60px; text-align:right; }
  .runtime { width:60px; text-align:right; }
 .bpm { width:70px; text-align:right; }
-.remove { margin-left:10px; }
   #navControls{
       text-align:center;
       margin-bottom:15px;
@@ -344,8 +343,7 @@ function loadSongs(data){
             duration: parseDuration(durField),
             bpm: bpmField ? parseInt(bpmField) : null,
             notes: notesField || '',
-            dropFirst:false,
-            dropNum:1,
+            keepOrder:1,
             start:0,
             protect:false
         });
@@ -369,27 +367,14 @@ function renderSetlist(){
         cumulative+=song.duration+transition;
         const li=document.createElement('li');
         li.dataset.index=i;
-        li.innerHTML=`<div class="song-info">${i+1}. ${song.title} - ${song.artist}</div>
+        li.innerHTML=`<div class="song-info"><label class="protect-label"><input type="checkbox" class="protect" data-idx="${i}" ${song.protect?'checked':''}></label> ${i+1}. ${song.title} - ${song.artist}</div>
             <div class="song-controls">
                 <span class="runtime">${formatTime(song.start)}</span>
                 <span class="time">${formatTime(song.duration)}</span>
                 <span class="bpm">${song.bpm?song.bpm+' BPM':''}</span>
-                <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}" ${song.dropFirst?'checked':''}> drop <input type="number" class="drop-num" data-idx="${i}" min="1" value="${song.dropNum}" style="width:3em" ${song.dropFirst?'':'disabled'}></label>
-                <label class="protect-label"><input type="checkbox" class="protect" data-idx="${i}" ${song.protect?'checked':''}> keep</label>
-                <button class="remove" data-idx="${i}">Remove</button>
+                <label class="priority-label">keep <input type="number" class="keep-order" data-idx="${i}" min="1" value="${song.keepOrder}" style="width:3em"></label>
             </div>`;
         list.appendChild(li);
-    });
-    document.querySelectorAll('.drop').forEach(cb=>{
-        cb.addEventListener('change',e=>{
-            const idx=parseInt(e.target.dataset.idx);
-            songs[idx].dropFirst=e.target.checked;
-            const num=document.querySelector(`.drop-num[data-idx="${idx}"]`);
-            if(num){
-                num.disabled=!e.target.checked;
-                if(e.target.checked && !num.value) num.value=songs[idx].dropNum;
-            }
-        });
     });
     document.querySelectorAll('.protect').forEach(cb=>{
         cb.addEventListener('change',e=>{
@@ -397,18 +382,11 @@ function renderSetlist(){
             songs[idx].protect=e.target.checked;
         });
     });
-    document.querySelectorAll('.drop-num').forEach(inp=>{
+    document.querySelectorAll('.keep-order').forEach(inp=>{
         inp.addEventListener('change',e=>{
             const idx=parseInt(e.target.dataset.idx);
             const val=parseInt(e.target.value);
-            if(!isNaN(val)) songs[idx].dropNum=val;
-        });
-    });
-    document.querySelectorAll('.remove').forEach(btn=>{
-        btn.addEventListener('click',e=>{
-            const idx=parseInt(e.target.dataset.idx);
-            songs.splice(idx,1);
-            renderSetlist();
+            if(!isNaN(val) && val>=1) songs[idx].keepOrder=val;
         });
     });
     document.getElementById('timeRemaining').textContent='';
@@ -438,23 +416,17 @@ function computeDroppedSongs(elapsed){
     let keep=[...pending];
     if(totalDur(keep)<=remaining) return;
 
-    const dropFirst=droppable.filter(i=>i!==0 && i!==songs.length-1 && songs[i].dropFirst)
-        .sort((a,b)=>{
-            const d=(songs[a].dropNum||0)-(songs[b].dropNum||0);
-            return d!==0?d:b-a;
-        });
-    const untagged=droppable.filter(i=>i!==0 && i!==songs.length-1 && !songs[i].dropFirst)
-        .sort((a,b)=>b-a);
-    const anchors=droppable.filter(i=>i===0 || i===songs.length-1)
-        .sort((a,b)=>b-a);
+    const order=droppable.sort((a,b)=>{
+        const da=songs[a].keepOrder||1;
+        const db=songs[b].keepOrder||1;
+        if(da!==db) return db-da;
+        return b-a;
+    });
 
-    const lists=[dropFirst,untagged,anchors];
-    for(const list of lists){
-        while(list.length && totalDur(keep)>remaining){
-            const idx=list.shift();
-            keep=keep.filter(k=>k!==idx);
-            songs[idx].dropped=true;
-        }
+    for(const idx of order){
+        if(totalDur(keep)<=remaining) break;
+        keep=keep.filter(k=>k!==idx);
+        songs[idx].dropped=true;
     }
 }
 

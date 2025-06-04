@@ -13,7 +13,7 @@
       padding: 20px;
   }
   .container {
-      max-width: 900px;
+      width: 100%;
       margin: 0 auto;
       background: white;
       border-radius: 15px;
@@ -78,20 +78,18 @@
       background:#f9f9f9;
       margin-bottom:8px;
       border-radius:8px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
       box-shadow:0 2px 4px rgba(0,0,0,0.05);
   }
   #setlist li.playing { background:#fff3cd; }
   #setlist li.should { background:#d1e7dd; }
   #setlist li.dropped { background:#f8d7da; text-decoration: line-through; opacity:0.6; }
-.song-info { flex:1; }
-.drop-label { margin-left:10px; font-size:0.9em; }
-.protect-label { margin-left:10px; font-size:0.9em; }
-.time { width:60px; text-align:right; margin-left:10px; }
- .runtime { width:60px; text-align:right; margin-left:10px; }
-.bpm { width:70px; text-align:right; margin-left:10px; }
+.song-info { font-weight:bold; margin-bottom:5px; }
+.song-controls{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+.drop-label { font-size:0.9em; }
+.protect-label { font-size:0.9em; }
+.time { width:60px; text-align:right; }
+ .runtime { width:60px; text-align:right; }
+.bpm { width:70px; text-align:right; }
 .remove { margin-left:10px; }
   #navControls{
       text-align:center;
@@ -174,7 +172,6 @@
 </head>
 <body>
 <div class="container">
-<h1>Setlist Tracker</h1>
 <div id="contentWrapper">
 <div id="infoColumn">
 <div id="navControls">
@@ -201,6 +198,11 @@
 <div id="projectedEnd"></div>
 <div id="droppedInfo"></div>
 <div id="transitionInfo"></div>
+</div> <!-- infoColumn -->
+<div id="songsColumn">
+<ul id="setlist"></ul>
+</div>
+</div> <!-- contentWrapper -->
 <div id="fileControls">
     <div class="file-row">
         <input type="file" id="csvFile" accept=".csv">
@@ -212,11 +214,6 @@
         <label><input type="checkbox" id="autoDrop" checked> Auto Drop</label>
     </div>
 </div>
-</div> <!-- infoColumn -->
-<div id="songsColumn">
-<ul id="setlist"></ul>
-</div>
-</div> <!-- contentWrapper -->
 </div>
 <script>
 let songs = [];
@@ -373,13 +370,15 @@ function renderSetlist(){
         cumulative+=song.duration+transition;
         const li=document.createElement('li');
         li.dataset.index=i;
-        li.innerHTML=`<span class="song-info">${i+1}. ${song.title} - ${song.artist}</span>
-            <span class="runtime">${formatTime(song.start)}</span>
-            <span class="time">${formatTime(song.duration)}</span>
-            <span class="bpm">${song.bpm?song.bpm+' BPM':''}</span>
-            <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}" ${song.dropFirst?'checked':''}> drop <input type="number" class="drop-num" data-idx="${i}" min="1" value="${song.dropNum}" style="width:3em" ${song.dropFirst?'':'disabled'}></label>
-            <label class="protect-label"><input type="checkbox" class="protect" data-idx="${i}" ${song.protect?'checked':''}> keep</label>
-            <button class="remove" data-idx="${i}">Remove</button>`;
+        li.innerHTML=`<div class="song-info">${i+1}. ${song.title} - ${song.artist}</div>
+            <div class="song-controls">
+                <span class="runtime">${formatTime(song.start)}</span>
+                <span class="time">${formatTime(song.duration)}</span>
+                <span class="bpm">${song.bpm?song.bpm+' BPM':''}</span>
+                <label class="drop-label"><input type="checkbox" class="drop" data-idx="${i}" ${song.dropFirst?'checked':''}> drop <input type="number" class="drop-num" data-idx="${i}" min="1" value="${song.dropNum}" style="width:3em" ${song.dropFirst?'':'disabled'}></label>
+                <label class="protect-label"><input type="checkbox" class="protect" data-idx="${i}" ${song.protect?'checked':''}> keep</label>
+                <button class="remove" data-idx="${i}">Remove</button>
+            </div>`;
         list.appendChild(li);
     });
     document.querySelectorAll('.drop').forEach(cb=>{

@@ -570,6 +570,11 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     updateDisplay();
 });
 document.getElementById('transitionTime').addEventListener('change', renderSetlist);
+document.getElementById('maxTime').addEventListener('change', () => {
+    const elapsed = startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
+    if(autoDrop) computeDroppedSongs(elapsed);
+    updateDisplay();
+});
 document.getElementById('dropBtn').addEventListener('click', ()=>{
     const elapsed=startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
     computeDroppedSongs(elapsed);

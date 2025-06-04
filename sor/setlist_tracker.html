@@ -458,8 +458,8 @@ function updateDropBtn(elapsed){
     else btn.classList.add('highlight');
 
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
-    const remAll=remainingDuration(false, elapsed);
-    const show=!autoDrop && (elapsed + remAll > maxSec);
+    const remaining=remainingDuration(true, elapsed); // use current dropped state
+    const show=!autoDrop && (elapsed + remaining > maxSec);
     btn.style.display=show?'':'none';
 }
 
@@ -597,7 +597,12 @@ function updateDisplay(){
     }
     songs.forEach((song,i)=>{
         const li=document.querySelector(`#setlist li[data-index="${i}"]`);
-        if(li && song.dropped) li.classList.add('dropped');
+        if(li){
+            if(song.dropped) li.classList.add('dropped');
+            else li.classList.remove('dropped');
+            const cb=li.querySelector('.drop-toggle');
+            if(cb) cb.checked=!song.dropped;
+        }
     });
 }
 

@@ -36,7 +36,13 @@
       font-size:2.2em;
       font-weight:bold;
       text-align:center;
-      margin:20px 0;
+      margin:20px 0 5px;
+  }
+  #nextSongDisplay {
+      font-size:1.3em;
+      text-align:center;
+      margin-bottom:15px;
+      color:#555;
   }
   #progressContainer {
       height:20px;
@@ -115,6 +121,7 @@
           padding:12px 20px;
       }
       #currentSongDisplay{ font-size:1.6em; }
+      #nextSongDisplay{ font-size:1.1em; }
   }
 </style>
 </head>
@@ -129,6 +136,7 @@
     <button id="nextBtn">&gt;</button>
 </div>
 <div id="currentSongDisplay"></div>
+<div id="nextSongDisplay"></div>
 <div id="progressContainer"><div id="progressBar"></div></div>
 <span id="timerDisplay">00:00</span>
 <div id="timeRemaining" style="text-align:center;margin-bottom:10px;"></div>
@@ -370,6 +378,11 @@ function updateDisplay(){
     const songEl=document.getElementById('currentSongDisplay');
     if(songEl){
         songEl.textContent=curSong?`${currentIndex+1}. ${curSong.title} - ${curSong.artist}`:'';
+    }
+    const nextEl=document.getElementById('nextSongDisplay');
+    if(nextEl){
+        const nextSong=songs[currentIndex+1];
+        nextEl.textContent=nextSong?`Next Up: ${currentIndex+2}. ${nextSong.title} - ${nextSong.artist}`:'';
     }
     const diffEl=document.getElementById('aheadBehind');
     if(diffEl){

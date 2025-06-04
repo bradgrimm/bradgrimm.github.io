@@ -176,8 +176,7 @@
 <div id="infoColumn">
 <div id="navControls">
     <button id="startBtn">Start</button>
-    <button id="pauseBtn">Pause</button>
-    <button id="stopBtn">Stop</button>
+    <button id="stopBtn" disabled>Stop</button>
     <button id="prevBtn">&lt;</button>
     <button id="nextBtn">&gt;</button>
     <button id="dropBtn">Drop Songs</button>
@@ -459,11 +458,16 @@ function computeDroppedSongs(elapsed){
     }
 }
 
-function updateDropBtnHighlight(){
+function updateDropBtn(elapsed){
     const btn=document.getElementById('dropBtn');
     if(!btn) return;
     if(autoDrop) btn.classList.remove('highlight');
     else btn.classList.add('highlight');
+
+    const maxSec=parseInt(document.getElementById('maxTime').value)*60;
+    const remAll=remainingDuration(false, elapsed);
+    const show=!autoDrop && (elapsed + remAll > maxSec);
+    btn.style.display=show?'':'none';
 }
 
 function remainingDuration(withDrops, elapsed){
@@ -487,6 +491,7 @@ function remainingDuration(withDrops, elapsed){
 function updateDisplay(){
     const elapsed=startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
     if(autoDrop) computeDroppedSongs(elapsed);
+    updateDropBtn(elapsed);
     document.getElementById('timerDisplay').textContent=formatTime(elapsed);
     const maxSec=parseInt(document.getElementById('maxTime').value)*60;
     document.getElementById('timeRemaining').textContent='Remaining: '+formatTime(maxSec-elapsed);
@@ -623,17 +628,32 @@ function startTimer(){
     timer=setInterval(updateDisplay,1000/speedFactor);
     const toggle=document.getElementById('metronomeToggle');
     if(toggle && toggle.checked) startMetronome();
+    updateButtonStates();
     updateDisplay();
+}
+
+function updateButtonStates(){
+    const start=document.getElementById('startBtn');
+    const stop=document.getElementById('stopBtn');
+    if(!start || !stop) return;
+    if(!startTime){
+        start.textContent='Start';
+        stop.disabled=true;
+    }else if(isPaused){
+        start.textContent='Resume';
+        stop.disabled=false;
+    }else{
+        start.textContent='Pause';
+        stop.disabled=false;
+    }
 }
 
 function togglePause(){
     if(!startTime) return;
-    const btn=document.getElementById('pauseBtn');
     if(isPaused){
         totalPause+=Date.now()-pauseStart;
         isPaused=false;
         timer=setInterval(updateDisplay,1000/speedFactor);
-        if(btn) btn.textContent='Pause';
     }else{
         if(timer){
             clearInterval(timer);
@@ -641,8 +661,8 @@ function togglePause(){
         }
         isPaused=true;
         pauseStart=Date.now();
-        if(btn) btn.textContent='Resume';
     }
+    updateButtonStates();
     updateDisplay();
 }
 
@@ -655,8 +675,6 @@ function stopTimer(){
     if(isPaused){
         totalPause+=Date.now()-pauseStart;
         isPaused=false;
-        const btn=document.getElementById('pauseBtn');
-        if(btn) btn.textContent='Pause';
     }
     stopMetronome();
     const elapsedSec=Math.floor(getElapsedMs()/1000*speedFactor);
@@ -671,11 +689,14 @@ function stopTimer(){
     actualStart.length = 0;
     startTime = null;
     totalPause = 0;
+    updateButtonStates();
     updateDisplay();
 }
 
-document.getElementById('startBtn').addEventListener('click', startTimer);
-document.getElementById('pauseBtn').addEventListener('click', togglePause);
+document.getElementById('startBtn').addEventListener('click', () => {
+    if(!startTime) startTimer();
+    else togglePause();
+});
 document.getElementById('stopBtn').addEventListener('click', stopTimer);
 document.getElementById('prevBtn').addEventListener('click', ()=>{
     currentIndex=Math.max(0,currentIndex-1);
@@ -714,7 +735,7 @@ document.getElementById('autoDrop').addEventListener('change', e=>{
     autoDrop=e.target.checked;
     const elapsed=startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
     if(autoDrop) computeDroppedSongs(elapsed);
-    updateDropBtnHighlight();
+    updateDropBtn(elapsed);
     updateDisplay();
 });
 document.getElementById('metronomeToggle').addEventListener('change', e=>{
@@ -727,7 +748,7 @@ document.getElementById('bpmInput').addEventListener('change', e=>{
         setMetronomeBpm(val);
     }
 });
-updateDropBtnHighlight();
+updateDropBtn(0);
 </script>
 </body>
 </html>

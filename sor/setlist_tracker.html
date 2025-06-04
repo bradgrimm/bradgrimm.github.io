@@ -464,21 +464,19 @@ function updateDropBtn(elapsed){
 }
 
 function remainingDuration(withDrops, elapsed){
-    const transition=parseInt(document.getElementById('transitionTime').value)||0;
-    const remainIdx=[];
-    for(let i=currentIndex;i<songs.length;i++){
+    const transition = parseInt(document.getElementById('transitionTime').value) || 0;
+    const remainIdx = [];
+    for(let i=currentIndex; i<songs.length; i++){
         if(withDrops && songs[i].dropped) continue;
         remainIdx.push(i);
     }
-    let t=0;
-    const progress=Math.max(0, elapsed - songStart);
+    let total = 0;
     remainIdx.forEach((idx,j)=>{
-        let dur=songs[idx].duration;
-        if(idx===currentIndex) dur=Math.max(0,dur-progress);
-        t+=dur;
-        if(j<remainIdx.length-1) t+=transition;
+        total += songs[idx].duration;
+        if(j < remainIdx.length-1) total += transition;
     });
-    return t;
+    const progress = Math.max(0, elapsed - songStart);
+    return Math.max(0, total - progress);
 }
 
 function updateDisplay(){
@@ -518,46 +516,21 @@ function updateDisplay(){
     if(diffEl){
         diffEl.style.color='';
         if(curSong){
-            // Determine how far ahead or behind we are compared to the schedule
-            let shouldIdx=null;
-            for(let i=0;i<songs.length;i++){
-                if(elapsed < songs[i].start + songs[i].duration){ shouldIdx=i; break; }
-            }
-            if(shouldIdx===null) shouldIdx=songs.length-1;
-
-            const schedDiff=songs[shouldIdx].start - songs[currentIndex].start;
-
-            const maxSec=parseInt(document.getElementById('maxTime').value)*60;
-            const remWith=remainingDuration(true, elapsed);
-            const remAll=remainingDuration(false, elapsed);
-            const endDiff=maxSec - (elapsed + remWith);
-            const dropped=remAll - remWith;
-
-            let text='On time';
-            if(!autoDrop){
-                if(Math.abs(schedDiff)>=1){
-                    if(schedDiff>0){
-                        text=`Behind ${formatTime(schedDiff)}`;
-                        diffEl.style.color='red';
-                    }else{
-                        text=`Ahead ${formatTime(-schedDiff)}`;
-                        diffEl.style.color='blue';
-                    }
+            const setRemain = remainingDuration(true, elapsed);
+            const maxSec = parseInt(document.getElementById('maxTime').value) * 60;
+            const gigRemain = Math.max(0, maxSec - elapsed);
+            let diff = gigRemain - setRemain;
+            let text = 'On time';
+            if(Math.abs(diff) >= 1){
+                if(diff < 0){
+                    text = `Behind ${formatTime(-diff)}`;
+                    diffEl.style.color = 'red';
+                }else{
+                    text = `Ahead ${formatTime(diff)}`;
+                    diffEl.style.color = 'blue';
                 }
-            }else{
-                if(Math.abs(endDiff)>=1){
-                    if(endDiff<0){
-                        text=`Behind ${formatTime(-endDiff)}`;
-                        diffEl.style.color='red';
-                    }else{
-                        text=`Ahead ${formatTime(endDiff)}`;
-                        diffEl.style.color='blue';
-                    }
-                }
-                if(dropped>0) text+=` (Dropped ${formatTime(dropped)})`;
             }
-
-            diffEl.textContent=text;
+            diffEl.textContent = text;
         }else{
             diffEl.textContent='';
         }

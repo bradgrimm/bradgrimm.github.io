@@ -163,6 +163,9 @@
       display:flex;
       flex-direction:column;
   }
+  #infoSpacer{
+      flex-grow:1;
+  }
   @media (min-width:800px){
       #contentWrapper{ flex-direction:row; align-items:flex-start; }
       #infoColumn{ flex:1; padding-right:20px; }
@@ -200,6 +203,7 @@
 <div id="projectedEnd"></div>
 <div id="droppedInfo"></div>
 <div id="transitionInfo"></div>
+<div id="infoSpacer"></div>
   <div id="metronomeControls">
       <label><input type="checkbox" id="metronomeToggle"></label>
       <label>BPM: <input type="number" id="bpmInput" value="120" min="30" style="width:5em"></label>
@@ -352,7 +356,7 @@ function loadSongs(data){
             duration: parseDuration(durField),
             bpm: bpmField ? parseInt(bpmField) : null,
             notes: notesField || '',
-            keepOrder:1,
+            dropOrder:0,
             start:0,
             protect:false,
             dropped:false,
@@ -383,7 +387,7 @@ function renderSetlist(){
                 <span class="runtime">${formatTime(song.start)}</span>
                 <span class="time">${formatTime(song.duration)}</span>
                 <span class="bpm">${song.bpm?song.bpm+' BPM':''}</span>
-                <label class="priority-label">keep <input type="number" class="keep-order" data-idx="${i}" min="1" value="${song.keepOrder}" style="width:3em"></label>
+                <label class="priority-label">Drop <input type="number" class="drop-order" data-idx="${i}" min="0" value="${song.dropOrder}" style="width:3em"></label>
             </div>`;
         list.appendChild(li);
     });
@@ -400,11 +404,11 @@ function renderSetlist(){
             updateDisplay();
         });
     });
-    document.querySelectorAll('.keep-order').forEach(inp=>{
+    document.querySelectorAll('.drop-order').forEach(inp=>{
         inp.addEventListener('change',e=>{
             const idx=parseInt(e.target.dataset.idx);
             const val=parseInt(e.target.value);
-            if(!isNaN(val) && val>=1) songs[idx].keepOrder=val;
+            if(!isNaN(val) && val>=0) songs[idx].dropOrder=val;
         });
     });
     document.getElementById('timeRemaining').textContent='';
@@ -436,10 +440,16 @@ function computeDroppedSongs(elapsed){
     let keep=[...pending];
     if(totalDur(keep)<=remaining) return;
 
+    const closerIdx=songs.length-1;
+    // Sort drop candidates so we always drop from the bottom first.
     const order=droppable.sort((a,b)=>{
-        const da=songs[a].keepOrder||1;
-        const db=songs[b].keepOrder||1;
-        if(da!==db) return db-da;
+        if(a===closerIdx && b!==closerIdx) return 1;
+        if(b===closerIdx && a!==closerIdx) return -1;
+        const da=songs[a].dropOrder??0;
+        const db=songs[b].dropOrder??0;
+        const pa=da===0?Infinity:da;
+        const pb=db===0?Infinity:db;
+        if(pa!==pb) return pa-pb;
         return b-a;
     });
 
@@ -464,21 +474,20 @@ function updateDropBtn(elapsed){
 }
 
 function remainingDuration(withDrops, elapsed){
-    const transition=parseInt(document.getElementById('transitionTime').value)||0;
-    const remainIdx=[];
-    for(let i=currentIndex;i<songs.length;i++){
+    const transition = parseInt(document.getElementById('transitionTime').value) || 0;
+    const remainIdx = [];
+    for(let i=currentIndex; i<songs.length; i++){
         if(withDrops && songs[i].dropped) continue;
         remainIdx.push(i);
     }
-    let t=0;
-    const progress=Math.max(0, elapsed - songStart);
+    let total = 0;
     remainIdx.forEach((idx,j)=>{
-        let dur=songs[idx].duration;
-        if(idx===currentIndex) dur=Math.max(0,dur-progress);
-        t+=dur;
-        if(j<remainIdx.length-1) t+=transition;
+        total += songs[idx].duration;
+        if(j < remainIdx.length-1) total += transition;
     });
-    return t;
+    const curSongDur = songs[currentIndex] ? songs[currentIndex].duration : 0;
+    const progress = Math.min(curSongDur, Math.max(0, elapsed - songStart));
+    return Math.max(0, total - progress);
 }
 
 function updateDisplay(){
@@ -518,46 +527,21 @@ function updateDisplay(){
     if(diffEl){
         diffEl.style.color='';
         if(curSong){
-            // Determine how far ahead or behind we are compared to the schedule
-            let shouldIdx=null;
-            for(let i=0;i<songs.length;i++){
-                if(elapsed < songs[i].start + songs[i].duration){ shouldIdx=i; break; }
-            }
-            if(shouldIdx===null) shouldIdx=songs.length-1;
-
-            const schedDiff=songs[shouldIdx].start - songs[currentIndex].start;
-
-            const maxSec=parseInt(document.getElementById('maxTime').value)*60;
-            const remWith=remainingDuration(true, elapsed);
-            const remAll=remainingDuration(false, elapsed);
-            const endDiff=maxSec - (elapsed + remWith);
-            const dropped=remAll - remWith;
-
-            let text='On time';
-            if(!autoDrop){
-                if(Math.abs(schedDiff)>=1){
-                    if(schedDiff>0){
-                        text=`Behind ${formatTime(schedDiff)}`;
-                        diffEl.style.color='red';
-                    }else{
-                        text=`Ahead ${formatTime(-schedDiff)}`;
-                        diffEl.style.color='blue';
-                    }
+            const setRemain = remainingDuration(true, elapsed);
+            const maxSec = parseInt(document.getElementById('maxTime').value) * 60;
+            const gigRemain = Math.max(0, maxSec - elapsed);
+            let diff = gigRemain - setRemain;
+            let text = 'On time';
+            if(Math.abs(diff) >= 1){
+                if(diff < 0){
+                    text = `Behind ${formatTime(-diff)}`;
+                    diffEl.style.color = 'red';
+                }else{
+                    text = `Ahead ${formatTime(diff)}`;
+                    diffEl.style.color = 'blue';
                 }
-            }else{
-                if(Math.abs(endDiff)>=1){
-                    if(endDiff<0){
-                        text=`Behind ${formatTime(-endDiff)}`;
-                        diffEl.style.color='red';
-                    }else{
-                        text=`Ahead ${formatTime(endDiff)}`;
-                        diffEl.style.color='blue';
-                    }
-                }
-                if(dropped>0) text+=` (Dropped ${formatTime(dropped)})`;
             }
-
-            diffEl.textContent=text;
+            diffEl.textContent = text;
         }else{
             diffEl.textContent='';
         }

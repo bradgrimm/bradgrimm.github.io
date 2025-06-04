@@ -485,7 +485,8 @@ function remainingDuration(withDrops, elapsed){
         total += songs[idx].duration;
         if(j < remainIdx.length-1) total += transition;
     });
-    const progress = Math.max(0, elapsed - songStart);
+    const curSongDur = songs[currentIndex] ? songs[currentIndex].duration : 0;
+    const progress = Math.min(curSongDur, Math.max(0, elapsed - songStart));
     return Math.max(0, total - progress);
 }
 

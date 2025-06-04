@@ -6,8 +6,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
  <style>
-  body { font-family: Arial, sans-serif; padding:20px; background:#f4f4f4; }
-  h1 { text-align:center; }
+  body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+  }
+  .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 20px;
+  }
+  h1 {
+      text-align:center;
+      margin-bottom:15px;
+      font-weight:300;
+  }
   #timerDisplay {
       font-size:3em;
       font-weight:bold;
@@ -16,14 +33,14 @@
       margin:10px 0;
   }
   #currentSongDisplay {
-      font-size:2.5em;
+      font-size:2.2em;
       font-weight:bold;
       text-align:center;
       margin:20px 0;
   }
   #progressContainer {
       height:20px;
-      background:#ddd;
+      background:#e2e8f0;
       border-radius:10px;
       overflow:hidden;
       margin:10px 0;
@@ -32,6 +49,7 @@
       height:100%;
       width:0%;
       background:#4caf50;
+      transition:width 0.2s ease;
   }
   #aheadBehind {
       text-align:center;
@@ -44,10 +62,19 @@
       font-size:1em;
   }
   #setlist { list-style:none; padding:0; }
-  #setlist li { padding:8px; background:#fff; margin-bottom:4px; border-radius:4px; display:flex; align-items:center; justify-content:space-between; }
-  #setlist li.playing { background:#cfe2ff; }
+  #setlist li {
+      padding:12px;
+      background:#f9f9f9;
+      margin-bottom:8px;
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      box-shadow:0 2px 4px rgba(0,0,0,0.05);
+  }
+  #setlist li.playing { background:#fff3cd; }
   #setlist li.should { background:#d1e7dd; }
-  #setlist li.dropped { text-decoration: line-through; opacity:0.6; }
+  #setlist li.dropped { background:#f8d7da; text-decoration: line-through; opacity:0.6; }
 .song-info { flex:1; }
 .drop-label { margin-left:10px; font-size:0.9em; }
 .protect-label { margin-left:10px; font-size:0.9em; }
@@ -59,17 +86,40 @@
       margin-bottom:15px;
   }
   #navControls button{
-      font-size:2em;
-      padding:10px 20px;
+      font-size:1.5em;
+      padding:15px 25px;
       margin:0 5px;
+      background:#4caf50;
+      color:white;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+  }
+  #navControls button:active{
+      transform:scale(0.97);
   }
   #fileControls{
       margin-top:20px;
       text-align:center;
   }
+  #fileControls label{
+      margin-left:10px;
+      font-size:1.1em;
+  }
+  #fileControls input[type="number"]{
+      width:4em;
+  }
+  @media (max-width:600px){
+      #navControls button{
+          font-size:1.2em;
+          padding:12px 20px;
+      }
+      #currentSongDisplay{ font-size:1.6em; }
+  }
 </style>
 </head>
 <body>
+<div class="container">
 <h1>Setlist Tracker</h1>
 <div id="navControls">
     <button id="startBtn">Start</button>
@@ -93,6 +143,7 @@
     <label>Max Time (min): <input type="number" id="maxTime" value="60" min="1"></label>
     <label>End By: <input type="time" id="endBy"></label>
     <label>Transition (sec): <input type="number" id="transitionTime" value="60" min="0"></label>
+</div>
 </div>
 <script>
 let songs = [];

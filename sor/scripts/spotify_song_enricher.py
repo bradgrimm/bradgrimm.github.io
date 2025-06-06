@@ -2,19 +2,30 @@ import os
 import csv
 import argparse
 import requests
+from base64 import b64encode
 
 SPOTIFY_SEARCH_URL = "https://api.spotify.com/v1/search"
 SPOTIFY_AUDIO_FEATURE_URL = "https://api.spotify.com/v1/audio-features/{id}"
 
 
-def get_api_key() -> str:
-    """Return the Spotify API key from the SPOTIFY_API_KEY environment variable."""
-    api_key = os.getenv("SPOTIFY_API_KEY")
-    if not api_key:
+def get_token() -> str:
+    """Retrieve an OAuth token using client credentials."""
+    client_id = os.getenv("SPOTIFY_CLIENT_ID")
+    client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
+    if not client_id or not client_secret:
         raise RuntimeError(
-            "SPOTIFY_API_KEY environment variable not found."
+            "SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET environment variables must be set."
         )
-    return api_key
+
+    auth_header = b64encode(f"{client_id}:{client_secret}".encode()).decode()
+
+    response = requests.post(
+        "https://accounts.spotify.com/api/token",
+        headers={"Authorization": f"Basic {auth_header}"},
+        data={"grant_type": "client_credentials"},
+    )
+    response.raise_for_status()
+    return response.json()["access_token"]
 
 
 def search_track(title: str, artist: str, token: str):
@@ -83,7 +94,7 @@ def main():
     parser.add_argument("output_csv", help="Path to output CSV file")
     args = parser.parse_args()
 
-    api_key = get_api_key()
+    token = get_token()
 
     with open(args.input_csv, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -95,7 +106,7 @@ def main():
         if fld not in fieldnames:
             fieldnames.append(fld)
 
-    enriched = [enrich_row(row, api_key) for row in rows]
+    enriched = [enrich_row(row, token) for row in rows]
 
     with open(args.output_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)

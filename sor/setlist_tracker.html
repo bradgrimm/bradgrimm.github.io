@@ -244,6 +244,69 @@ let currentBpm = 120;
 let metronomeTimer = null;
 let lastSongAppliedBpm = -1;
 
+function saveState(){
+    try{
+        const state={
+            songs,
+            currentIndex,
+            startTime,
+            songStart,
+            startDiff,
+            actualStart,
+            transitionDurations,
+            totalPause,
+            isPaused,
+            pauseStart,
+            autoDrop,
+            maxTime:document.getElementById('maxTime').value,
+            transitionTime:document.getElementById('transitionTime').value,
+            endBy:document.getElementById('endBy').value,
+            autoDropChecked:document.getElementById('autoDrop').checked,
+            metronome:document.getElementById('metronomeToggle').checked,
+            bpm:currentBpm,
+            lastSongAppliedBpm
+        };
+        localStorage.setItem('sorTrackerState', JSON.stringify(state));
+    }catch(e){}
+}
+
+function loadState(){
+    try{
+        const raw=localStorage.getItem('sorTrackerState');
+        if(!raw) return;
+        const state=JSON.parse(raw);
+        if(state.songs&&state.songs.length){
+            songs=state.songs;
+            currentIndex=state.currentIndex||0;
+            startTime=state.startTime||null;
+            songStart=state.songStart||0;
+            isPaused=state.isPaused||false;
+            pauseStart=state.pauseStart||0;
+            totalPause=state.totalPause||0;
+            autoDrop=state.autoDrop||false;
+            state.startDiff&&state.startDiff.forEach((v,i)=>startDiff[i]=v);
+            state.actualStart&&state.actualStart.forEach((v,i)=>actualStart[i]=v);
+            state.transitionDurations&&state.transitionDurations.forEach((v,i)=>transitionDurations[i]=v);
+            if(state.maxTime) document.getElementById('maxTime').value=state.maxTime;
+            if(state.transitionTime) document.getElementById('transitionTime').value=state.transitionTime;
+            if(state.endBy) document.getElementById('endBy').value=state.endBy;
+            document.getElementById('autoDrop').checked=state.autoDropChecked||false;
+            document.getElementById('metronomeToggle').checked=state.metronome||false;
+            if(state.bpm) currentBpm=state.bpm;
+            lastSongAppliedBpm=state.lastSongAppliedBpm??-1;
+            renderSetlist();
+            if(startTime && !isPaused){
+                timer=setInterval(updateDisplay,1000/speedFactor);
+            }
+            updateButtonStates();
+            if(document.getElementById('metronomeToggle').checked) startMetronome();
+            updateDisplay();
+        }
+    }catch(e){}
+}
+
+window.addEventListener('beforeunload', saveState);
+
 // Check query string for a debugging speed multiplier, e.g. ?debugspeed=5
 // This is intentionally hidden so regular users don't accidentally change it.
 const params = new URLSearchParams(window.location.search);
@@ -370,6 +433,7 @@ function loadSongs(data){
     }
     renderSetlist();
     updateDisplay();
+    saveState();
 }
 
 function renderSetlist(){
@@ -402,6 +466,7 @@ function renderSetlist(){
                 computeDroppedSongs(elapsed);
             }
             updateDisplay();
+            saveState();
         });
     });
     document.querySelectorAll('.drop-order').forEach(inp=>{
@@ -409,6 +474,7 @@ function renderSetlist(){
             const idx=parseInt(e.target.dataset.idx);
             const val=parseInt(e.target.value);
             if(!isNaN(val) && val>=0) songs[idx].dropOrder=val;
+            saveState();
         });
     });
     document.getElementById('timeRemaining').textContent='';
@@ -617,6 +683,7 @@ function startTimer(){
     if(toggle && toggle.checked) startMetronome();
     updateButtonStates();
     updateDisplay();
+    saveState();
 }
 
 function updateButtonStates(){
@@ -651,6 +718,7 @@ function togglePause(){
     }
     updateButtonStates();
     updateDisplay();
+    saveState();
 }
 
 function stopTimer(){
@@ -678,6 +746,7 @@ function stopTimer(){
     totalPause = 0;
     updateButtonStates();
     updateDisplay();
+    saveState();
 }
 
 document.getElementById('startBtn').addEventListener('click', () => {
@@ -692,6 +761,7 @@ document.getElementById('prevBtn').addEventListener('click', ()=>{
     startDiff[currentIndex]=elapsed - songs[currentIndex].start;
     actualStart[currentIndex]=elapsed;
     updateDisplay();
+    saveState();
 });
 document.getElementById('nextBtn').addEventListener('click', () => {
     const elapsed = startTime ? Math.floor(getElapsedMs() / 1000) : 0;
@@ -703,20 +773,26 @@ document.getElementById('nextBtn').addEventListener('click', () => {
         currentIndex = Math.min(songs.length - 1, currentIndex + 1);
         songStart = elapsed;
         startDiff[currentIndex] = elapsed - songs[currentIndex].start;
-        actualStart[currentIndex] = elapsed;
+    actualStart[currentIndex] = elapsed;
     }
     updateDisplay();
+    saveState();
 });
-document.getElementById('transitionTime').addEventListener('change', renderSetlist);
+document.getElementById('transitionTime').addEventListener('change', () => {
+    renderSetlist();
+    saveState();
+});
 document.getElementById('maxTime').addEventListener('change', () => {
     const elapsed = startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
     if(autoDrop) computeDroppedSongs(elapsed);
     updateDisplay();
+    saveState();
 });
 document.getElementById('dropBtn').addEventListener('click', ()=>{
     const elapsed=startTime ? Math.floor(getElapsedMs()/1000*speedFactor) : 0;
     computeDroppedSongs(elapsed);
     updateDisplay();
+    saveState();
 });
 document.getElementById('autoDrop').addEventListener('change', e=>{
     autoDrop=e.target.checked;
@@ -724,17 +800,21 @@ document.getElementById('autoDrop').addEventListener('change', e=>{
     if(autoDrop) computeDroppedSongs(elapsed);
     updateDropBtn(elapsed);
     updateDisplay();
+    saveState();
 });
 document.getElementById('metronomeToggle').addEventListener('change', e=>{
     if(e.target.checked) startMetronome();
     else stopMetronome();
+    saveState();
 });
 document.getElementById('bpmInput').addEventListener('change', e=>{
     const val=parseInt(e.target.value);
     if(!isNaN(val) && val>0){
         setMetronomeBpm(val);
     }
+    saveState();
 });
+loadState();
 updateDropBtn(0);
 </script>
 </body>

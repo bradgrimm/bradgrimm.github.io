@@ -119,18 +119,27 @@
       margin-top:auto;
       margin-bottom:10px;
   }
-  #metronomeBeat{
-      width:40px;
-      height:40px;
+  #metronomeBeats{
+      display:flex;
+      justify-content:center;
+      gap:10px;
       margin:10px auto;
+  }
+  .metronomeBeat{
+      width:50px;
+      height:50px;
       border-radius:50%;
-      background:#4caf50;
       opacity:0.2;
       transition:opacity 0.1s;
   }
-  #metronomeBeat.active{
+  .metronomeBeat.active{
       opacity:1;
   }
+  .metronomeBeat.beat-1,
+  .metronomeBeat.beat-3{ background:#0d47a1; }
+  .metronomeBeat.beat-2,
+  .metronomeBeat.beat-4{ background:#4caf50; }
+  .metronomeBeat.beat-1{ box-shadow:0 0 5px #0d47a1; }
   #fileControls{
       margin-top:20px;
       text-align:center;
@@ -207,7 +216,12 @@
   <div id="metronomeControls">
       <label><input type="checkbox" id="metronomeToggle"></label>
       <label>BPM: <input type="number" id="bpmInput" value="120" min="30" style="width:5em"></label>
-      <div id="metronomeBeat"></div>
+      <div id="metronomeBeats">
+          <div class="metronomeBeat beat-1"></div>
+          <div class="metronomeBeat beat-2"></div>
+          <div class="metronomeBeat beat-3"></div>
+          <div class="metronomeBeat beat-4"></div>
+      </div>
   </div>
 </div> <!-- infoColumn -->
 <div id="songsColumn">
@@ -349,20 +363,22 @@ function formatClock(date){
 
 function startMetronome(){
     if(metronomeTimer) clearInterval(metronomeTimer);
-    const beatEl=document.getElementById('metronomeBeat');
-    if(!beatEl) return;
+    const beats=document.querySelectorAll('.metronomeBeat');
+    if(!beats.length) return;
+    let index=0;
     const interval=60000/Math.max(1,currentBpm);
+    beats.forEach(b=>b.classList.remove('active'));
     metronomeTimer=setInterval(()=>{
-        beatEl.classList.add('active');
-        setTimeout(()=>beatEl.classList.remove('active'),100);
+        beats.forEach(b=>b.classList.remove('active'));
+        beats[index].classList.add('active');
+        index=(index+1)%beats.length;
     },interval);
 }
 
 function stopMetronome(){
     if(metronomeTimer) clearInterval(metronomeTimer);
     metronomeTimer=null;
-    const beatEl=document.getElementById('metronomeBeat');
-    if(beatEl) beatEl.classList.remove('active');
+    document.querySelectorAll('.metronomeBeat').forEach(b=>b.classList.remove('active'));
 }
 
 function setMetronomeBpm(bpm){

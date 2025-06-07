@@ -2,20 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>School of Rock Setlist Manager</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            height: 100vh;
             padding: 20px;
         }
         
@@ -414,6 +422,7 @@
     </style>
 </head>
 <body>
+    <button id="fullscreenBtn" onclick="goFullscreen()" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">Fullscreen</button>
     <div class="container">
         <div class="header">
             <h1>🎸 School of Rock Setlist Manager</h1>
@@ -490,7 +499,17 @@
         </div>
     </div>
 
-    <script>
+<script>
+        function goFullscreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
         // Global variables
         let songsData = [];
         let allPlayers = [];

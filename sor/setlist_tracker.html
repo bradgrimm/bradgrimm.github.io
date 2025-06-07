@@ -412,6 +412,8 @@ function loadSongs(data){
         const durField = normalized['duration'] || normalized['time'];
         const bpmField = normalized['bpm'] || normalized['tempo'];
         const notesField = normalized['notes'] || normalized['note'];
+        const dropField = normalized['drop order'] || normalized['drop'];
+        const dropVal = parseInt(dropField);
         if(!title && !artist) return; // ignore note rows
         songs.push({
             title: title || '',
@@ -419,7 +421,7 @@ function loadSongs(data){
             duration: parseDuration(durField),
             bpm: bpmField ? parseInt(bpmField) : null,
             notes: notesField || '',
-            dropOrder:0,
+            dropOrder: isNaN(dropVal) ? 0 : dropVal,
             start:0,
             protect:false,
             dropped:false,

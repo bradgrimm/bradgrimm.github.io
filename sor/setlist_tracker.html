@@ -16,17 +16,19 @@
 
   body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #111;
       height: 100vh;
       padding: 20px;
   }
   .container {
       width: 100%;
       margin: 0 auto;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: none;
       padding: 20px;
+      position:relative;
   }
   h1 {
       text-align:center;
@@ -34,17 +36,19 @@
       font-weight:300;
   }
   #timerDisplay {
-      font-size:3em;
+      font-size:4.5em;
       font-weight:bold;
       text-align:center;
       display:block;
-      margin:10px 0;
+      margin:20px 0 10px;
+      color:#0cf;
+      text-shadow:0 0 5px #0cf;
   }
   #currentSongDisplay {
-      font-size:2.2em;
+      font-size:2.5em;
       font-weight:bold;
       text-align:center;
-      margin:20px 0 5px;
+      margin-bottom:0.3em;
   }
   #songNotesDisplay {
       text-align:center;
@@ -52,14 +56,14 @@
       margin-bottom:5px;
   }
   #nextSongDisplay {
-      font-size:1.3em;
+      font-size:1.6em;
       text-align:center;
-      margin-bottom:15px;
-      color:#555;
+      margin-bottom:20px;
+      color:#7abaff;
   }
   #progressContainer {
       height:20px;
-      background:#e2e8f0;
+      background:#333;
       border-radius:10px;
       overflow:hidden;
       margin:10px 0;
@@ -75,10 +79,11 @@
       font-size:1.5em;
       margin:10px 0;
   }
-  #clockTime,#projectedEnd,#droppedInfo,#transitionInfo{
+  #clockTime,#projectedEnd,#metadataLine{
       text-align:center;
       margin:4px 0;
       font-size:1em;
+      color:#bbb;
   }
   #clockTime,#projectedEnd{
       display:inline-block;
@@ -87,14 +92,29 @@
   #setlist { list-style:none; padding:0; }
   #setlist li {
       padding:12px;
-      background:#f9f9f9;
+      background:#2a2a2a;
+      color:#fff;
       margin-bottom:8px;
       border-radius:8px;
       box-shadow:0 2px 4px rgba(0,0,0,0.05);
+      font-size:1.1em;
+      line-height:1.4;
   }
-  #setlist li.playing { background:#fff3cd; }
-  #setlist li.should { background:#d1e7dd; }
-  #setlist li.dropped { background:#f8d7da; text-decoration: line-through; opacity:0.6; }
+  #setlist li.playing {
+      background:#d1e7dd;
+      color:#000;
+      border-left:4px solid #0d6efd;
+  }
+  #setlist li.should {
+      background:#cfe2ff;
+      color:#000;
+  }
+  #setlist li.dropped {
+      background:#f8d7da;
+      color:#000;
+      text-decoration: line-through;
+      opacity:0.6;
+  }
 .song-info { font-weight:bold; margin-bottom:5px; }
 .song-controls{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
 .priority-label { font-size:0.9em; }
@@ -103,20 +123,40 @@
  .runtime { width:60px; text-align:right; }
 .bpm { width:70px; text-align:right; }
   #navControls{
-      text-align:center;
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:15px;
+      margin-top:15px;
       margin-bottom:15px;
+      position:relative;
+      z-index:200;
   }
   #navControls button{
       font-size:1.5em;
       padding:15px 25px;
-      margin:0 5px;
-      background:#4caf50;
+      background:#222;
       color:white;
-      border:none;
+      border:1px solid rgba(255,255,255,0.6);
       border-radius:8px;
       cursor:pointer;
+      white-space:nowrap;
+      flex:1 0 auto;
+      max-width:160px;
   }
+  #navControls button.icon-btn{
+      font-size:2.2em;
+      width:70px;
+      height:70px;
+      padding:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+  }
+  #dropBtn{ flex-basis:calc(50% - 15px); }
+  #togglePanelBtn{ width:70px; }
   #navControls button:active{
+      background:#333;
       transform:scale(0.97);
   }
   .highlight{
@@ -134,20 +174,29 @@
       margin:10px auto;
   }
   .metronomeBeat{
-      width:50px;
-      height:50px;
+      width:60px;
+      height:60px;
       border-radius:50%;
       opacity:0.2;
       transition:opacity 0.1s;
   }
   .metronomeBeat.active{
       opacity:1;
+      box-shadow:0 0 8px currentColor;
   }
   .metronomeBeat.beat-1,
-  .metronomeBeat.beat-3{ background:#0d47a1; }
+  .metronomeBeat.beat-3{ background:#0d6efd; }
   .metronomeBeat.beat-2,
-  .metronomeBeat.beat-4{ background:#4caf50; }
-  .metronomeBeat.beat-1{ box-shadow:0 0 5px #0d47a1; }
+  .metronomeBeat.beat-4{ background:#2ecc71; }
+  .metronomeBeat.beat-1{ box-shadow:0 0 5px #0d6efd; }
+  @keyframes pulse{
+      0%,100%{ transform:scale(1); }
+      50%{ transform:scale(1.1); }
+  }
+  .metronomeBeat.beat-1.active,
+  .metronomeBeat.beat-3.active{
+      animation:pulse 0.4s ease-in-out;
+  }
   #fileControls{
       margin-top:20px;
       text-align:center;
@@ -173,6 +222,7 @@
   body.panel-hidden #navControls button{
       font-size:1.8em;
       padding:20px 30px;
+      max-width:160px;
   }
   body.panel-hidden #currentSongDisplay{
       font-size:2.5em;
@@ -181,8 +231,13 @@
       font-size:1.5em;
   }
   body.panel-hidden #timerDisplay{
-      font-size:3.5em;
+      font-size:4.5em;
   }
+  #metadataLine,
+  #metronomeControls{ display:none; }
+  .show-details #metadataLine,
+  .show-details #metronomeControls{ display:block; }
+  body.panel-hidden #metadataLine{ display:none; }
 
   #contentWrapper{
       display:flex;
@@ -194,11 +249,59 @@
       max-height:60vh;
   }
   #infoColumn{
+      position:relative;
       display:flex;
       flex-direction:column;
   }
   #infoSpacer{
       flex-grow:1;
+  }
+  #infoToggle{
+      position:absolute;
+      bottom:15px;
+      right:15px;
+      background:none;
+      border:none;
+      color:#bbb;
+      font-size:1.6em;
+      cursor:pointer;
+      z-index:200;
+  }
+  #fullscreenBtn{
+      position:fixed;
+      top:10px;
+      right:10px;
+      z-index:1000;
+      background:none;
+      border:none;
+      color:#bbb;
+      font-size:1.5em;
+      cursor:pointer;
+  }
+  .edge-nav{
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:40%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:3em;
+      color:rgba(255,255,255,0.7);
+      background:transparent;
+      border:none;
+      z-index:50;
+      transition:background 0.2s, box-shadow 0.2s;
+  }
+  .edge-nav:active{
+      background:rgba(255,255,255,0.15);
+      box-shadow:0 0 20px rgba(255,255,255,0.6) inset;
+  }
+  #edgePrev{
+      left:0;
+  }
+  #edgeNext{
+      right:0;
   }
   @media (min-width:800px){
       #contentWrapper{ flex-direction:row; align-items:flex-start; }
@@ -210,24 +313,16 @@
           font-size:1.2em;
           padding:12px 20px;
       }
-      #currentSongDisplay{ font-size:1.6em; }
-      #nextSongDisplay{ font-size:1.1em; }
+      #currentSongDisplay{ font-size:1.8em; }
+      #nextSongDisplay{ font-size:1.2em; }
   }
 </style>
 </head>
 <body>
-<button id="fullscreenBtn" onclick="goFullscreen()" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">Fullscreen</button>
-<div class="container">
+<button id="fullscreenBtn" onclick="goFullscreen()">⛶</button>
+<div class="container show-details">
 <div id="contentWrapper">
 <div id="infoColumn">
-<div id="navControls">
-    <button id="startBtn">Start</button>
-    <button id="stopBtn" disabled>Stop</button>
-    <button id="prevBtn">&lt;</button>
-    <button id="nextBtn">&gt;</button>
-    <button id="dropBtn">Drop Songs</button>
-    <button id="togglePanelBtn">Hide List</button>
-</div>
 <div id="currentSongDisplay"></div>
 <div id="songNotesDisplay" style="text-align:center;margin-bottom:5px;"></div>
 <div id="nextSongDisplay"></div>
@@ -237,9 +332,9 @@
 <div id="aheadBehind"></div>
 <div id="clockTime"></div>
 <div id="projectedEnd"></div>
-<div id="droppedInfo"></div>
-<div id="transitionInfo"></div>
+<div id="metadataLine"></div>
 <div id="infoSpacer"></div>
+<button id="infoToggle" title="Show details">ℹ️</button>
   <div id="metronomeControls">
       <label><input type="checkbox" id="metronomeToggle"></label>
       <label>BPM: <input type="number" id="bpmInput" value="120" min="30" style="width:5em"></label>
@@ -250,6 +345,14 @@
           <div class="metronomeBeat beat-4"></div>
       </div>
   </div>
+  <div id="navControls">
+      <button id="startBtn" class="icon-btn">▶️</button>
+      <button id="stopBtn" class="icon-btn" disabled>⏹️</button>
+      <button id="dropBtn">Drop Songs</button>
+      <button id="togglePanelBtn" class="icon-btn">☰</button>
+  </div>
+  <button id="edgePrev" class="edge-nav">⏮️</button>
+  <button id="edgeNext" class="edge-nav">⏭️</button>
 </div> <!-- infoColumn -->
 <div id="songsColumn">
 <ul id="setlist"></ul>
@@ -267,6 +370,7 @@
     </div>
 </div>
 </div>
+</div>
 <script>
 function goFullscreen() {
     const elem = document.documentElement;
@@ -278,26 +382,41 @@ function goFullscreen() {
         elem.msRequestFullscreen();
     }
 }
+document.addEventListener('fullscreenchange', () => {
+    const btn=document.getElementById('fullscreenBtn');
+    if(!btn) return;
+    if(document.fullscreenElement) btn.style.display='none';
+    else btn.style.display='block';
+});
 
 const toggleBtn = document.getElementById('togglePanelBtn');
+const infoBtn = document.getElementById('infoToggle');
+const edgePrev = document.getElementById('edgePrev');
+const edgeNext = document.getElementById('edgeNext');
 let panelVisible = true;
 
 function showSongsPanel(){
     document.body.classList.remove('panel-hidden');
     panelVisible = true;
-    if(toggleBtn) toggleBtn.textContent = 'Hide List';
+    if(toggleBtn) toggleBtn.textContent = '☰';
 }
 
 function hideSongsPanel(){
     document.body.classList.add('panel-hidden');
     panelVisible = false;
-    if(toggleBtn) toggleBtn.textContent = 'Show List';
+    if(toggleBtn) toggleBtn.textContent = '☰';
 }
 
 function toggleSongsPanel(){
     if(panelVisible) hideSongsPanel();
     else showSongsPanel();
 }
+
+function toggleDetails(){
+    document.querySelector('.container').classList.toggle('show-details');
+}
+
+if(infoBtn) infoBtn.addEventListener('click', toggleDetails);
 
 if(toggleBtn) toggleBtn.addEventListener('click', toggleSongsPanel);
 let songs = [];
@@ -645,7 +764,7 @@ function updateDisplay(){
     const remEl=document.getElementById('timeRemaining');
     if(remEl){
         remEl.textContent=`${formatTime(setRemain)} of ${formatTime(gigRemain)}`;
-        remEl.style.color=setRemain>gigRemain?'red':'blue';
+        remEl.style.color=setRemain>gigRemain?'red':'#0cf';
     }
     const progress=document.getElementById('progressBar');
     if(progress){
@@ -681,7 +800,7 @@ function updateDisplay(){
                     diffEl.style.color = 'red';
                 }else{
                     text = `Ahead ${formatTime(diff)}`;
-                    diffEl.style.color = 'blue';
+                    diffEl.style.color = 'limegreen';
                 }
             }
             diffEl.textContent = text;
@@ -699,15 +818,11 @@ function updateDisplay(){
         const endTime=new Date(Date.now()+rd*1000);
         endEl.textContent=`Setlist End: ${formatClock(endTime)}`;
     }
-    const dropEl=document.getElementById('droppedInfo');
-    if(dropEl){
+    const meta=document.getElementById('metadataLine');
+    if(meta){
         const count=songs.filter(s=>s.dropped).length;
-        dropEl.textContent=`Dropped songs: ${count}`;
-    }
-    const transEl=document.getElementById('transitionInfo');
-    if(transEl){
         const avg=transitionDurations.length?transitionDurations.reduce((a,b)=>a+b,0)/transitionDurations.length:0;
-        transEl.textContent=`Avg transition: ${formatTime(avg)}`;
+        meta.textContent=`Dropped: ${count} | Avg trans: ${formatTime(avg)}`;
     }
     let shouldIndex=null;
     for(let i=0;i<songs.length;i++){
@@ -769,13 +884,13 @@ function updateButtonStates(){
     const stop=document.getElementById('stopBtn');
     if(!start || !stop) return;
     if(!startTime){
-        start.textContent='Start';
+        start.textContent='▶️';
         stop.disabled=true;
     }else if(isPaused){
-        start.textContent='Resume';
+        start.textContent='▶️';
         stop.disabled=false;
     }else{
-        start.textContent='Pause';
+        start.textContent='⏸️';
         stop.disabled=false;
     }
 }
@@ -833,16 +948,17 @@ document.getElementById('startBtn').addEventListener('click', () => {
     else togglePause();
 });
 document.getElementById('stopBtn').addEventListener('click', stopTimer);
-document.getElementById('prevBtn').addEventListener('click', ()=>{
-    currentIndex=Math.max(0,currentIndex-1);
-    const elapsed=startTime?Math.floor(getElapsedMs()/1000):0;
-    songStart=elapsed;
-    startDiff[currentIndex]=elapsed - songs[currentIndex].start;
-    actualStart[currentIndex]=elapsed;
+function goPrev(){
+    currentIndex = Math.max(0, currentIndex - 1);
+    const elapsed = startTime ? Math.floor(getElapsedMs() / 1000) : 0;
+    songStart = elapsed;
+    startDiff[currentIndex] = elapsed - songs[currentIndex].start;
+    actualStart[currentIndex] = elapsed;
     updateDisplay();
     saveState();
-});
-document.getElementById('nextBtn').addEventListener('click', () => {
+}
+
+function goNext(){
     const elapsed = startTime ? Math.floor(getElapsedMs() / 1000) : 0;
     if (currentIndex < songs.length - 1) {
         if (actualStart[currentIndex] !== undefined) {
@@ -852,11 +968,14 @@ document.getElementById('nextBtn').addEventListener('click', () => {
         currentIndex = Math.min(songs.length - 1, currentIndex + 1);
         songStart = elapsed;
         startDiff[currentIndex] = elapsed - songs[currentIndex].start;
-    actualStart[currentIndex] = elapsed;
+        actualStart[currentIndex] = elapsed;
     }
     updateDisplay();
     saveState();
-});
+}
+
+if(edgePrev) edgePrev.addEventListener('click', goPrev);
+if(edgeNext) edgeNext.addEventListener('click', goNext);
 document.getElementById('transitionTime').addEventListener('change', () => {
     renderSetlist();
     saveState();

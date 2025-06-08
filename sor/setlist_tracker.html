@@ -774,7 +774,7 @@ function updateDisplay(){
     applySongBpm();
     const songEl=document.getElementById('currentSongDisplay');
     if(songEl){
-        songEl.textContent=curSong?`${currentIndex+1}. ${curSong.title} - ${curSong.artist}`:'';
+        songEl.textContent=curSong?`${curSong.title} - ${curSong.artist}`:'';
     }
     const notesEl=document.getElementById('songNotesDisplay');
     if(notesEl){
@@ -783,7 +783,7 @@ function updateDisplay(){
     const nextEl=document.getElementById('nextSongDisplay');
     if(nextEl){
         const nextSong=songs[currentIndex+1];
-        nextEl.textContent=nextSong?`Next Up: ${currentIndex+2}. ${nextSong.title} - ${nextSong.artist}`:'';
+        nextEl.textContent=nextSong?`Next Up: ${nextSong.title} - ${nextSong.artist}`:'';
     }
     const diffEl=document.getElementById('aheadBehind');
     if(diffEl){

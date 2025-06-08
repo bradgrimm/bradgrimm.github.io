@@ -790,7 +790,9 @@ function updateDisplay(){
     }
     const nextEl=document.getElementById('nextSongDisplay');
     if(nextEl){
-        const nextSong=songs[currentIndex+1];
+        let idx=currentIndex+1;
+        while(idx<songs.length && songs[idx].dropped) idx++;
+        const nextSong=idx<songs.length?songs[idx]:null;
         nextEl.textContent=nextSong?`Next Up: ${nextSong.title} - ${nextSong.artist}`:'';
     }
     const diffEl=document.getElementById('aheadBehind');
@@ -969,10 +971,14 @@ function goNext(){
             const trans = elapsed - actualStart[currentIndex] - songs[currentIndex].duration;
             if (trans >= 0) transitionDurations[currentIndex] = trans;
         }
-        currentIndex = Math.min(songs.length - 1, currentIndex + 1);
-        songStart = elapsed;
-        startDiff[currentIndex] = elapsed - songs[currentIndex].start;
-        actualStart[currentIndex] = elapsed;
+        let nextIndex = currentIndex + 1;
+        while(nextIndex < songs.length && songs[nextIndex].dropped) nextIndex++;
+        if(nextIndex < songs.length){
+            currentIndex = nextIndex;
+            songStart = elapsed;
+            startDiff[currentIndex] = elapsed - songs[currentIndex].start;
+            actualStart[currentIndex] = elapsed;
+        }
     }
     updateDisplay();
     saveState();

@@ -91,7 +91,8 @@
   #setlist { list-style:none; padding:0; }
   #setlist li {
       padding:12px;
-      background:#f9f9f9;
+      background:#2a2a2a;
+      color:#fff;
       margin-bottom:8px;
       border-radius:8px;
       box-shadow:0 2px 4px rgba(0,0,0,0.05);
@@ -100,10 +101,19 @@
   }
   #setlist li.playing {
       background:#d1e7dd;
+      color:#000;
       border-left:4px solid #0d6efd;
   }
-  #setlist li.should { background:#cfe2ff; }
-  #setlist li.dropped { background:#f8d7da; text-decoration: line-through; opacity:0.6; }
+  #setlist li.should {
+      background:#cfe2ff;
+      color:#000;
+  }
+  #setlist li.dropped {
+      background:#f8d7da;
+      color:#000;
+      text-decoration: line-through;
+      opacity:0.6;
+  }
 .song-info { font-weight:bold; margin-bottom:5px; }
 .song-controls{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
 .priority-label { font-size:0.9em; }
@@ -126,7 +136,10 @@
       border:none;
       border-radius:8px;
       cursor:pointer;
+      white-space:nowrap;
+      flex:1 0 auto;
   }
+  #dropBtn,#togglePanelBtn{ flex-basis:calc(50% - 15px); }
   #navControls button:active{
       transform:scale(0.97);
   }
@@ -235,6 +248,33 @@
       font-size:1.6em;
       cursor:pointer;
   }
+  #fullscreenBtn{
+      position:fixed;
+      top:10px;
+      right:10px;
+      z-index:1000;
+      background:none;
+      border:none;
+      color:#bbb;
+      font-size:1.5em;
+      cursor:pointer;
+  }
+  .edge-nav{
+      position:fixed;
+      top:0;
+      bottom:0;
+      width:20%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:3em;
+      color:rgba(255,255,255,0.2);
+      background:none;
+      border:none;
+      z-index:900;
+  }
+  #edgePrev{ left:0; }
+  #edgeNext{ right:0; }
   @media (min-width:800px){
       #contentWrapper{ flex-direction:row; align-items:flex-start; }
       #infoColumn{ flex:1; padding-right:20px; }
@@ -251,7 +291,7 @@
 </style>
 </head>
 <body>
-<button id="fullscreenBtn" onclick="goFullscreen()" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">Fullscreen</button>
+<button id="fullscreenBtn" onclick="goFullscreen()">⛶</button>
 <div class="container">
 <div id="contentWrapper">
 <div id="infoColumn">
@@ -302,6 +342,9 @@
     </div>
 </div>
 </div>
+</div>
+<button id="edgePrev" class="edge-nav">⏮️</button>
+<button id="edgeNext" class="edge-nav">⏭️</button>
 <script>
 function goFullscreen() {
     const elem = document.documentElement;
@@ -313,9 +356,17 @@ function goFullscreen() {
         elem.msRequestFullscreen();
     }
 }
+document.addEventListener('fullscreenchange', () => {
+    const btn=document.getElementById('fullscreenBtn');
+    if(!btn) return;
+    if(document.fullscreenElement) btn.style.display='none';
+    else btn.style.display='block';
+});
 
 const toggleBtn = document.getElementById('togglePanelBtn');
 const infoBtn = document.getElementById('infoToggle');
+const edgePrev = document.getElementById('edgePrev');
+const edgeNext = document.getElementById('edgeNext');
 let panelVisible = true;
 
 function showSongsPanel(){
@@ -895,6 +946,8 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     updateDisplay();
     saveState();
 });
+if(edgePrev) edgePrev.addEventListener('click', ()=>document.getElementById('prevBtn').click());
+if(edgeNext) edgeNext.addEventListener('click', ()=>document.getElementById('nextBtn').click());
 document.getElementById('transitionTime').addEventListener('change', () => {
     renderSetlist();
     saveState();

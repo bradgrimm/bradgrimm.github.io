@@ -251,6 +251,18 @@
       height:100vh;
       flex:0 0 50%;
       max-width:50vw;
+      min-width:300px;
+      position:relative;
+  }
+  #closePanelBtn{
+      position:absolute;
+      top:10px;
+      right:10px;
+      background:none;
+      border:none;
+      color:#fff;
+      font-size:2em;
+      z-index:301;
   }
   #infoColumn{
       position:relative;
@@ -286,8 +298,9 @@
       bottom:0;
       width:40%;
       display:flex;
-      align-items:center;
+      align-items:flex-end;
       justify-content:center;
+      padding-bottom:20px;
       font-size:3em;
       color:rgba(255,255,255,0.7);
       background:transparent;
@@ -313,6 +326,7 @@
       #contentWrapper{ flex-direction:row; align-items:flex-start; }
       #infoColumn{ flex:1; padding-right:20px; }
       #songsColumn{ flex:0 0 50%; max-width:50vw; height:100vh; }
+      #closePanelBtn{ display:none; }
   }
   @media (max-width:799px){
       #contentWrapper{ flex-direction:column; }
@@ -325,6 +339,7 @@
           background:#111;
           z-index:300;
       }
+      #closePanelBtn{ display:block; }
       body.panel-hidden #songsColumn{ display:none; }
   }
   @media (max-width:600px){
@@ -373,7 +388,8 @@
   <button id="edgeNext" class="edge-nav">⏭️</button>
 </div> <!-- infoColumn -->
 <div id="songsColumn">
-<ul id="setlist"></ul>
+  <button id="closePanelBtn" class="icon-btn">✖️</button>
+  <ul id="setlist"></ul>
 <div id="fileControls">
     <div class="file-row">
         <input type="file" id="csvFile" accept=".csv">
@@ -407,6 +423,7 @@ document.addEventListener('fullscreenchange', () => {
 });
 
 const toggleBtn = document.getElementById('togglePanelBtn');
+const closeBtn = document.getElementById('closePanelBtn');
 const edgePrev = document.getElementById('edgePrev');
 const edgeNext = document.getElementById('edgeNext');
 let panelVisible = true;
@@ -431,6 +448,7 @@ function toggleSongsPanel(){
 
 
 if(toggleBtn) toggleBtn.addEventListener('click', toggleSongsPanel);
+if(closeBtn) closeBtn.addEventListener('click', hideSongsPanel);
 let songs = [];
 let timer = null;
 let startTime = null;

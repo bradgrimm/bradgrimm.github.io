@@ -132,7 +132,7 @@
       justify-content:center;
       flex-wrap:wrap;
       gap:15px;
-      margin-top:15px;
+      margin-top:auto;
       margin-bottom:15px;
       position:relative;
       z-index:200;
@@ -238,10 +238,6 @@
   body.panel-hidden #timerDisplay{
       font-size:4em;
   }
-  #metadataLine,
-  #metronomeControls{ display:none; }
-  .show-details #metadataLine,
-  .show-details #metronomeControls{ display:block; }
   body.panel-hidden #metadataLine{ display:none; }
 
   #contentWrapper{
@@ -259,20 +255,10 @@
       position:relative;
       display:flex;
       flex-direction:column;
+      align-items:center;
   }
   #infoSpacer{
       flex-grow:1;
-  }
-  #infoToggle{
-      position:absolute;
-      bottom:15px;
-      right:15px;
-      background:none;
-      border:none;
-      color:#bbb;
-      font-size:1.6em;
-      cursor:pointer;
-      z-index:200;
   }
   #fullscreenBtn{
       position:fixed;
@@ -287,6 +273,7 @@
   }
   .edge-nav{
       position:absolute;
+      top:0;
       bottom:0;
       width:13%;
       display:flex;
@@ -330,7 +317,7 @@
 </head>
 <body>
 <button id="fullscreenBtn" onclick="goFullscreen()">⛶</button>
-<div class="container show-details">
+<div class="container">
 <div id="contentWrapper">
 <div id="infoColumn">
   <span id="timerDisplay">00:00</span>
@@ -343,7 +330,6 @@
   <div id="timeRemaining" style="text-align:center;margin-bottom:10px;display:none;"></div>
 <div id="metadataLine"></div>
 <div id="infoSpacer"></div>
-<button id="infoToggle" title="Show details">ℹ️</button>
   <div id="metronomeControls">
       <label><input type="checkbox" id="metronomeToggle"></label>
       <label>BPM: <input type="number" id="bpmInput" value="120" min="30" style="width:5em"></label>
@@ -398,7 +384,6 @@ document.addEventListener('fullscreenchange', () => {
 });
 
 const toggleBtn = document.getElementById('togglePanelBtn');
-const infoBtn = document.getElementById('infoToggle');
 const edgePrev = document.getElementById('edgePrev');
 const edgeNext = document.getElementById('edgeNext');
 let panelVisible = true;
@@ -420,11 +405,7 @@ function toggleSongsPanel(){
     else showSongsPanel();
 }
 
-function toggleDetails(){
-    document.querySelector('.container').classList.toggle('show-details');
-}
 
-if(infoBtn) infoBtn.addEventListener('click', toggleDetails);
 
 if(toggleBtn) toggleBtn.addEventListener('click', toggleSongsPanel);
 let songs = [];
@@ -951,7 +932,9 @@ document.getElementById('startBtn').addEventListener('click', () => {
     if(!startTime) startTimer();
     else togglePause();
 });
-document.getElementById('stopBtn').addEventListener('click', stopTimer);
+document.getElementById('stopBtn').addEventListener('click', () => {
+    if(confirm('Are you sure you want to stop?')) stopTimer();
+});
 function goPrev(){
     currentIndex = Math.max(0, currentIndex - 1);
     const elapsed = startTime ? Math.floor(getElapsedMs() / 1000) : 0;

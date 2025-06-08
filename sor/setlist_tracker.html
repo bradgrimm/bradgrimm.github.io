@@ -16,16 +16,17 @@
 
   body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #111;
       height: 100vh;
       padding: 20px;
   }
   .container {
       width: 100%;
       margin: 0 auto;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      background: #111;
+      color: white;
+      border: 1px solid #333;
+      box-shadow: none;
       padding: 20px;
   }
   h1 {
@@ -34,17 +35,18 @@
       font-weight:300;
   }
   #timerDisplay {
-      font-size:3em;
+      font-size:4em;
       font-weight:bold;
       text-align:center;
       display:block;
       margin:10px 0;
+      text-shadow: 0 0 5px black;
   }
   #currentSongDisplay {
-      font-size:2.2em;
+      font-size:2.5em;
       font-weight:bold;
       text-align:center;
-      margin:20px 0 5px;
+      margin-bottom:0.2em;
   }
   #songNotesDisplay {
       text-align:center;
@@ -52,14 +54,14 @@
       margin-bottom:5px;
   }
   #nextSongDisplay {
-      font-size:1.3em;
+      font-size:1.5em;
       text-align:center;
       margin-bottom:15px;
-      color:#555;
+      color:#ccc;
   }
   #progressContainer {
       height:20px;
-      background:#e2e8f0;
+      background:#333;
       border-radius:10px;
       overflow:hidden;
       margin:10px 0;
@@ -75,10 +77,11 @@
       font-size:1.5em;
       margin:10px 0;
   }
-  #clockTime,#projectedEnd,#droppedInfo,#transitionInfo{
+  #clockTime,#projectedEnd,#metadataLine{
       text-align:center;
       margin:4px 0;
       font-size:1em;
+      color:#bbb;
   }
   #clockTime,#projectedEnd{
       display:inline-block;
@@ -103,13 +106,15 @@
  .runtime { width:60px; text-align:right; }
 .bpm { width:70px; text-align:right; }
   #navControls{
-      text-align:center;
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:15px;
       margin-bottom:15px;
   }
   #navControls button{
       font-size:1.5em;
       padding:15px 25px;
-      margin:0 5px;
       background:#4caf50;
       color:white;
       border:none;
@@ -134,20 +139,29 @@
       margin:10px auto;
   }
   .metronomeBeat{
-      width:50px;
-      height:50px;
+      width:60px;
+      height:60px;
       border-radius:50%;
       opacity:0.2;
       transition:opacity 0.1s;
   }
   .metronomeBeat.active{
       opacity:1;
+      box-shadow:0 0 8px currentColor;
   }
   .metronomeBeat.beat-1,
   .metronomeBeat.beat-3{ background:#0d47a1; }
   .metronomeBeat.beat-2,
   .metronomeBeat.beat-4{ background:#4caf50; }
   .metronomeBeat.beat-1{ box-shadow:0 0 5px #0d47a1; }
+  @keyframes pulse{
+      0%,100%{ transform:scale(1); }
+      50%{ transform:scale(1.1); }
+  }
+  .metronomeBeat.beat-1.active,
+  .metronomeBeat.beat-3.active{
+      animation:pulse 0.4s ease-in-out;
+  }
   #fileControls{
       margin-top:20px;
       text-align:center;
@@ -181,7 +195,10 @@
       font-size:1.5em;
   }
   body.panel-hidden #timerDisplay{
-      font-size:3.5em;
+      font-size:4em;
+  }
+  body.panel-hidden #metadataLine{
+      display:none;
   }
 
   #contentWrapper{
@@ -210,8 +227,8 @@
           font-size:1.2em;
           padding:12px 20px;
       }
-      #currentSongDisplay{ font-size:1.6em; }
-      #nextSongDisplay{ font-size:1.1em; }
+      #currentSongDisplay{ font-size:1.8em; }
+      #nextSongDisplay{ font-size:1.2em; }
   }
 </style>
 </head>
@@ -221,10 +238,10 @@
 <div id="contentWrapper">
 <div id="infoColumn">
 <div id="navControls">
-    <button id="startBtn">Start</button>
-    <button id="stopBtn" disabled>Stop</button>
-    <button id="prevBtn">&lt;</button>
-    <button id="nextBtn">&gt;</button>
+    <button id="startBtn">▶️</button>
+    <button id="stopBtn" disabled>⏹️</button>
+    <button id="prevBtn">⏮️</button>
+    <button id="nextBtn">⏭️</button>
     <button id="dropBtn">Drop Songs</button>
     <button id="togglePanelBtn">Hide List</button>
 </div>
@@ -237,8 +254,7 @@
 <div id="aheadBehind"></div>
 <div id="clockTime"></div>
 <div id="projectedEnd"></div>
-<div id="droppedInfo"></div>
-<div id="transitionInfo"></div>
+<div id="metadataLine"></div>
 <div id="infoSpacer"></div>
   <div id="metronomeControls">
       <label><input type="checkbox" id="metronomeToggle"></label>
@@ -699,15 +715,11 @@ function updateDisplay(){
         const endTime=new Date(Date.now()+rd*1000);
         endEl.textContent=`Setlist End: ${formatClock(endTime)}`;
     }
-    const dropEl=document.getElementById('droppedInfo');
-    if(dropEl){
+    const meta=document.getElementById('metadataLine');
+    if(meta){
         const count=songs.filter(s=>s.dropped).length;
-        dropEl.textContent=`Dropped songs: ${count}`;
-    }
-    const transEl=document.getElementById('transitionInfo');
-    if(transEl){
         const avg=transitionDurations.length?transitionDurations.reduce((a,b)=>a+b,0)/transitionDurations.length:0;
-        transEl.textContent=`Avg transition: ${formatTime(avg)}`;
+        meta.textContent=`Dropped: ${count} | Avg trans: ${formatTime(avg)}`;
     }
     let shouldIndex=null;
     for(let i=0;i<songs.length;i++){
@@ -769,13 +781,13 @@ function updateButtonStates(){
     const stop=document.getElementById('stopBtn');
     if(!start || !stop) return;
     if(!startTime){
-        start.textContent='Start';
+        start.textContent='▶️';
         stop.disabled=true;
     }else if(isPaused){
-        start.textContent='Resume';
+        start.textContent='▶️';
         stop.disabled=false;
     }else{
-        start.textContent='Pause';
+        start.textContent='⏸️';
         stop.disabled=false;
     }
 }

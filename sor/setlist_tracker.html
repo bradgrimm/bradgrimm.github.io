@@ -23,9 +23,9 @@
   .container {
       width: 100%;
       margin: 0 auto;
-      background: #111;
+      background: rgba(0,0,0,0.6);
       color: white;
-      border: 1px solid #333;
+      border: 1px solid rgba(255,255,255,0.8);
       box-shadow: none;
       padding: 20px;
       position:relative;
@@ -126,6 +126,7 @@
       justify-content:center;
       flex-wrap:wrap;
       gap:15px;
+      margin-top:15px;
       margin-bottom:15px;
       position:relative;
       z-index:200;
@@ -141,8 +142,18 @@
       white-space:nowrap;
       flex:1 0 auto;
   }
+  #navControls button.icon-btn{
+      font-size:2.2em;
+      width:70px;
+      height:70px;
+      padding:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+  }
   #prevBtn,#nextBtn{ display:none; }
-  #dropBtn,#togglePanelBtn{ flex-basis:calc(50% - 15px); }
+  #dropBtn{ flex-basis:calc(50% - 15px); }
+  #togglePanelBtn{ width:70px; }
   #navControls button:active{
       transform:scale(0.97);
   }
@@ -301,17 +312,9 @@
 </head>
 <body>
 <button id="fullscreenBtn" onclick="goFullscreen()">⛶</button>
-<div class="container">
+<div class="container show-details">
 <div id="contentWrapper">
 <div id="infoColumn">
-<div id="navControls">
-    <button id="startBtn">▶️</button>
-    <button id="stopBtn" disabled>⏹️</button>
-    <button id="prevBtn">⏮️</button>
-    <button id="nextBtn">⏭️</button>
-    <button id="dropBtn">Drop Songs</button>
-    <button id="togglePanelBtn">Hide List</button>
-</div>
 <div id="currentSongDisplay"></div>
 <div id="songNotesDisplay" style="text-align:center;margin-bottom:5px;"></div>
 <div id="nextSongDisplay"></div>
@@ -333,6 +336,14 @@
           <div class="metronomeBeat beat-3"></div>
           <div class="metronomeBeat beat-4"></div>
       </div>
+  </div>
+  <div id="navControls">
+      <button id="startBtn" class="icon-btn">▶️</button>
+      <button id="stopBtn" class="icon-btn" disabled>⏹️</button>
+      <button id="prevBtn" class="icon-btn">⏮️</button>
+      <button id="nextBtn" class="icon-btn">⏭️</button>
+      <button id="dropBtn">Drop Songs</button>
+      <button id="togglePanelBtn" class="icon-btn">☰</button>
   </div>
 </div> <!-- infoColumn -->
 <div id="songsColumn">
@@ -381,13 +392,13 @@ let panelVisible = true;
 function showSongsPanel(){
     document.body.classList.remove('panel-hidden');
     panelVisible = true;
-    if(toggleBtn) toggleBtn.textContent = 'Hide List';
+    if(toggleBtn) toggleBtn.textContent = '☰';
 }
 
 function hideSongsPanel(){
     document.body.classList.add('panel-hidden');
     panelVisible = false;
-    if(toggleBtn) toggleBtn.textContent = 'Show List';
+    if(toggleBtn) toggleBtn.textContent = '☰';
 }
 
 function toggleSongsPanel(){

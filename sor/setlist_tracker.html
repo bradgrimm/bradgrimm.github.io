@@ -127,6 +127,8 @@
       flex-wrap:wrap;
       gap:15px;
       margin-bottom:15px;
+      position:relative;
+      z-index:200;
   }
   #navControls button{
       font-size:1.5em;
@@ -139,6 +141,7 @@
       white-space:nowrap;
       flex:1 0 auto;
   }
+  #prevBtn,#nextBtn{ display:none; }
   #dropBtn,#togglePanelBtn{ flex-basis:calc(50% - 15px); }
   #navControls button:active{
       transform:scale(0.97);
@@ -247,6 +250,7 @@
       color:#bbb;
       font-size:1.6em;
       cursor:pointer;
+      z-index:200;
   }
   #fullscreenBtn{
       position:fixed;
@@ -268,10 +272,15 @@
       align-items:center;
       justify-content:center;
       font-size:3em;
-      color:rgba(255,255,255,0.2);
+      color:rgba(255,255,255,0.4);
       background:none;
       border:none;
-      z-index:900;
+      z-index:100;
+      transition:background 0.2s, box-shadow 0.2s;
+  }
+  .edge-nav:active{
+      background:rgba(255,255,255,0.2);
+      box-shadow:0 0 20px rgba(255,255,255,0.6) inset;
   }
   #edgePrev{ left:0; }
   #edgeNext{ right:0; }

@@ -36,7 +36,7 @@
       font-weight:300;
   }
   #timerDisplay {
-      font-size:4.5em;
+      font-size:4em;
       font-weight:bold;
       text-align:center;
       display:block;
@@ -45,10 +45,13 @@
       text-shadow:0 0 5px #0cf;
   }
   #currentSongDisplay {
-      font-size:2.5em;
+      font-size:3em;
       font-weight:bold;
       text-align:center;
       margin-bottom:0.3em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
   }
   #songNotesDisplay {
       text-align:center;
@@ -60,6 +63,9 @@
       text-align:center;
       margin-bottom:20px;
       color:#7abaff;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
   }
   #progressContainer {
       height:20px;
@@ -221,13 +227,13 @@
       max-width:160px;
   }
   body.panel-hidden #currentSongDisplay{
-      font-size:2.5em;
+      font-size:3em;
   }
   body.panel-hidden #nextSongDisplay{
       font-size:1.5em;
   }
   body.panel-hidden #timerDisplay{
-      font-size:4.5em;
+      font-size:4em;
   }
   #metadataLine,
   #metronomeControls{ display:none; }
@@ -309,8 +315,8 @@
           font-size:1.2em;
           padding:12px 20px;
       }
-      #currentSongDisplay{ font-size:1.8em; }
-      #nextSongDisplay{ font-size:1.2em; }
+      #currentSongDisplay{ font-size:1.8em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      #nextSongDisplay{ font-size:1.2em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   }
 </style>
 </head>
@@ -320,13 +326,13 @@
 <div id="contentWrapper">
 <div id="infoColumn">
   <span id="timerDisplay">00:00</span>
+  <div id="aheadBehind"></div>
   <div id="timeLine"></div>
   <div id="progressContainer"><div id="progressBar"></div></div>
-<div id="currentSongDisplay"></div>
+  <div id="currentSongDisplay"></div>
 <div id="songNotesDisplay" style="text-align:center;margin-bottom:5px;"></div>
 <div id="nextSongDisplay"></div>
   <div id="timeRemaining" style="text-align:center;margin-bottom:10px;"></div>
-<div id="aheadBehind"></div>
 <div id="metadataLine"></div>
 <div id="infoSpacer"></div>
 <button id="infoToggle" title="Show details">ℹ️</button>

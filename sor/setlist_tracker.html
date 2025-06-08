@@ -141,6 +141,7 @@
       cursor:pointer;
       white-space:nowrap;
       flex:1 0 auto;
+      max-width:160px;
   }
   #navControls button.icon-btn{
       font-size:2.2em;
@@ -220,6 +221,7 @@
   body.panel-hidden #navControls button{
       font-size:1.8em;
       padding:20px 30px;
+      max-width:160px;
   }
   body.panel-hidden #currentSongDisplay{
       font-size:2.5em;
@@ -284,22 +286,20 @@
       justify-content:center;
       font-size:3em;
       color:rgba(255,255,255,0.7);
-      background:#1a1a1a;
+      background:transparent;
       border:none;
       z-index:100;
       transition:background 0.2s, box-shadow 0.2s;
   }
   .edge-nav:active{
-      background:#333;
+      background:rgba(255,255,255,0.15);
       box-shadow:0 0 20px rgba(255,255,255,0.6) inset;
   }
   #edgePrev{
       left:0;
-      border-right:1px solid rgba(255,255,255,0.5);
   }
   #edgeNext{
       right:0;
-      border-left:1px solid rgba(255,255,255,0.5);
   }
   @media (min-width:800px){
       #contentWrapper{ flex-direction:row; align-items:flex-start; }

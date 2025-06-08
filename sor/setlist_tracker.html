@@ -52,11 +52,16 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      max-width:100%;
   }
   #songNotesDisplay {
       text-align:center;
       font-size:1.1em;
       margin-bottom:5px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:100%;
   }
   #nextSongDisplay {
       font-size:1.6em;
@@ -66,6 +71,7 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      max-width:100%;
   }
   #progressContainer {
       height:20px;
@@ -132,7 +138,7 @@
       justify-content:center;
       flex-wrap:wrap;
       gap:15px;
-      margin-top:15px;
+      margin-top:auto;
       margin-bottom:15px;
       position:relative;
       z-index:200;
@@ -238,41 +244,48 @@
   body.panel-hidden #timerDisplay{
       font-size:4em;
   }
-  #metadataLine,
-  #metronomeControls{ display:none; }
-  .show-details #metadataLine,
-  .show-details #metronomeControls{ display:block; }
   body.panel-hidden #metadataLine{ display:none; }
 
   #contentWrapper{
       display:flex;
       flex-direction:column;
       gap:20px;
+      min-height:100vh;
   }
   #songsColumn{
       overflow-y:auto;
-      max-height:60vh;
+      height:100vh;
       flex:0 0 50%;
       max-width:50vw;
+      min-width:300px;
+      position:relative;
+  }
+  #closePanelBtn{
+      position:absolute;
+      top:10px;
+      left:10px;
+      background:none;
+      border:none;
+      color:#fff;
+      font-size:2em;
+      z-index:301;
   }
   #infoColumn{
       position:relative;
       display:flex;
       flex-direction:column;
+      align-items:center;
+      flex:1;
+      min-height:100vh;
   }
-  #infoSpacer{
-      flex-grow:1;
-  }
-  #infoToggle{
-      position:absolute;
-      bottom:15px;
-      right:15px;
-      background:none;
-      border:none;
-      color:#bbb;
-      font-size:1.6em;
-      cursor:pointer;
-      z-index:200;
+  #centerInfo{
+      text-align:center;
+      flex:1;
+      padding:20px 0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
   }
   #fullscreenBtn{
       position:fixed;
@@ -287,11 +300,13 @@
   }
   .edge-nav{
       position:absolute;
+      top:0;
       bottom:0;
-      width:13%;
+      width:40%;
       display:flex;
-      align-items:center;
+      align-items:flex-end;
       justify-content:center;
+      padding-bottom:20px;
       font-size:3em;
       color:rgba(255,255,255,0.7);
       background:transparent;
@@ -316,7 +331,22 @@
   @media (min-width:800px){
       #contentWrapper{ flex-direction:row; align-items:flex-start; }
       #infoColumn{ flex:1; padding-right:20px; }
-      #songsColumn{ flex:0 0 50%; max-width:50vw; max-height:80vh; }
+      #songsColumn{ flex:0 0 50%; max-width:50vw; height:100vh; }
+      #closePanelBtn{ display:none; }
+  }
+  @media (max-width:799px){
+      #contentWrapper{ flex-direction:column; }
+      #songsColumn{
+          position:fixed;
+          inset:0;
+          width:100vw;
+          height:100vh;
+          max-width:none;
+          background:#111;
+          z-index:300;
+      }
+      #closePanelBtn{ display:block; }
+      body.panel-hidden #songsColumn{ display:none; }
   }
   @media (max-width:600px){
       #navControls button{
@@ -330,20 +360,20 @@
 </head>
 <body>
 <button id="fullscreenBtn" onclick="goFullscreen()">⛶</button>
-<div class="container show-details">
+<div class="container">
 <div id="contentWrapper">
 <div id="infoColumn">
   <span id="timerDisplay">00:00</span>
   <div id="aheadBehind"></div>
   <div id="timeLine"></div>
   <div id="progressContainer"><div id="progressBar"></div></div>
-  <div id="currentSongDisplay"></div>
-<div id="songNotesDisplay" style="text-align:center;margin-bottom:5px;"></div>
-<div id="nextSongDisplay"></div>
-  <div id="timeRemaining" style="text-align:center;margin-bottom:10px;display:none;"></div>
-<div id="metadataLine"></div>
-<div id="infoSpacer"></div>
-<button id="infoToggle" title="Show details">ℹ️</button>
+  <div id="centerInfo">
+    <div id="currentSongDisplay"></div>
+    <div id="songNotesDisplay" style="text-align:center;margin-bottom:5px;"></div>
+    <div id="nextSongDisplay"></div>
+    <div id="timeRemaining" style="text-align:center;margin-bottom:10px;display:none;"></div>
+    <div id="metadataLine"></div>
+  </div>
   <div id="metronomeControls">
       <label><input type="checkbox" id="metronomeToggle"></label>
       <label>BPM: <input type="number" id="bpmInput" value="120" min="30" style="width:5em"></label>
@@ -364,7 +394,8 @@
   <button id="edgeNext" class="edge-nav">⏭️</button>
 </div> <!-- infoColumn -->
 <div id="songsColumn">
-<ul id="setlist"></ul>
+  <button id="closePanelBtn" class="icon-btn">✖️</button>
+  <ul id="setlist"></ul>
 <div id="fileControls">
     <div class="file-row">
         <input type="file" id="csvFile" accept=".csv">
@@ -398,7 +429,7 @@ document.addEventListener('fullscreenchange', () => {
 });
 
 const toggleBtn = document.getElementById('togglePanelBtn');
-const infoBtn = document.getElementById('infoToggle');
+const closeBtn = document.getElementById('closePanelBtn');
 const edgePrev = document.getElementById('edgePrev');
 const edgeNext = document.getElementById('edgeNext');
 let panelVisible = true;
@@ -420,13 +451,10 @@ function toggleSongsPanel(){
     else showSongsPanel();
 }
 
-function toggleDetails(){
-    document.querySelector('.container').classList.toggle('show-details');
-}
 
-if(infoBtn) infoBtn.addEventListener('click', toggleDetails);
 
 if(toggleBtn) toggleBtn.addEventListener('click', toggleSongsPanel);
+if(closeBtn) closeBtn.addEventListener('click', hideSongsPanel);
 let songs = [];
 let timer = null;
 let startTime = null;
@@ -953,7 +981,9 @@ document.getElementById('startBtn').addEventListener('click', () => {
     if(!startTime) startTimer();
     else togglePause();
 });
-document.getElementById('stopBtn').addEventListener('click', stopTimer);
+document.getElementById('stopBtn').addEventListener('click', () => {
+    if(confirm('Are you sure you want to stop?')) stopTimer();
+});
 function goPrev(){
     currentIndex = Math.max(0, currentIndex - 1);
     const elapsed = startTime ? Math.floor(getElapsedMs() / 1000) : 0;

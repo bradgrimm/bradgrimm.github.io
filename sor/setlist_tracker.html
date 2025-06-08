@@ -134,9 +134,9 @@
   #navControls button{
       font-size:1.5em;
       padding:15px 25px;
-      background:#4caf50;
+      background:#222;
       color:white;
-      border:none;
+      border:1px solid rgba(255,255,255,0.6);
       border-radius:8px;
       cursor:pointer;
       white-space:nowrap;
@@ -151,10 +151,10 @@
       align-items:center;
       justify-content:center;
   }
-  #prevBtn,#nextBtn{ display:none; }
   #dropBtn{ flex-basis:calc(50% - 15px); }
   #togglePanelBtn{ width:70px; }
   #navControls button:active{
+      background:#333;
       transform:scale(0.97);
   }
   .highlight{
@@ -283,18 +283,24 @@
       align-items:center;
       justify-content:center;
       font-size:3em;
-      color:rgba(255,255,255,0.4);
-      background:none;
+      color:rgba(255,255,255,0.7);
+      background:#1a1a1a;
       border:none;
       z-index:100;
       transition:background 0.2s, box-shadow 0.2s;
   }
   .edge-nav:active{
-      background:rgba(255,255,255,0.2);
+      background:#333;
       box-shadow:0 0 20px rgba(255,255,255,0.6) inset;
   }
-  #edgePrev{ left:0; }
-  #edgeNext{ right:0; }
+  #edgePrev{
+      left:0;
+      border-right:1px solid rgba(255,255,255,0.5);
+  }
+  #edgeNext{
+      right:0;
+      border-left:1px solid rgba(255,255,255,0.5);
+  }
   @media (min-width:800px){
       #contentWrapper{ flex-direction:row; align-items:flex-start; }
       #infoColumn{ flex:1; padding-right:20px; }
@@ -340,8 +346,6 @@
   <div id="navControls">
       <button id="startBtn" class="icon-btn">▶️</button>
       <button id="stopBtn" class="icon-btn" disabled>⏹️</button>
-      <button id="prevBtn" class="icon-btn">⏮️</button>
-      <button id="nextBtn" class="icon-btn">⏭️</button>
       <button id="dropBtn">Drop Songs</button>
       <button id="togglePanelBtn" class="icon-btn">☰</button>
   </div>
@@ -942,16 +946,17 @@ document.getElementById('startBtn').addEventListener('click', () => {
     else togglePause();
 });
 document.getElementById('stopBtn').addEventListener('click', stopTimer);
-document.getElementById('prevBtn').addEventListener('click', ()=>{
-    currentIndex=Math.max(0,currentIndex-1);
-    const elapsed=startTime?Math.floor(getElapsedMs()/1000):0;
-    songStart=elapsed;
-    startDiff[currentIndex]=elapsed - songs[currentIndex].start;
-    actualStart[currentIndex]=elapsed;
+function goPrev(){
+    currentIndex = Math.max(0, currentIndex - 1);
+    const elapsed = startTime ? Math.floor(getElapsedMs() / 1000) : 0;
+    songStart = elapsed;
+    startDiff[currentIndex] = elapsed - songs[currentIndex].start;
+    actualStart[currentIndex] = elapsed;
     updateDisplay();
     saveState();
-});
-document.getElementById('nextBtn').addEventListener('click', () => {
+}
+
+function goNext(){
     const elapsed = startTime ? Math.floor(getElapsedMs() / 1000) : 0;
     if (currentIndex < songs.length - 1) {
         if (actualStart[currentIndex] !== undefined) {
@@ -961,13 +966,14 @@ document.getElementById('nextBtn').addEventListener('click', () => {
         currentIndex = Math.min(songs.length - 1, currentIndex + 1);
         songStart = elapsed;
         startDiff[currentIndex] = elapsed - songs[currentIndex].start;
-    actualStart[currentIndex] = elapsed;
+        actualStart[currentIndex] = elapsed;
     }
     updateDisplay();
     saveState();
-});
-if(edgePrev) edgePrev.addEventListener('click', ()=>document.getElementById('prevBtn').click());
-if(edgeNext) edgeNext.addEventListener('click', ()=>document.getElementById('nextBtn').click());
+}
+
+if(edgePrev) edgePrev.addEventListener('click', goPrev);
+if(edgeNext) edgeNext.addEventListener('click', goNext);
 document.getElementById('transitionTime').addEventListener('change', () => {
     renderSetlist();
     saveState();

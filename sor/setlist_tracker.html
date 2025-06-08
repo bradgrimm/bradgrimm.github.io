@@ -120,9 +120,6 @@
 .song-info {
       font-weight:bold;
       margin-bottom:5px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
   }
 .song-controls{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
 .priority-label { font-size:0.9em; }
@@ -255,6 +252,8 @@
   #songsColumn{
       overflow-y:auto;
       max-height:60vh;
+      flex:0 0 50%;
+      max-width:50vw;
   }
   #infoColumn{
       position:relative;
@@ -314,7 +313,7 @@
   @media (min-width:800px){
       #contentWrapper{ flex-direction:row; align-items:flex-start; }
       #infoColumn{ flex:1; padding-right:20px; }
-      #songsColumn{ flex:1; max-height:80vh; }
+      #songsColumn{ flex:0 0 50%; max-width:50vw; max-height:80vh; }
   }
   @media (max-width:600px){
       #navControls button{

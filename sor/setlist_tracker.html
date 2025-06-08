@@ -28,6 +28,7 @@
       border: 1px solid #333;
       box-shadow: none;
       padding: 20px;
+      position:relative;
   }
   h1 {
       text-align:center;
@@ -35,18 +36,18 @@
       font-weight:300;
   }
   #timerDisplay {
-      font-size:4em;
+      font-size:4.5em;
       font-weight:bold;
       text-align:center;
       display:block;
-      margin:10px 0;
-      text-shadow: 0 0 5px black;
+      margin:20px 0 10px;
+      text-shadow:0 0 5px black;
   }
   #currentSongDisplay {
       font-size:2.5em;
       font-weight:bold;
       text-align:center;
-      margin-bottom:0.2em;
+      margin-bottom:0.3em;
   }
   #songNotesDisplay {
       text-align:center;
@@ -54,10 +55,10 @@
       margin-bottom:5px;
   }
   #nextSongDisplay {
-      font-size:1.5em;
+      font-size:1.6em;
       text-align:center;
-      margin-bottom:15px;
-      color:#ccc;
+      margin-bottom:20px;
+      color:#7abaff;
   }
   #progressContainer {
       height:20px;
@@ -94,9 +95,14 @@
       margin-bottom:8px;
       border-radius:8px;
       box-shadow:0 2px 4px rgba(0,0,0,0.05);
+      font-size:1.1em;
+      line-height:1.4;
   }
-  #setlist li.playing { background:#fff3cd; }
-  #setlist li.should { background:#d1e7dd; }
+  #setlist li.playing {
+      background:#d1e7dd;
+      border-left:4px solid #0d6efd;
+  }
+  #setlist li.should { background:#cfe2ff; }
   #setlist li.dropped { background:#f8d7da; text-decoration: line-through; opacity:0.6; }
 .song-info { font-weight:bold; margin-bottom:5px; }
 .song-controls{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
@@ -150,10 +156,10 @@
       box-shadow:0 0 8px currentColor;
   }
   .metronomeBeat.beat-1,
-  .metronomeBeat.beat-3{ background:#0d47a1; }
+  .metronomeBeat.beat-3{ background:#0d6efd; }
   .metronomeBeat.beat-2,
-  .metronomeBeat.beat-4{ background:#4caf50; }
-  .metronomeBeat.beat-1{ box-shadow:0 0 5px #0d47a1; }
+  .metronomeBeat.beat-4{ background:#2ecc71; }
+  .metronomeBeat.beat-1{ box-shadow:0 0 5px #0d6efd; }
   @keyframes pulse{
       0%,100%{ transform:scale(1); }
       50%{ transform:scale(1.1); }
@@ -195,11 +201,13 @@
       font-size:1.5em;
   }
   body.panel-hidden #timerDisplay{
-      font-size:4em;
+      font-size:4.5em;
   }
-  body.panel-hidden #metadataLine{
-      display:none;
-  }
+  #metadataLine,
+  #metronomeControls{ display:none; }
+  .show-details #metadataLine,
+  .show-details #metronomeControls{ display:block; }
+  body.panel-hidden #metadataLine{ display:none; }
 
   #contentWrapper{
       display:flex;
@@ -216,6 +224,16 @@
   }
   #infoSpacer{
       flex-grow:1;
+  }
+  #infoToggle{
+      position:absolute;
+      bottom:15px;
+      right:15px;
+      background:none;
+      border:none;
+      color:#bbb;
+      font-size:1.6em;
+      cursor:pointer;
   }
   @media (min-width:800px){
       #contentWrapper{ flex-direction:row; align-items:flex-start; }
@@ -256,6 +274,7 @@
 <div id="projectedEnd"></div>
 <div id="metadataLine"></div>
 <div id="infoSpacer"></div>
+<button id="infoToggle" title="Show details">ℹ️</button>
   <div id="metronomeControls">
       <label><input type="checkbox" id="metronomeToggle"></label>
       <label>BPM: <input type="number" id="bpmInput" value="120" min="30" style="width:5em"></label>
@@ -296,6 +315,7 @@ function goFullscreen() {
 }
 
 const toggleBtn = document.getElementById('togglePanelBtn');
+const infoBtn = document.getElementById('infoToggle');
 let panelVisible = true;
 
 function showSongsPanel(){
@@ -314,6 +334,12 @@ function toggleSongsPanel(){
     if(panelVisible) hideSongsPanel();
     else showSongsPanel();
 }
+
+function toggleDetails(){
+    document.querySelector('.container').classList.toggle('show-details');
+}
+
+if(infoBtn) infoBtn.addEventListener('click', toggleDetails);
 
 if(toggleBtn) toggleBtn.addEventListener('click', toggleSongsPanel);
 let songs = [];
@@ -697,7 +723,7 @@ function updateDisplay(){
                     diffEl.style.color = 'red';
                 }else{
                     text = `Ahead ${formatTime(diff)}`;
-                    diffEl.style.color = 'blue';
+                    diffEl.style.color = 'limegreen';
                 }
             }
             diffEl.textContent = text;

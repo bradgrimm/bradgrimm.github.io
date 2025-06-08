@@ -244,6 +244,7 @@
       display:flex;
       flex-direction:column;
       gap:20px;
+      min-height:100vh;
   }
   #songsColumn{
       overflow-y:auto;
@@ -256,9 +257,17 @@
       display:flex;
       flex-direction:column;
       align-items:center;
+      flex:1;
   }
   #infoSpacer{
       flex-grow:1;
+  }
+  #centerInfo{
+      text-align:center;
+      margin:auto 0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
   }
   #fullscreenBtn{
       position:fixed;
@@ -275,7 +284,7 @@
       position:absolute;
       top:0;
       bottom:0;
-      width:13%;
+      width:40%;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -324,12 +333,14 @@
   <div id="aheadBehind"></div>
   <div id="timeLine"></div>
   <div id="progressContainer"><div id="progressBar"></div></div>
-  <div id="currentSongDisplay"></div>
-<div id="songNotesDisplay" style="text-align:center;margin-bottom:5px;"></div>
-<div id="nextSongDisplay"></div>
-  <div id="timeRemaining" style="text-align:center;margin-bottom:10px;display:none;"></div>
-<div id="metadataLine"></div>
-<div id="infoSpacer"></div>
+  <div id="centerInfo">
+    <div id="currentSongDisplay"></div>
+    <div id="songNotesDisplay" style="text-align:center;margin-bottom:5px;"></div>
+    <div id="nextSongDisplay"></div>
+    <div id="timeRemaining" style="text-align:center;margin-bottom:10px;display:none;"></div>
+    <div id="metadataLine"></div>
+  </div>
+  <div id="infoSpacer"></div>
   <div id="metronomeControls">
       <label><input type="checkbox" id="metronomeToggle"></label>
       <label>BPM: <input type="number" id="bpmInput" value="120" min="30" style="width:5em"></label>

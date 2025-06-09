@@ -471,6 +471,36 @@ let autoDrop = false;
 let currentBpm = 120;
 let metronomeTimer = null;
 let lastSongAppliedBpm = -1;
+let wakeLock = null;
+
+async function requestWakeLock(){
+    if('wakeLock' in navigator){
+        try{
+            wakeLock = await navigator.wakeLock.request('screen');
+            wakeLock.addEventListener('release',()=>{console.log('Wake lock released');});
+            console.log('Wake lock acquired');
+        }catch(e){
+            console.error('Wake lock error:', e);
+        }
+    }
+}
+
+async function releaseWakeLock(){
+    if(wakeLock){
+        try{
+            await wakeLock.release();
+        }catch(e){
+            console.error('Wake lock release error:', e);
+        }
+        wakeLock=null;
+    }
+}
+
+document.addEventListener('visibilitychange', () => {
+    if(document.visibilityState === 'visible'){
+        requestWakeLock();
+    }
+});
 
 function saveState(){
     try{
@@ -525,6 +555,7 @@ function loadState(){
             renderSetlist();
             if(startTime && !isPaused){
                 timer=setInterval(updateDisplay,1000/speedFactor);
+                requestWakeLock();
             }
             updateButtonStates();
             if(document.getElementById('metronomeToggle').checked) startMetronome();
@@ -533,7 +564,10 @@ function loadState(){
     }catch(e){}
 }
 
-window.addEventListener('beforeunload', saveState);
+window.addEventListener('beforeunload', () => {
+    releaseWakeLock();
+    saveState();
+});
 
 // Check query string for a debugging speed multiplier, e.g. ?debugspeed=5
 // This is intentionally hidden so regular users don't accidentally change it.
@@ -887,6 +921,7 @@ function startTimer(){
     startTime=Date.now();
     isPaused=false;
     totalPause=0;
+    requestWakeLock();
     hideSongsPanel();
 
     const endInput=document.getElementById('endBy');
@@ -954,6 +989,7 @@ function stopTimer(){
         clearInterval(timer);
         timer=null;
     }
+    releaseWakeLock();
     if(isPaused){
         totalPause+=Date.now()-pauseStart;
         isPaused=false;

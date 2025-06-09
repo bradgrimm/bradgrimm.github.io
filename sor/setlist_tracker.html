@@ -1054,6 +1054,11 @@ document.getElementById('bpmInput').addEventListener('change', e=>{
 });
 loadState();
 updateDropBtn(0);
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js');
+    });
+}
 </script>
 </body>
 </html>

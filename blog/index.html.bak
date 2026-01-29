@@ -1,0 +1,56 @@
+---
+layout: blog-archive
+title: Blog Archive
+permalink: /blog/
+---
+
+<h2>Blog Archive</h2>
+
+<div class="blog-notice">
+  <p><strong>Note:</strong> This archive contains posts from 2014-2017, primarily focused on Android app development. Content is preserved for historical reference and may contain outdated technical information.</p>
+</div>
+
+<!-- 2017 Posts -->
+<div class="year-section">
+  <h2>2017</h2>
+  {% assign posts_2017 = site.posts | where_exp: "post", "post.date >= '2017-01-01'" | where_exp: "post", "post.date < '2018-01-01'" | sort: 'date' | reverse %}
+  {% for post in posts_2017 %}
+  <div class="post-entry">
+    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+    <p class="post-date">{{ post.date | date: "%B %d, %Y" }}</p>
+    {% if post.excerpt %}
+    <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 40 }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<!-- 2015 Posts -->
+<div class="year-section">
+  <h2>2015</h2>
+  {% assign posts_2015 = site.posts | where_exp: "post", "post.date >= '2015-01-01'" | where_exp: "post", "post.date < '2016-01-01'" | sort: 'date' | reverse %}
+  {% for post in posts_2015 %}
+  <div class="post-entry">
+    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+    <p class="post-date">{{ post.date | date: "%B %d, %Y" }}</p>
+    {% if post.excerpt %}
+    <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 40 }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<!-- 2014 Posts -->
+<div class="year-section">
+  <h2>2014</h2>
+  {% assign posts_2014 = site.posts | where_exp: "post", "post.date >= '2014-01-01'" | where_exp: "post", "post.date < '2015-01-01'" | sort: 'date' | reverse %}
+  {% for post in posts_2014 %}
+  <div class="post-entry">
+    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+    <p class="post-date">{{ post.date | date: "%B %d, %Y" }}</p>
+    {% if post.excerpt %}
+    <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 40 }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>

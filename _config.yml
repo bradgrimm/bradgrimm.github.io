@@ -1,11 +1,21 @@
-title: The Bard of Robots
+title: Brad Grimm
 email: snard6@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Machine learning for Lego -- Coming soon.
+  App Developer | Data Scientist | Musician | Triathlete.
+  Building mobile apps, analyzing health data, playing bass, and racing triathlons.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://bradgrimm.com"
 twitter_username: bradleycgrimm
 github_username:  bradgrimm
+
+# Navigation
+header_pages:
+  - index.markdown
+  - about.markdown
+  - projects.html
+  - publications.html
+  - media.html
+  - blog/index.html
 
 # Build settings
 remote_theme: broccolini/swiss
@@ -13,6 +23,8 @@ theme_color: red
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-sitemap
 
 # Exclude from processing.
 # The following items will not be processed, by default.

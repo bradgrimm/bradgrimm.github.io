@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Projects - Bradley Grimm">
+  <meta name="author" content="Bradley Grimm">
+  <title>Projects - Bradley Grimm</title>
+  <link rel="stylesheet" href="assets/css/custom.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="/" class="site-title">Bradley Grimm</a>
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        ☰
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projects.html" class="active">Projects</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="media.html">Media</a></li>
+        <li><a href="blog/">Archive</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="content-section">
+      <h2>Past Projects</h2>
+      <p>A brief look at some historical work. Most of these projects are no longer active, but they represent milestones in my journey as a software developer and tinkerer.</p>
+
+      <div class="about-section">
+        <h3>Augmented Reality Children's Books</h3>
+        <p>Created two AR children's books that brought stories to life through 3D animations and interactive experiences. Both projects were successfully funded through Kickstarter campaigns.</p>
+
+        <p><strong>Goodnight Lad:</strong> An augmented reality children's bedtime book that combined traditional print with smartphone-enabled 3D scenes. Readers could watch characters come alive and interact with the story in new ways.</p>
+        <div class="project-links">
+          <a href="https://www.kickstarter.com/projects/hiddenworlds/goodnight-lad-augmented-reality-childrens-book" target="_blank" rel="noopener noreferrer">View Kickstarter</a>
+          <a href="https://www.ksl.com/article/33539970/utah-app-developer-creates-augmented-reality-childrens-book" target="_blank" rel="noopener noreferrer">Press Coverage (KSL 2015)</a>
+        </div>
+
+        <p class="mt-md"><strong>Marvelous Machines for Silly Things:</strong> A second AR book exploring whimsical inventions and encouraging kids to imagine creative solutions to everyday problems.</p>
+        <div class="project-links">
+          <a href="https://www.kickstarter.com/projects/hiddenworlds/marvelous-machines-for-silly-things" target="_blank" rel="noopener noreferrer">View Kickstarter</a>
+        </div>
+      </div>
+
+      <div class="about-section">
+        <h3>Mobile Applications</h3>
+        <p>Built multiple Android applications over the years that collectively reached millions of downloads. While most have been sold off or discontinued, they represent significant learning experiences in mobile development, user engagement, and product design.</p>
+
+        <p>These apps covered a range of categories including educational games, AR experiences, and fitness tracking. The work taught me valuable lessons about building production systems, user experience, and the entire lifecycle of consumer software.</p>
+      </div>
+
+      <div class="about-section">
+        <h3>Current Work</h3>
+        <p>These days, my focus is on multimodal machine learning systems at Videra Health, building intelligent tools for clinical research and digital health. For details on current work, see my <a href="publications.html">Publications</a> or read more on the <a href="about.html">About page</a>.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/bradley-grimm-8869b58/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://grimstonemusic.com" target="_blank" rel="noopener noreferrer">Grimstone</a>
+        <a href="https://grimstones.bandcamp.com" target="_blank" rel="noopener noreferrer">Bandcamp</a>
+      </div>
+      <div class="footer-contact">
+        <a href="mailto:grimm.bradley@gmail.com">grimm.bradley@gmail.com</a>
+      </div>
+      <p class="footer-copyright">&copy; 2026 Bradley Grimm</p>
+    </div>
+  </footer>
+
+  <script>
+  function toggleNav() {
+    const navMenu = document.getElementById('navMenu');
+    navMenu.classList.toggle('active');
+  }
+
+  // Close nav when clicking outside
+  document.addEventListener('click', function(event) {
+    const navMenu = document.getElementById('navMenu');
+    const navToggle = document.querySelector('.nav-toggle');
+
+    if (!navMenu.contains(event.target) && !navToggle.contains(event.target)) {
+      navMenu.classList.remove('active');
+    }
+  });
+
+  // Close nav when window is resized above mobile breakpoint
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      document.getElementById('navMenu').classList.remove('active');
+    }
+  });
+  </script>
+</body>
+</html>

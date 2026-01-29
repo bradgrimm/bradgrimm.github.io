@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Media - Bradley Grimm">
+  <meta name="author" content="Bradley Grimm">
+  <title>Media - Bradley Grimm</title>
+  <link rel="stylesheet" href="assets/css/custom.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="/" class="site-title">Bradley Grimm</a>
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        ☰
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="media.html" class="active">Media</a></li>
+        <li><a href="blog/">Archive</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="content-section">
+      <h2>Media & Videos</h2>
+      <p>Musical performances, mountain biking adventures, and other projects.</p>
+
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterMedia('all')">All</button>
+        <button class="filter-tab" onclick="filterMedia('music')">Music</button>
+        <button class="filter-tab" onclick="filterMedia('outdoors')">Outdoors</button>
+      </div>
+
+      <div class="media-grid">
+        <!-- Music Media Items -->
+        <div class="media-item" data-category="music">
+          <h3>Grimstone - Recent Practice (January 2026)</h3>
+          <p class="media-meta">Category: Music | Type: Band Practice</p>
+          <p>Recent Grimstone practice session featuring covers and original work. This one turned out good.</p>
+          <div class="project-links">
+            <a href="https://www.youtube.com/watch?v=dTYxUylDkCc" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+          </div>
+        </div>
+
+        <div class="media-item" data-category="music">
+          <h3>Grimstone - Performance Playlist</h3>
+          <p class="media-meta">Category: Music | Type: Video Playlist</p>
+          <p>Collection of Grimstone performances and covers from various shows and practice sessions.</p>
+          <div class="project-links">
+            <a href="https://www.youtube.com/watch?v=WotJdDq452I&list=PLE2FyrlcS-kp4jtNcuLVovy5IT14thVfz" target="_blank" rel="noopener noreferrer">View Playlist</a>
+          </div>
+        </div>
+
+        <!-- Outdoors Media Items -->
+        <div class="media-item" data-category="outdoors">
+          <h3>McKenzie River Trail - Oregon</h3>
+          <p class="media-meta">Category: Outdoors | Type: Mountain Biking</p>
+          <p>Bucket list ride on the McKenzie River Trail in Oregon. One of the most beautiful trails I've ridden.</p>
+          <div class="project-links">
+            <a href="https://www.youtube.com/watch?v=[McKenzie Trail Video ID]" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+          </div>
+        </div>
+
+        <div class="media-item" data-category="outdoors">
+          <h3>Gooseberry Mesa 2025</h3>
+          <p class="media-meta">Category: Outdoors | Type: Mountain Biking</p>
+          <p>Quick trip to Hurricane to ride Gooseberry Mesa - Fall 2025.</p>
+          <div class="project-links">
+            <a href="https://www.youtube.com/watch?v=[Gooseberry Mesa Video ID]" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+          </div>
+        </div>
+
+        <div class="media-item" data-category="outdoors">
+          <h3>Jem & Hurricane Mesa 2025</h3>
+          <p class="media-meta">Category: Outdoors | Type: Mountain Biking</p>
+          <p>Mountain biking adventure at Jem and Hurricane Mesa.</p>
+          <div class="project-links">
+            <a href="https://www.youtube.com/watch?v=[Jem Mesa Video ID]" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+          </div>
+        </div>
+
+        <div class="media-item" data-category="outdoors">
+          <h3>Bradley Grimm Skydiving - 41st Birthday</h3>
+          <p class="media-meta">Category: Outdoors | Type: Skydiving</p>
+          <p>Celebrating my 41st birthday by jumping out of a plane.</p>
+          <div class="project-links">
+            <a href="https://www.youtube.com/watch?v=[Skydiving Video ID]" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/bradley-grimm-8869b58/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://grimstonemusic.com" target="_blank" rel="noopener noreferrer">Grimstone</a>
+        <a href="https://grimstones.bandcamp.com" target="_blank" rel="noopener noreferrer">Bandcamp</a>
+      </div>
+      <div class="footer-contact">
+        <a href="mailto:grimm.bradley@gmail.com">grimm.bradley@gmail.com</a>
+      </div>
+      <p class="footer-copyright">&copy; 2026 Bradley Grimm</p>
+    </div>
+  </footer>
+
+  <script>
+  function filterMedia(category) {
+    const items = document.querySelectorAll('.media-item');
+    const tabs = document.querySelectorAll('.filter-tab');
+
+    // Update active tab
+    tabs.forEach(tab => tab.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // Filter items
+    items.forEach(item => {
+      if (category === 'all' || item.dataset.category === category) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  function toggleNav() {
+    const navMenu = document.getElementById('navMenu');
+    navMenu.classList.toggle('active');
+  }
+
+  // Close nav when clicking outside
+  document.addEventListener('click', function(event) {
+    const navMenu = document.getElementById('navMenu');
+    const navToggle = document.querySelector('.nav-toggle');
+
+    if (!navMenu.contains(event.target) && !navToggle.contains(event.target)) {
+      navMenu.classList.remove('active');
+    }
+  });
+
+  // Close nav when window is resized above mobile breakpoint
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      document.getElementById('navMenu').classList.remove('active');
+    }
+  });
+  </script>
+</body>
+</html>

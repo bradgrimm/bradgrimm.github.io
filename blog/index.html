@@ -1,34 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Blog Archive - Bradley Grimm">
-  <meta name="author" content="Bradley Grimm">
-  <title>Archive - Bradley Grimm</title>
-  <link rel="stylesheet" href="../assets/css/custom.css">
-  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-</head>
-<body>
-  <header class="site-header">
-    <nav class="site-nav">
-      <a href="../index.html" class="site-title">Bradley Grimm</a>
-      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
-        ☰
-      </button>
-      <ul class="nav-menu" id="navMenu">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../projects.html">Projects</a></li>
-        <li><a href="../publications.html">Publications</a></li>
-        <li><a href="../media.html">Media</a></li>
-        <li><a href="index.html" class="active">Archive</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main class="blog-archive">
-    <h2>Archive</h2>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Archive · Brad Grimm</title><meta name="description" content="Older writing on software, projects, and experiments by Bradley Grimm."><link rel="canonical" href="https://bradgrimm.com/blog/"><link rel="icon" href="/assets/images/favicon.svg"><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/css/music.css"><link rel="stylesheet" href="/assets/css/work.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="header"><a class="wordmark" href="/" aria-label="Brad Grimm home">BRAD GRIMM<span> / </span></a><nav aria-label="Main navigation"><a href="/#music">The music</a><a href="/#beyond">Beyond the stage</a><a href="/work/">Research & work</a><a class="nav-book" href="/#contact">Let’s talk <span aria-hidden="true">↗</span></a></nav></header><main id="main" class="work-main blog-archive">
+    <p class="section-label">WRITING / 2014–2017</p><h1>From the archive.</h1>
 
     <div class="blog-notice">
       <p><strong>Note:</strong> This archive contains posts from 2014-2017, primarily focused on Android app development. Content is preserved for historical reference and may contain outdated technical information.</p>
@@ -203,44 +174,4 @@
         <p class="post-date">January 14, 2014</p>
       </div>
     </div>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="social-links">
-        <a href="https://github.com/bradgrimm" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://twitter.com/bradleycgrimm" target="_blank" rel="noopener noreferrer">Twitter</a>
-        <a href="[LinkedIn URL]" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      </div>
-      <div class="footer-contact">
-        <a href="mailto:snard6@gmail.com">snard6@gmail.com</a>
-      </div>
-      <p class="footer-copyright">&copy; 2026 Bradley Grimm</p>
-    </div>
-  </footer>
-
-  <script>
-  function toggleNav() {
-    const navMenu = document.getElementById('navMenu');
-    navMenu.classList.toggle('active');
-  }
-
-  // Close nav when clicking outside
-  document.addEventListener('click', function(event) {
-    const navMenu = document.getElementById('navMenu');
-    const navToggle = document.querySelector('.nav-toggle');
-
-    if (!navMenu.contains(event.target) && !navToggle.contains(event.target)) {
-      navMenu.classList.remove('active');
-    }
-  });
-
-  // Close nav when window is resized above mobile breakpoint
-  window.addEventListener('resize', function() {
-    if (window.innerWidth > 768) {
-      document.getElementById('navMenu').classList.remove('active');
-    }
-  });
-  </script>
-</body>
-</html>
+  </main><footer><a class="wordmark" href="/">BRAD GRIMM<span> / </span></a><p>Music, research, and whatever comes next.</p><div><a href="https://www.instagram.com/bradleycgrimm/">Instagram ↗</a><a href="https://www.youtube.com/@bradleygrimm">YouTube ↗</a><a href="https://grimstonemusic.com/">Grimstone ↗</a><a href="/publications.html">Publications</a><a href="/blog/">Archive</a></div><small>© 2026 Brad Grimm</small></footer></body></html>

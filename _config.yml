@@ -1,8 +1,8 @@
 title: Brad Grimm
 email: snard6@gmail.com
-description: >- # this means to ignore newlines until "baseurl:"
-  Bradley Grimm — machine learning researcher and engineer working on video, audio, and language.
-  First-author research in npj Digital Medicine; patents; NIH-funded. Also a drummer and triathlete.
+description: >-
+  Brad Grimm — guitar and vocals in Utah’s Salt Lake Valley. Music, live performances,
+  machine learning research, and a life spent making things.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://bradgrimm.com"
 twitter_username: bradleycgrimm
@@ -10,12 +10,9 @@ github_username:  bradgrimm
 
 # Navigation
 header_pages:
-  - index.markdown
-  - about.markdown
-  - projects.html
+  - index.html
+  - work/index.html
   - publications.html
-  - media.html
-  - blog/index.html
 
 # Build settings
 remote_theme: broccolini/swiss

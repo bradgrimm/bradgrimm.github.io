@@ -42,3 +42,15 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+# Kept out of jekyll-sitemap: /thanks/ is noindex; the others are redirect stubs
+# whose canonical URLs are already listed.
+defaults:
+  - scope: { path: "thanks" }
+    values: { sitemap: false }
+  - scope: { path: "about.html" }
+    values: { sitemap: false }
+  - scope: { path: "media.html" }
+    values: { sitemap: false }
+  - scope: { path: "projects.html" }
+    values: { sitemap: false }

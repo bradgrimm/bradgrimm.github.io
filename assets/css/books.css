@@ -1,0 +1,9 @@
+.book-hero{display:grid;grid-template-columns:1.1fr 1fr;gap:6%;align-items:center;margin-bottom:40px}.book-hero img{width:100%;height:auto;display:block}
+.store-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.store-links .button{margin:0;color:#141c22;text-decoration:none}.store-links .button:hover{color:#141c22;filter:brightness(1.08)}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 40px}.feature-grid h3{font-size:22px!important;margin:18px 0 8px!important}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px}.video-grid figure{margin:0}.video-grid iframe{width:100%;aspect-ratio:16/9;border:0;display:block}.video-grid figcaption{color:var(--muted);font-size:14px;margin-top:8px}
+.demo-pages{display:grid;gap:40px;margin-top:20px}.demo-pages figure{margin:0}.demo-pages img{width:100%;height:auto;display:block;background:#fff}.demo-pages figcaption{display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:15px;margin-top:10px}
+.steps{color:#bdc8ce;font-size:17px;padding-left:22px}.steps li{margin:6px 0}
+.book-form label{color:var(--ink)}.book-form label span{color:var(--muted)}
+@media(max-width:760px){.book-hero{grid-template-columns:1fr}}
+@media print{header,footer,.no-print{display:none!important}body{background:#fff}.demo-pages figure{break-after:page}.demo-pages figcaption{display:none}.work-main{padding:0}}

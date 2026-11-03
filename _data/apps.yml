@@ -1,0 +1,81 @@
+# Drives /apps/. To flip a platform from "coming soon" to live, paste its store
+# URL into that platform's field. A platform listed in `platforms` with no URL
+# shows as "coming soon"; an app with no URLs at all gets the "Coming soon" tag.
+# Only paste a store URL once the listing is live in production.
+
+groups:
+  - id: music
+    title: Music tools
+  - id: learning
+    title: Learning
+  - id: kids
+    title: Kids & AR books
+  - id: fun
+    title: Just for fun
+
+apps:
+  - name: Songroost
+    group: music
+    icon: /assets/apps/songroost/icon.png
+    line: Charts, practice notes, recordings, and setlists in one place. It runs every gig I play.
+    more: https://songroost.com/
+    platforms: [web, android, ios]
+    web: https://songroost.com/
+    android: https://play.google.com/store/apps/details?id=com.songroost.app
+    ios:
+
+  - name: Accentuate
+    group: learning
+    icon: /assets/apps/accentuate/icon.png
+    line: Learn an English accent by ear, from Yorkshire to Lagos, with pronunciation scoring.
+    more: https://accentuatevoices.com/
+    platforms: [ios, android, web]
+    ios: https://apps.apple.com/us/app/accentuate-accent-coach/id6809026532
+    android: https://play.google.com/store/apps/details?id=com.accentuatevoices.app
+    web: https://accentuatevoices.com/
+
+  - name: Colorblind Vision
+    group: learning
+    icon: /assets/apps/colorblind/icon.png
+    line: See how people with color blindness see the world, test your own color vision, and check whether two colors match.
+    more: /colorblind/
+    platforms: [ios, android]
+    ios:
+    android:
+
+  - name: Goodnight Lad
+    group: kids
+    icon: /assets/apps/goodnightlad/icon.png
+    line: A picture book that comes to life. Point the free app at the book and every page plays.
+    more: /goodnightlad/
+    platforms: [ios, android]
+    ios: https://apps.apple.com/us/app/goodnight-lad/id1013894831
+    # when Play is live, replace the next line with: android: https://play.google.com/store/apps/details?id=com.goodnightlad.book
+    android:
+
+  - name: Marvelous Machines
+    group: kids
+    icon: /assets/apps/marvelousmachines/icon.png
+    line: The second augmented reality book, about exploring, inventing, and silly machines.
+    more: /marvelousmachines/
+    platforms: [ios, android]
+    ios: https://apps.apple.com/us/app/marvelous-machines/id1205353856
+    android:
+
+  - name: Spot! Hidden Animals
+    group: kids
+    icon: /assets/apps/spotanimals/icon.png
+    line: A seek-and-find game for little kids, with illustrated worlds to explore and a sticker book to fill.
+    more: /spotanimals/
+    platforms: [ios, android]
+    ios:
+    android:
+
+  - name: Squishface
+    group: fun
+    icon: /assets/apps/squishface/icon.png
+    line: A fun house mirror for your camera. Big eyes, balloon heads, lasers out of your fingers.
+    more: /squishface/
+    platforms: [ios, android]
+    ios:
+    android:

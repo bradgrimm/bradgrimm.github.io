@@ -10,6 +10,8 @@ groups:
     title: Learning
   - id: kids
     title: Kids & AR books
+  - id: fun
+    title: Just for fun
 
 apps:
   - name: Songroost
@@ -48,6 +50,7 @@ apps:
     more: /goodnightlad/
     platforms: [ios, android]
     ios: https://apps.apple.com/us/app/goodnight-lad/id1013894831
+    # when Play is live, replace the next line with: android: https://play.google.com/store/apps/details?id=com.goodnightlad.book
     android:
 
   - name: Marvelous Machines
@@ -56,7 +59,7 @@ apps:
     line: The second augmented reality book, about exploring, inventing, and silly machines.
     more: /marvelousmachines/
     platforms: [ios, android]
-    ios:
+    ios: https://apps.apple.com/us/app/marvelous-machines/id1205353856
     android:
 
   - name: Spot! Hidden Animals
@@ -69,7 +72,7 @@ apps:
     android:
 
   - name: Squishface
-    group: kids
+    group: fun
     icon: /assets/apps/squishface/icon.png
     line: A fun house mirror for your camera. Big eyes, balloon heads, lasers out of your fingers.
     more: /squishface/

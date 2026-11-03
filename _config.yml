@@ -54,3 +54,7 @@ defaults:
     values: { sitemap: false }
   - scope: { path: "projects.html" }
     values: { sitemap: false }
+  - scope: { path: "lad" }
+    values: { sitemap: false }
+  - scope: { path: "mm" }
+    values: { sitemap: false }

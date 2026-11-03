@@ -1,0 +1,11 @@
+.app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.app-card{display:flex;gap:18px;align-items:flex-start;padding:20px;background:var(--panel);border:1px solid var(--line)}
+.app-icon{flex:none;line-height:0}.app-icon img{width:88px;height:88px;border-radius:20px;display:block}
+.app-body{min-width:0}.app-card h3{font-size:24px!important;margin:2px 0 6px!important;line-height:1.15}.app-card h3 a{color:var(--ink)!important;text-decoration:none!important}.app-card h3 a:hover{color:var(--accent)!important}
+.app-card p{font-size:15px!important;margin:0 0 12px;color:#bdc8ce}
+.app-soon{display:inline-block;vertical-align:middle;font-family:Barlow,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#141c22;background:var(--accent);padding:3px 7px;margin-left:4px;position:relative;top:-2px}
+.app-platforms{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0}
+.app-badge{display:inline-block;font-size:13px;font-weight:600;padding:5px 10px;border:1px solid var(--accent);color:var(--accent)!important;text-decoration:none!important}
+a.app-badge:hover{background:var(--accent);color:#141c22!important}
+.app-badge.is-soon{border-color:var(--line);color:var(--muted)!important;font-weight:500}
+@media(max-width:600px){.app-grid{grid-template-columns:1fr}.app-card{padding:16px;gap:14px}.app-icon img{width:64px;height:64px;border-radius:15px}}

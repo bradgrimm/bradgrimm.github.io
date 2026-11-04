@@ -48,6 +48,10 @@ plugins:
 defaults:
   - scope: { path: "thanks" }
     values: { sitemap: false }
+  - scope: { path: "goodnightlad/thanks" }
+    values: { sitemap: false }
+  - scope: { path: "marvelousmachines/thanks" }
+    values: { sitemap: false }
   - scope: { path: "about.html" }
     values: { sitemap: false }
   - scope: { path: "media.html" }

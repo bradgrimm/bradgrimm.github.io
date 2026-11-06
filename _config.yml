@@ -43,7 +43,7 @@ plugins:
 #   - vendor/gems/
 #   - vendor/ruby/
 
-# Kept out of jekyll-sitemap: /thanks/ is noindex; the others are redirect stubs
+# Kept out of jekyll-sitemap: the thanks pages and /live/ are noindex; the others are redirect stubs
 # whose canonical URLs are already listed.
 defaults:
   - scope: { path: "thanks" }
@@ -61,4 +61,8 @@ defaults:
   - scope: { path: "lad" }
     values: { sitemap: false }
   - scope: { path: "mm" }
+    values: { sitemap: false }
+  - scope: { path: "live" }
+    values: { sitemap: false }
+  - scope: { path: "goofyglass" }
     values: { sitemap: false }

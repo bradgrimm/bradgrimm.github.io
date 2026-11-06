@@ -20,12 +20,7 @@ meta:
   _oembed_2e4b8b736e745cb8cf7e45a83011dd26: "{{unknown}}"
   _oembed_e5a26eb050a9fbca923f78243baf4cdd: "{{unknown}}"
   _oembed_93b335310748f55518930b9748119e6a: "{{unknown}}"
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/02/17/1-million-goofy-downloads/"
 ---
 [![1m_Downloads]({{ site.baseurl }}/assets/2014/02/1m_downloads.png?w=640)](http://bradgrimm.files.wordpress.com/2014/02/1m_downloads.png)GoofyBooth passed 1 Million downloads today! &nbsp;It is one of the apps I am most proud of, and super excited that it passed 1 Million in under a year and a half.

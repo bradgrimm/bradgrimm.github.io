@@ -17,12 +17,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/04/18/google-next/"
 ---
 [![]({{ site.baseurl }}/assets/2014/04/hires_gfexnext_logo_rgb-2100x1828-5_10.png?w=300)](http://bradgrimm.files.wordpress.com/2014/04/hires_gfexnext_logo_rgb-2100x1828-5_10.png)For the past 5 weeks I've had an amazing opportunity to be a part of the NEXT program in Provo. &nbsp;It has been an amazing experience, and I am very&nbsp;grateful for all the&nbsp;mentorship shared with us.

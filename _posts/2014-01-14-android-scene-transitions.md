@@ -19,12 +19,7 @@ meta:
   _oembed_e3a657574d42fe3d8fa9bf35a4b98c9e: "{{unknown}}"
   _oembed_25941a90254fcc41d6d67e981ca1e127: "{{unknown}}"
   _oembed_1509112c23b9aaf5bb22d2df37154781: "{{unknown}}"
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/01/14/android-scene-transitions/"
 ---
 One of the less published features of Android KitKat 4.4 was the addition of a new animation framework for Scene Transitions. This is a really nifty framework for developers, because it allows easily providing two layouts and letting the system handle the animations between them. This can be a powerful but simple way to change views around with beautiful animations. While animations in general have been around forever (and they saw a great update with honeycomb) this just makes it even easier. Now you simply provide scenes via xml and let the system do its magic.

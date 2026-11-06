@@ -16,12 +16,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/03/09/my-sons-hair-is-green/"
 ---
 Yesterday, as I walked down the street I looked at my son Logan and thought to myself: "Wow, he has such bright&nbsp; **green** hair, it really shows up well in the sunlight." &nbsp;By now, you may be thinking I am joking. &nbsp;Or perhaps I played a cruel joke on my son and dyed his hair color to celebrate St. Patrick's day. &nbsp;But, I promise this isn't a joke. &nbsp; His hair looked the same way it always does, and you can see it in the picture below:

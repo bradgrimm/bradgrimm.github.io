@@ -21,12 +21,7 @@ meta:
   _edit_last: '50576885'
   geo_public: '0'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2015/02/19/android-rating-ranges/"
 ---
 As a developer with a variety of apps in the store&nbsp;my ratings are&nbsp;super important to me. &nbsp;But even more important than the actual ratings of my apps are the perceived ratings of my apps. &nbsp;What exactly do I mean? &nbsp;Well I think this comic by Randall Munroe sums it up best:

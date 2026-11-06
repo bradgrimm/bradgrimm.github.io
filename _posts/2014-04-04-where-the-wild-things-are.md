@@ -15,12 +15,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/04/04/where-the-wild-things-are/"
 ---
 ![Where_The_Wild_Things_Are_(book)_cover]({{ site.baseurl }}/assets/2014/04/where_the_wild_things_are_book_cover.jpg?w=300)As part of&nbsp;#ChildrensBookDay I thought I'd write about one of my favorite books growing up. &nbsp;This book is none other than&nbsp;Where the Wild Things Are. &nbsp;But to be completely honest, it wasn't so much the book I loved as the experience. &nbsp;But to truly understand you have to know my Dad.

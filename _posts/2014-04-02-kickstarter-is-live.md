@@ -17,12 +17,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/04/02/kickstarter-is-live/"
 ---
 After lots of&nbsp;work I am proud to finally announce that my Kickstarter has gone live. &nbsp;I've been super impressed and grateful by the amount of support I've received so far. &nbsp;Please help the good vibes keep rolling by sharing in any way possible.

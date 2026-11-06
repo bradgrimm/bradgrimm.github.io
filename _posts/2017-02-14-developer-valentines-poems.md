@@ -13,12 +13,7 @@ meta:
   _edit_last: '50576885'
   geo_public: '0'
   _publicize_job_id: '1850438158'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2017/02/14/developer-valentines-poems/"
 ---
 This year HireVue ran a fun little competition. Remember the fun little Valentines boxes from elementary school? &nbsp;The goal was to make the most technologically advanced box possible, and to deliver creative cards to the other engineering rooms. &nbsp;One of the judging criteria was best use of code and poetry. &nbsp;Below are poems I wrote for it.

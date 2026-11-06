@@ -17,12 +17,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/02/13/running-rpg/"
 ---
 [caption id="attachment\_142" align="aligncenter" width="300"][![medium_3627890636]({{ site.baseurl }}/assets/2014/02/medium_3627890636.jpg?w=300)](http://bradgrimm.files.wordpress.com/2014/02/medium_3627890636.jpg) [Drewski Mac](http://www.flickr.com/photos/andrewmaciejewski/3627890636/) via [photopin](http://photopin.com) [cc](http://creativecommons.org/licenses/by-sa/2.0/)[/caption]

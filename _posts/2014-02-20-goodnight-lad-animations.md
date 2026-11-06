@@ -26,12 +26,7 @@ meta:
   _oembed_de68fa78bc967e11ba21fd828442ba67: <div class="embed-kickstarter"><iframe
     frameborder="0" height="438" scrolling="no" src="https://www.kickstarter.com/projects/1223734313/goodnight-lad-childrens-book-and-interactive-3d-ap/widget/video.html"
     width="584"></iframe></div>
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/02/20/goodnight-lad-animations/"
 ---
 Note: The Kickstart for this has begun, you can find the site here:  

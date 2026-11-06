@@ -16,12 +16,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/03/03/report-finds-ios-apps-riskier-than-android-apps/"
 ---
 I recently read [this](http://www.pcworld.com/article/2098435/report-finds-ios-apps-riskier-than-android-apps.html)&nbsp;article that states that iOS apps are riskier than Android apps. &nbsp;I make a point of not trusting news articles... &nbsp;I'm an Android developer, so I like hearing Android doing well. &nbsp;And it would be easy to just rejoice that Android is awesome, but instead I decided to look a little deeper.

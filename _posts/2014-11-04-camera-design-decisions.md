@@ -15,12 +15,7 @@ meta:
   _edit_last: '50576885'
   geo_public: '0'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/11/04/camera-design-decisions/"
 ---
 _A couple years ago I released one of my favorite apps, [Goofy Glass](https://play.google.com/store/apps/details?id=com.givewaygames.goofyglass).&nbsp; Since that initial release I have pushed out many updates.&nbsp; Along the way I have come across a variety of difficult design decisions.&nbsp; This latest release has been especially difficult,&nbsp;and so I've decided to recap the tradeoffs I made._

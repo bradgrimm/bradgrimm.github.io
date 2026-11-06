@@ -14,12 +14,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/03/05/android-superman/"
 ---
 My work recently awarded me a t-shirt, it is a little tradition at HireVue that when somebody does has a great achievement they are recognized with a customized shirt. &nbsp;Mine has a superman Android on the front, and on the back says:

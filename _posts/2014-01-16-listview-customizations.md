@@ -15,12 +15,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/01/16/listview-customizations/"
 ---
 ListView is one of the most useful Android layout classes, but customizing it can be tricky. Part of that is simply glossing over some of the nice features that are already included. It is easy to simply extend BaseAdapter; it is easy and takes care of most the abstract methods for you. But doing so may make you miss some of the nifty built-in features. Below are 3 features you may be missing out on.

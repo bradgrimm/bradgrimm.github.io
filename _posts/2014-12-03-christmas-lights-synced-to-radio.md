@@ -24,12 +24,7 @@ meta:
   _wpas_skip_path: '1'
   _edit_last: '50576885'
   geo_public: '0'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/12/03/christmas-lights-synced-to-radio/"
 ---
 For years I have wanted to sync my Christmas lights to music. &nbsp;Each year&nbsp;comes and goes without&nbsp;even a single blinking light on my house. &nbsp;But no more... &nbsp;this year I decided&nbsp;to finally&nbsp;sync my house to the radio station&nbsp;FM&nbsp;100.3!

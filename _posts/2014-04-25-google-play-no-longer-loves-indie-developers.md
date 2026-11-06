@@ -18,12 +18,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/04/25/google-play-no-longer-loves-indie-developers/"
 ---
 Both the Google Play&nbsp;Store and the Apple App Store were built&nbsp;on the backs of independent developers. &nbsp;The platform was wonderful! &nbsp;People could easily find exactly the apps they were looking for, and developers could finally reach out to niche markets. &nbsp;The pay for developers was reasonable, and the cost for users was much cheaper than traditional software. &nbsp;Life was great.

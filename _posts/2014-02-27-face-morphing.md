@@ -15,12 +15,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/02/27/face-morphing/"
 ---
 I took a short stroll down memory lane today as I was browsing some of my old Image Processing work. &nbsp;There was a lot of really cool things I worked on, but the one I loved the most was _Face Morphing_. &nbsp;Below are a few samples from the project.

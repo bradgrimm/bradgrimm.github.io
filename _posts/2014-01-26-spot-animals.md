@@ -16,12 +16,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/01/26/spot-animals/"
 ---
 [![level_selection_Zoo_view]({{ site.baseurl }}/assets/2014/01/level_selection_zoo_view.jpg?w=600)](http://bradgrimm.files.wordpress.com/2014/01/level_selection_zoo_view.jpg)

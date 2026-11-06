@@ -15,12 +15,7 @@ meta:
   _edit_last: '50576885'
   geo_public: '0'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/11/17/android-tv-presentation/"
 ---
 [![device-2014-11-11-220510]({{ site.baseurl }}/assets/2014/11/device-2014-11-11-220510.png?w=604)](https://bradgrimm.files.wordpress.com/2014/11/device-2014-11-11-220510.png)

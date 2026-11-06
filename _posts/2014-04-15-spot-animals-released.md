@@ -17,12 +17,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/04/15/spot-animals-released/"
 ---
 I just recently launched the perfect game for kids and toddlers. &nbsp;It is a hidden objects game like Where’s Waldo or Eye Spy. &nbsp;It is a 100% free for a limited time. &nbsp;Below are more details about the game. &nbsp;Check it out, and let me know what you think.

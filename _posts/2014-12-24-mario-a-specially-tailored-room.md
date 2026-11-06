@@ -15,12 +15,7 @@ meta:
   _edit_last: '50576885'
   geo_public: '0'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/12/24/mario-a-specially-tailored-room/"
 ---
 ![2012-01-15 11.58.07]({{ site.baseurl }}/assets/2014/12/2012-01-15-11-58-07.jpg?w=604)

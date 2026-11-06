@@ -15,12 +15,7 @@ tags:
 meta:
   _edit_last: '50576885'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/03/03/startup-weekend/"
 ---
 A week ago I attended my first Startup Weekend in Provo. &nbsp;The experience was good overall, but for none of the reasons I expected. &nbsp;And in the end I had plenty of disappointments, even though I was glad I went.

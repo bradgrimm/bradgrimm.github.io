@@ -15,12 +15,7 @@ meta:
   _edit_last: '50576885'
   geo_public: '0'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/12/22/copy-cat-a-game-for-working-parents-with-kids/"
 ---
 Imagine a rough morning where you wake up early to get to work. &nbsp;Your family is still asleep, and you aren’t able to say a proper goodbye before leaving. &nbsp;There’s a big important deadline, and it is taking all of your time and energy. &nbsp;You are finally starting to get things done when the phones rings… &nbsp;it is your child, super sad that they didn’t get to see you. &nbsp;Just then your child starts crying on the phone for you to come back home. &nbsp;You love them, but how do you show them with so much to worry about at work?

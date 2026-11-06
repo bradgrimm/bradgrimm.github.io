@@ -15,12 +15,7 @@ meta:
   _edit_last: '50576885'
   geo_public: '0'
   _publicize_pending: '1'
-author:
-  login: snard6
-  email: snard6@gmail.com
-  display_name: snard6
-  first_name: Brad
-  last_name: Grimm
+author: Brad Grimm
 permalink: "/2014/11/19/battling-the-media-framework/"
 ---
 [![Screen Shot 2014-11-15 at 9.32.15 PM]({{ site.baseurl }}/assets/2014/11/screen-shot-2014-11-15-at-9-32-15-pm.png?w=604)](https://bradgrimm.files.wordpress.com/2014/11/screen-shot-2014-11-15-at-9-32-15-pm.png)

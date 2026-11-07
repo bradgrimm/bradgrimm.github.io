@@ -14,3 +14,5 @@
 @media(max-width:900px){.holiday-grid{grid-template-columns:1fr;gap:28px}}
 .holiday-grid>*{min-width:0}
 @media(max-width:600px){.holiday-ticker{justify-content:center;flex-wrap:wrap;gap:6px 12px}.holiday-ticker span:nth-child(2),.holiday-ticker span:nth-child(n+4){display:none}.holiday-ticker span{font-size:10px}}
+
+@media(max-width:600px){nav{flex-wrap:wrap;justify-content:space-between;gap:10px 14px}nav a{white-space:nowrap}.header .nav-book{position:absolute;top:22px;right:5%;font-size:13px}}

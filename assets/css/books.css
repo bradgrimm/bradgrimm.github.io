@@ -11,3 +11,4 @@
 .shots{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 0 18px;margin:0 0 40px}.shots img{flex:0 0 auto;width:220px;height:auto;border-radius:18px;scroll-snap-align:start;box-shadow:0 10px 24px rgba(0,0,0,.35)}
 @media(max-width:760px){.shots img{width:62vw;max-width:240px}.book-hero,.buy-card{grid-template-columns:1fr}.buy-card img{max-width:300px;margin:0 auto}}
 @media print{header,footer,.no-print{display:none!important}body{background:#fff}.demo-pages figure{break-after:page}.demo-pages figcaption{display:none}.work-main{padding:0}}
+.store-links span.button{background:transparent;color:var(--muted);border-color:var(--line);font-weight:500;cursor:default}.store-links span.button:hover{filter:none;color:var(--muted)}

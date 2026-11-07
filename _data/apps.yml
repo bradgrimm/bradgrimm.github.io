@@ -2,6 +2,8 @@
 # URL into that platform's field. A platform listed in `platforms` with no URL
 # shows as "coming soon"; an app with no URLs at all gets the "Coming soon" tag.
 # Only paste a store URL once the listing is live in production.
+# group: books renders in the Books row at the top of /apps/ (cover, buy link, app badges).
+# The two-book set link lives in apps/index.html.
 
 groups:
   - id: music
@@ -9,7 +11,7 @@ groups:
   - id: learning
     title: Learning
   - id: kids
-    title: Kids & AR books
+    title: For kids
   - id: fun
     title: Just for fun
 
@@ -40,27 +42,34 @@ apps:
     line: See how people with color blindness see the world, test your own color vision, and check whether two colors match.
     more: /colorblind/
     platforms: [ios, android]
-    ios:
-    android:
+    ios: https://apps.apple.com/us/app/colorblind-vision/id6829817429
+    android: https://play.google.com/store/apps/details?id=com.givewaygames.colorblind_ads
 
   - name: Goodnight Lad
-    group: kids
+    group: books
+    cover: /assets/books/goodnightlad/hero.jpg
+    cover_alt: Goodnight Lad characters popping out of the book cover on a phone screen
+    book_line: A hardcover bedtime story about a little lad who just won’t fall asleep. Point the free app at any page and it plays.
+    buy: https://buy.stripe.com/eVq00lgNr0cF60451a2Nq02
     icon: /assets/apps/goodnightlad/icon.png
     line: A picture book that comes to life. Point the free app at the book and every page plays.
     more: /goodnightlad/
     platforms: [ios, android]
     ios: https://apps.apple.com/us/app/goodnight-lad/id1013894831
-    # when Play is live, replace the next line with: android: https://play.google.com/store/apps/details?id=com.goodnightlad.book
-    android:
+    android: https://play.google.com/store/apps/details?id=com.goodnightlad.book
 
   - name: Marvelous Machines
-    group: kids
+    group: books
+    cover: /assets/books/marvelousmachines/cover.jpg
+    cover_alt: The cover of Marvelous Machines for Silly Things, a boy with rocket boots flying past little robots
+    book_line: Thirty silly inventions that climb off the page, then smoke, sputter, and break in funny ways.
+    buy: https://buy.stripe.com/5kQ3cxcxb0cFagk65e2Nq01
     icon: /assets/apps/marvelousmachines/icon.png
     line: The second augmented reality book, about exploring, inventing, and silly machines.
     more: /marvelousmachines/
     platforms: [ios, android]
     ios: https://apps.apple.com/us/app/marvelous-machines/id1205353856
-    android:
+    android: https://play.google.com/store/apps/details?id=com.marveloussillymachines.book
 
   - name: Spot! Hidden Animals
     group: kids
@@ -69,7 +78,7 @@ apps:
     more: /spotanimals/
     platforms: [ios, android]
     ios:
-    android:
+    android: https://play.google.com/store/apps/details?id=com.givewaygames.spot
 
   - name: Squishface
     group: fun
@@ -77,5 +86,5 @@ apps:
     line: A fun house mirror for your camera. Big eyes, balloon heads, lasers out of your fingers.
     more: /squishface/
     platforms: [ios, android]
-    ios:
-    android:
+    ios: https://apps.apple.com/us/app/squishface-funhouse-mirror/id6829811964
+    android: https://play.google.com/store/apps/details?id=com.bradgrimm.squishface

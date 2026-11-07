@@ -20,6 +20,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/04/15/spot-animals-released/"
 ---
+*Update, November 2026: The links below are long gone, but the game isn't. Spot! Hidden Animals is back on Android, with iPhone coming soon. [Find it here →](/spotanimals/)*
+
 I just recently launched the perfect game for kids and toddlers. &nbsp;It is a hidden objects game like Where’s Waldo or Eye Spy. &nbsp;It is a 100% free for a limited time. &nbsp;Below are more details about the game. &nbsp;Check it out, and let me know what you think.
 
 iOS: https://itunes.apple.com/us/app/hidden-objects-spot!-animals/id859258283?ls=1&mt=8  

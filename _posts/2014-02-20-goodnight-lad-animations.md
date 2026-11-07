@@ -29,6 +29,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/02/20/goodnight-lad-animations/"
 ---
+*Update, November 2026: These animations are moving again. I rebuilt the Goodnight Lad app, and it's on iPhone and Android now. [Take a look →](/goodnightlad/)*
+
 Note: The Kickstart for this has begun, you can find the site here:  
 https://www.kickstarter.com/projects/1223734313/goodnight-lad-childrens-book-and-interactive-3d-ap
 

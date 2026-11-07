@@ -19,6 +19,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/02/13/goodnight-lad-first-prints/"
 ---
+*Update, November 2026: Those first prints turned into a real book, and you can buy it again. The app is back on iPhone and Android too. [Get a copy →](/goodnightlad/)*
+
 ![2014-02-12 (1)]({{ site.baseurl }}/assets/2014/02/2014-02-12-1.jpg?w=300)The first prints of my book arrived today! &nbsp;They turned out great. &nbsp;The quality is actually higher than I expected and the illustrations look fantastic in print. &nbsp;There are a few minor issues I'll want to fix before pushing out a larger batch, but nothing to dampen my excitement.
 
 ![2014-02-12]({{ site.baseurl }}/assets/2014/02/2014-02-12.jpg?w=300)

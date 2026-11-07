@@ -23,6 +23,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/02/17/1-million-goofy-downloads/"
 ---
+*Update, November 2026: Goofy Glass has a new name, Squishface, and it's back on iPhone and Android with 88 effects. [Check it out →](/squishface/)*
+
 [![1m_Downloads]({{ site.baseurl }}/assets/2014/02/1m_downloads.png?w=640)](http://bradgrimm.files.wordpress.com/2014/02/1m_downloads.png)GoofyBooth passed 1 Million downloads today! &nbsp;It is one of the apps I am most proud of, and super excited that it passed 1 Million in under a year and a half.
 
 Below are some interesting notes about Goofy Glass:

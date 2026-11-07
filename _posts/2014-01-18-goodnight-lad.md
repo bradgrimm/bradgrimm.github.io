@@ -20,6 +20,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/01/18/goodnight-lad/"
 ---
+*Update, November 2026: This little project grew up. Goodnight Lad is back on iPhone and Android, and the book is for sale again. [See it here →](/goodnightlad/)*
+
 ![page04]({{ site.baseurl }}/assets/2014/01/page04.jpg?w=300)
 
 I’m always looking for fun ways to learn. &nbsp;Over the past decade many new methods for learning have been discovered. &nbsp;Not only is information more quickly available, but there are many great new ways to explore it. &nbsp;Interestingly, while technology has taken off, traditional school learning has stayed much the same. &nbsp;Today I’d like to share one of the projects I’ve been working on: An augmented reality children’s bedtime book.

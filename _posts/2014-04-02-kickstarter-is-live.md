@@ -20,6 +20,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/04/02/kickstarter-is-live/"
 ---
+*Update, November 2026: Thank you again to everyone who backed this. Goodnight Lad is back on iPhone and Android, so your books work again, and new copies are for sale. [See it here →](/goodnightlad/)*
+
 After lots of&nbsp;work I am proud to finally announce that my Kickstarter has gone live. &nbsp;I've been super impressed and grateful by the amount of support I've received so far. &nbsp;Please help the good vibes keep rolling by sharing in any way possible.
 
 [![interactive-bed]({{ site.baseurl }}/assets/2014/04/interactive-bed.png?w=604)](http://bradgrimm.files.wordpress.com/2014/04/interactive-bed.png)

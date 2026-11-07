@@ -19,6 +19,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/03/17/colorblind-awareness-day/"
 ---
+*Update, November 2026: Still colorblind, still wearing the wrong green. Colorblind Vision is back on iPhone and Android if you want to see what I see. [Have a look →](/colorblind/)*
+
  **Happy Colorblind Awareness Day!&nbsp;**  
 _(Or as the rest of the world likes to call it St. Patrick's Day)_
 

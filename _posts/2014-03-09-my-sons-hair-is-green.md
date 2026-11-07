@@ -19,6 +19,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/03/09/my-sons-hair-is-green/"
 ---
+*Update, November 2026: Colorblind Vision is back, and this time it's on iPhone and Android. [Try it here →](/colorblind/)*
+
 Yesterday, as I walked down the street I looked at my son Logan and thought to myself: "Wow, he has such bright&nbsp; **green** hair, it really shows up well in the sunlight." &nbsp;By now, you may be thinking I am joking. &nbsp;Or perhaps I played a cruel joke on my son and dyed his hair color to celebrate St. Patrick's day. &nbsp;But, I promise this isn't a joke. &nbsp; His hair looked the same way it always does, and you can see it in the picture below:
 
 [![2014-03-07 10.12.53]({{ site.baseurl }}/assets/2014/03/2014-03-07-10-12-53.jpg?w=480)](http://bradgrimm.files.wordpress.com/2014/03/2014-03-07-10-12-53.jpg)

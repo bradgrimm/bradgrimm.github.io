@@ -22,6 +22,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/12/10/honest-development/"
 ---
+*Update, November 2026: Spot! is back in the stores as Spot! Hidden Animals, on Android now and iPhone soon. [Here it is →](/spotanimals/)*
+
 Through my years of development I have always strived to be an honest developer. I want my users to have a good experience. I want to build fun, new, exciting, polished apps. And I want to play by the rules...
 
 But not everybody plays by the rules.

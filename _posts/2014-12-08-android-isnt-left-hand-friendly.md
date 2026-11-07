@@ -17,6 +17,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/12/08/android-isnt-left-hand-friendly/"
 ---
+*Update, November 2026: Goofy Glass is now called Squishface, and it's back on iPhone and Android. [Take a look →](/squishface/)*
+
 While redesigning my app Goofy Glass, I came across this interesting finding.&nbsp; Android isn't left-hand friendly!&nbsp; Now I'm not left-handed, so this has never been a problem for me.&nbsp; But, I _am_ colorblind so I can relate to the frustration of designs excluding a minority of us and essentially making it unusable for us.
 
 So... What do I mean it isn't left-handed friendly?

@@ -18,6 +18,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/11/04/camera-design-decisions/"
 ---
+*Update, November 2026: Goofy Glass lives on as Squishface, rebuilt and back on iPhone and Android. [See what it does now →](/squishface/)*
+
 _A couple years ago I released one of my favorite apps, [Goofy Glass](https://play.google.com/store/apps/details?id=com.givewaygames.goofyglass).&nbsp; Since that initial release I have pushed out many updates.&nbsp; Along the way I have come across a variety of difficult design decisions.&nbsp; This latest release has been especially difficult,&nbsp;and so I've decided to recap the tradeoffs I made._
 
 **Initial Design**

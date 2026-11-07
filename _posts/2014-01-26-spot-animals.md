@@ -19,6 +19,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/01/26/spot-animals/"
 ---
+*Update, November 2026: Spot! is back as Spot! Hidden Animals, with fourteen worlds to search. It's on Android now, and iPhone is close behind. [Have a look →](/spotanimals/)*
+
 [![level_selection_Zoo_view]({{ site.baseurl }}/assets/2014/01/level_selection_zoo_view.jpg?w=600)](http://bradgrimm.files.wordpress.com/2014/01/level_selection_zoo_view.jpg)
 
 As a kid I loved Where's Waldo. &nbsp;It was the perfect game that never got old. &nbsp;Each page was jam packed with tons of items, and it took hours to find all of them. &nbsp;Where's Waldo and I Spy were the inspiration for my latest app. &nbsp;Today I announce another project I've been working on called Spot! Animals.

@@ -19,6 +19,8 @@ meta:
 author: Brad Grimm
 permalink: "/2014/03/15/funny-colorblind-stories/"
 ---
+*Update, November 2026: If you'd like to see the world a little more like I do, Colorblind Vision is back on iPhone and Android. [Try it →](/colorblind/)*
+
 As we get closer to Colorblind Awareness day (also known as St. Patrick's Day), I wanted to share a variety of my colorblind experiences. &nbsp;I hope you find them funny.
 
 **First Bad Experience**

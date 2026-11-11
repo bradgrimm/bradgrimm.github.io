@@ -51,6 +51,8 @@ apps:
     cover_alt: Goodnight Lad characters popping out of the book cover on a phone screen
     book_line: A hardcover bedtime story about a little lad who just won’t fall asleep. Point the free app at any page and it plays.
     buy: https://buy.stripe.com/eVq00lgNr0cF60451a2Nq02
+    price: 25
+    cover_price: "19.99"
     icon: /assets/apps/goodnightlad/icon.png
     line: A picture book that comes to life. Point the free app at the book and every page plays.
     more: /goodnightlad/
@@ -64,6 +66,8 @@ apps:
     cover_alt: The cover of Marvelous Machines for Silly Things, a boy with rocket boots flying past little robots
     book_line: Thirty silly inventions that climb off the page, then smoke, sputter, and break in funny ways.
     buy: https://buy.stripe.com/5kQ3cxcxb0cFagk65e2Nq01
+    price: 20
+    cover_price: "14.95"
     icon: /assets/apps/marvelousmachines/icon.png
     line: The second augmented reality book, about exploring, inventing, and silly machines.
     more: /marvelousmachines/

@@ -7,3 +7,8 @@ vendor
 .swo
 .DS_Store
 .idea/
+
+# local tooling / snapshots
+.claude/
+.wrangler/
+docs/BradGrimm-website.zip

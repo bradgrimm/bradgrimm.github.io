@@ -1,8 +1,8 @@
 title: Brad Grimm
 email: snard6@gmail.com
 description: >-
-  Brad Grimm — guitar and vocals in Utah’s Salt Lake Valley. Music, live performances,
-  machine learning research, and a life spent making things.
+  Brad Grimm plays acoustic guitar and sings in Utah’s Salt Lake Valley. Music and booking,
+  plus his machine learning research, books and apps.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://bradgrimm.com"
 twitter_username: bradleycgrimm
@@ -31,6 +31,15 @@ plugins:
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
 #
+# Internal planning notes and local tooling stay out of the published site.
+# (Jekyll 3 replaces its default list when exclude is set, so the defaults are repeated.)
+exclude:
+  - docs/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/
+
 # exclude:
 #   - .sass-cache/
 #   - .jekyll-cache/

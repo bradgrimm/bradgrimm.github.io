@@ -1,0 +1,87 @@
+{
+  "about": "Source for bradgrimm.com/open-mics/. Each mic needs a current source (venue page or a dated listing from the last few weeks). `confirmed` is the date that source was last checked; entries older than hide_after_days drop off the page on their own. `next` (optional) is the next known date for monthly or new nights. After editing, run: python3 _tools/open_mics.py",
+  "hide_after_days": 60,
+  "mics": [
+    {
+      "id": "scion-cider",
+      "venue": "Scion Cider Bar",
+      "area": "Salt Lake City (Central 9th)",
+      "address": "916 S Jefferson St, Salt Lake City",
+      "day": 1,
+      "when": "Every Monday, 7:30 PM",
+      "details": "Free. 21+ with ID. Performers and the crowd are all in a weekly drawing for concert tickets.",
+      "source": "https://www.scionciderbar.com/events/",
+      "confirmed": "2026-11-14"
+    },
+    {
+      "id": "sugar-house-coffee",
+      "venue": "Sugar House Coffee",
+      "area": "Sugar House",
+      "address": "2011 S 1100 E, Salt Lake City",
+      "day": 2,
+      "when": "Every Tuesday, sign-up 6:30 PM",
+      "details": "Free, all ages. Four-minute slots, first come, first served. Music, poetry and comedy all welcome.",
+      "source": "https://ma.to/venue/sugarhousecoffee",
+      "confirmed": "2026-11-14"
+    },
+    {
+      "id": "velour",
+      "venue": "Velour Live Music Gallery",
+      "area": "Provo",
+      "address": "135 N University Ave, Provo",
+      "day": 3,
+      "when": "Every Wednesday, 8 PM",
+      "details": "Two songs each. Get there by 7 PM to lock in a spot. $3 to play, $4 to watch. A legendary room to cut your teeth in.",
+      "source": "https://www.velourlive.com/openmic",
+      "confirmed": "2026-11-14"
+    },
+    {
+      "id": "tyler-library",
+      "venue": "Tyler Library (Salt Lake County Library)",
+      "area": "Midvale",
+      "address": "8041 S Wood St, Midvale",
+      "day": 3,
+      "when": "Second Wednesday of the month, 7 PM",
+      "details": "Free, all ages, drop in. Music, poetry, comedy and prose. A brand-new series.",
+      "next": "2027-01-13",
+      "source": "https://slcls.libnet.info/event/17014496",
+      "confirmed": "2026-11-14"
+    },
+    {
+      "id": "daybreak-thousand-hills",
+      "venue": "Land of a Thousand Hills Coffee, Daybreak",
+      "area": "South Jordan",
+      "address": "10678 S Lake Run Rd, South Jordan",
+      "day": 4,
+      "when": "Second Thursday of the month, 6:30 to 9 PM",
+      "details": "15-minute slots, booked ahead with the request form on the Daybreak page. Family-friendly sets.",
+      "next": "2026-12-10",
+      "source": "https://www.mydaybreak.com/open_mic_night",
+      "confirmed": "2026-11-14"
+    },
+    {
+      "id": "provo-library",
+      "venue": "Provo City Library",
+      "area": "Provo",
+      "address": "550 N University Ave, Provo",
+      "day": 5,
+      "when": "First Friday of the month, 7 PM",
+      "details": "Acoustic only. Sign-ups start at 6:30 PM. Free.",
+      "next": "2026-12-04",
+      "source": "https://provolibrary.gov/event/15307151",
+      "confirmed": "2026-11-14"
+    },
+    {
+      "id": "magna-library",
+      "venue": "Magna Library with the Magna Arts Council",
+      "area": "Magna",
+      "address": "2675 S 8950 W, Magna",
+      "day": 5,
+      "when": "One Friday a month, 6:30 to 8:30 PM",
+      "details": "Free, all ages, show up and sign up. First-timers and old pros side by side.",
+      "next": "2027-01-22",
+      "source": "https://slcls.libnet.info/event/17414953",
+      "confirmed": "2026-11-14"
+    }
+  ]
+}

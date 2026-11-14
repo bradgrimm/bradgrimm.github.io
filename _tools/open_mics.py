@@ -23,6 +23,7 @@ def load():
         if miss: sys.exit(f"{m.get('id', '?')}: missing {miss}")
         if m["id"] in ids: sys.exit(f"duplicate id {m['id']}")
         ids.add(m["id"])
+        if m["id"] in d.get("opted_out", []): sys.exit(f"{m['id']}: host opted out, remove it")
         if not m["source"].startswith("https://"): sys.exit(f"{m['id']}: source must be https")
         for k in ("confirmed", "next"):
             if k in m: dt.date.fromisoformat(m[k])

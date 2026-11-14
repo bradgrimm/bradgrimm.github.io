@@ -1,5 +1,5 @@
 {
-  "about": "Source for bradgrimm.com/open-mics/. Each mic needs a current source (venue page or a dated listing from the last few weeks). `confirmed` is the date that source was last checked; entries older than hide_after_days drop off the page on their own. `next` (optional) is the next known date for monthly or new nights. After editing, run: python3 _tools/open_mics.py",
+  "about": "Source for bradgrimm.com/open-mics/. Each mic needs a current source (venue page or a dated listing from the last few weeks). `confirmed` is the date that source was last checked; entries older than hide_after_days drop off the page on their own. `next` (optional) is the next known date for monthly or new nights. After editing, run: python3 _tools/open_mics.py `opted_out`: venues whose hosts asked to be left off. Never re-add them; the build script refuses any mic whose id is listed.",
   "hide_after_days": 60,
   "mics": [
     {
@@ -83,5 +83,6 @@
       "source": "https://slcls.libnet.info/event/17414953",
       "confirmed": "2026-11-14"
     }
-  ]
+  ],
+  "opted_out": []
 }

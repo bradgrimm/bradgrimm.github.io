@@ -81,7 +81,7 @@ apps:
     line: A seek-and-find game for little kids, with illustrated worlds to explore and a sticker book to fill.
     more: /spotanimals/
     platforms: [ios, android]
-    ios:
+    ios: https://apps.apple.com/us/app/spot-hidden-animals/id6829579319
     android: https://play.google.com/store/apps/details?id=com.givewaygames.spot
 
   - name: Squishface

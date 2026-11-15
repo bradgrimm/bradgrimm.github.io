@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Android Rating Ranges · Brad Grimm</title><meta name="description" content="Older writing on software, projects, and experiments by Bradley Grimm."><link rel="canonical" href="https://bradgrimm.com/2015/02/19/android-rating-ranges/"><link rel="icon" href="/favicon.ico" sizes="32x32"><link rel="icon" href="/assets/images/favicon-192.png" type="image/png" sizes="192x192"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,500&family=Permanent+Marker&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/css/performer.css"><link rel="stylesheet" href="/assets/css/content.css"></head><body><a class="skip-main" href="#main">Skip to content</a><div class="wrap"><header class="site-header"><a class="name" href="/">Brad Grimm</a><nav aria-label="Main"><a href="/work/">Work</a><a href="/publications.html">Publications</a><a href="/apps/">Books &amp; apps</a><a href="/music/">Music</a></nav></header></div>
+<main id="main" class="work-main archive-post"><a class="back-link" href="/blog/">← Back to the archive</a><h1>Android Rating Ranges</h1><p class="publication-meta"><time datetime="2015-02-19T07:00:55-07:00">February 19, 2015</time></p><article><p>As a developer with a variety of apps in the store my ratings are super important to me.  But even more important than the actual ratings of my apps are the perceived ratings of my apps.  What exactly do I mean?  Well I think this comic by Randall Munroe sums it up best:</p>
+
+<p><a href="https://bradgrimm.files.wordpress.com/2015/01/star_ratings.png"><img src="/assets/2015/02/star_ratings.png?w=289" alt="star_ratings" /></a></p>
+
+<p>Quite frankly that little sliver of pixels can make a huge difference.  Especially the jump from 3.5 stars to 4.0 stars.  But one of the things I’ve always found interesting is what ‘3.5 stars’ actually means.  Where exactly is the cutoff?  Does 3.5 stars mean 3.5 or lower?  Or does it mean the closest star value (3.25 to 3.75)?  Or does it mean something completely different?</p>
+
+<p>Well it turns out it isn’t really straightforward to answer this question for two big reasons:</p>
+
+<p>1) Stars are different in different locations.  The web shows stars different than the app, and at times different pages have showed them different as well.</p>
+
+<p>Here’s Goofy glass on mobile with 4.5 stars on the left, and 4.0 stars on the right (web).</p>
+
+<p><a href="https://bradgrimm.files.wordpress.com/2015/01/goofy-overview-mobile.png"><img src="/assets/2015/02/goofy-overview-mobile.png?w=169" alt="Goofy Overview Mobile" /></a> <a href="https://bradgrimm.files.wordpress.com/2015/01/goofy-overview-web.png"><img src="/assets/2015/02/goofy-overview-web.png?w=195" alt="Goofy Overview Web" /></a></p>
+
+<p>2) The metric changes from time to time.  Users probably never notice, but what a 4.0 app is today, isn’t necessarily what it was yesterday.</p>
+
+<p><strong>The Old Metric</strong></p>
+
+<p>What was the old metric?  Well it was actually relatively simple compared to how it works now.  The old rule was simple, round to the nearest half star.  So for instance:</p>
+
+<p>4.75 - 5.0   = 5 stars<br />
+4.25 - 4.75 = 4.5 stars<br />
+3.75 - 4.25 = 4 stars.<br />
+And so on…</p>
+
+<p>This meant that from a realistic perspective most of my apps fit into the 4-star rating.  My voice changers (notoriously low rated) fit into the 3.5 stars, and Goofy Glass at one point broke into 4.5 stars.</p>
+
+<p>Then one day tons more reviews started rolling in.  In fact I started getting as many as 5x to 10x more reviews.  What had changed?  The Play Store started prompting users to rate apps with the promise of providing similar apps the user would love.  This had two side effects:  1) Lot’s more ratings were showing up on apps.  2) The ratings were generally lower (though arguably more accurate).  Users often just uninstall an uninteresting app, but now were being prompted for a rating.  They also were asked a slightly different question…  Instead of: “What should this app be rated?” it was: “Would you like us to find apps similar to this one?”  And that question effects ratings significantly.</p>
+
+<p>[caption id=”attachment_408” align=”alignnone” width=”300”]<a href="https://bradgrimm.files.wordpress.com/2015/01/screen-shot-2015-01-11-at-9-54-39-pm.png"><img src="/assets/2015/02/screen-shot-2015-01-11-at-9-54-39-pm.png?w=300" alt="Screen Shot 2015-01-11 at 9.54.39 PM" /></a> Goofy Glass (Used to show a 4.3)[/caption]</p>
+
+<p> </p>
+
+<p>My apps all took a dive after that.  Goofy Glass which had been trending upward for the past few months, started dipping without any indication as to why.  And even worse, the ‘recommendation’ reviews don’t come with comments, so no valid feedback comes through to help improve the app, if they ran into issues, or what they’d like to see to win them back.</p>
+
+<p><strong>The New Metric (Mobile)</strong></p>
+
+<p>I’m guessing Google noticed the dip in ratings.  And since then they’ve played with a few different displays.  The most recent one is particularly interesting.  They’ve effectively gotten ride of whole stars in favor of half-star ratings.  The new ratings are as follows:</p>
+
+<p>5.00 = 5.0 stars<br />
+4.01 - 4.99 = 4.5 stars<br />
+4.00 = 4 stars (Must be exactly 4.0)<br />
+3.01 - 3.99 = 3.5 stars</p>
+
+<p>In my opinion this is really weird.  That means that my painting app, which has generally favorable reviews gets lumped with my voice changers, which have pretty bad reviews.  And if you take a look at the difference in graphs… you’ll notice they really don’t seem to fit into the same category.  Palette Painter (with a 3.9 review) seems to have tons of fans with just a few haters.  While Funny Voice Changer has almost as many haters and fans.  Yet, they both show up with a 3.5 star rating to anyone looking.</p>
+
+<p><a href="https://bradgrimm.files.wordpress.com/2015/01/2015-02-18-22-44-00.png"><img src="/assets/2015/02/2015-02-18-22-44-00.png?w=169" alt="2015-02-18 22.44.00" /></a> <a href="https://bradgrimm.files.wordpress.com/2015/01/2015-02-18-22-18-58.png"><img src="/assets/2015/02/2015-02-18-22-18-58.png?w=169" alt="2015-02-18 22.18.58" /></a></p>
+
+<p>Now admittedly they’ve also made it easier to see the exact number (see the 3.9) on the app page itself.  But of course that is after they click on the app, and if you are like me… 3.5 stars apps just aren’t worth my time (while a 4.0 star app often is).</p>
+
+<p><a href="https://bradgrimm.files.wordpress.com/2015/01/2015-02-18-22-52-30.png"><img src="/assets/2015/02/2015-02-18-22-52-30.png?w=169" alt="2015-02-18 22.52.30" /></a></p>
+
+<p><strong>The New Metric (Web)</strong></p>
+
+<p>The web on the other hand does something completely different.  They fill in stars as a percentage of the full star.  What that means (in theory) is that if you had a 4.1 star rating it would show up with 10% of the last star filled.</p>
+
+<p>I actually like idea if it can be implemented correctly.  The only problem I see with the current iteration is that the percentage stars don’t start on the left and right side of the star.  They actually start in the space between.  What this effectively means is a 4.2 star looks identical to a 4.0 star and a 3.9 star.  While a 3.3 has a little tiny bit of a sliver being drawn in.</p>
+
+<p>[caption id=”attachment_414” align=”alignnone” width=”300”]<a href="https://bradgrimm.files.wordpress.com/2015/01/screen-shot-2015-02-18-at-3-58-43-pm.png"><img src="/assets/2015/02/screen-shot-2015-02-18-at-3-58-43-pm.png?w=300" alt="Palette Painter" /></a> Palette Painter[/caption]</p>
+
+<p>[caption id=”attachment_412” align=”alignnone” width=”300”]<a href="https://bradgrimm.files.wordpress.com/2015/01/screen-shot-2015-01-11-at-9-55-30-pm.png"><img src="/assets/2015/02/screen-shot-2015-01-11-at-9-55-30-pm.png?w=300" alt="Spot the Animals" /></a> Spot the Animals[/caption]</p>
+
+<p>[caption id=”attachment_413” align=”alignnone” width=”300”]<a href="https://bradgrimm.files.wordpress.com/2015/01/screen-shot-2015-01-11-at-10-07-06-pm.png"><img src="/assets/2015/02/screen-shot-2015-01-11-at-10-07-06-pm.png?w=300" alt="Scary Voice Changer Pro" /></a> Scary Voice Changer Pro[/caption]</p>
+
+<p>[caption id=”attachment_415” align=”alignnone” width=”300”]<a href="https://bradgrimm.files.wordpress.com/2015/01/screen-shot-2015-01-11-at-9-54-58-pm.png"><img src="/assets/2015/02/screen-shot-2015-01-11-at-9-54-58-pm.png?w=300" alt="Scary Voice Changer" /></a> Scary Voice Changer - Hey look: A sliver![/caption]</p>
+
+<p>Effectively this means that the difference form web to mobile can be a full visual star.  Anyway, I don’t know if anyone else has noticed these weird ratings.  And I’d be really curious to hear the reasonings behind them, but I just thought I’d call them as I see them.</p>
+
+<p> </p>
+
+<p> </p>
+
+</article><p><a href="/blog/">← More from the archive</a></p></main><div class="wrap"><footer class="site-footer">
+<div><b>Brad Grimm</b><a href="/music/">Music</a><a href="/book/">Booking</a><a href="/about/">About</a><a href="/epk/">One-page sheet</a><a href="/band/">Electric guitar &amp; drums</a></div>
+<div class="social"><a href="https://www.youtube.com/@bradleygrimm" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path fill-rule="evenodd" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2C.5 9 .5 12 .5 12s0 3 .5 4.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.5-1.8.5-4.8.5-4.8s0-3-.5-4.8zM9.7 15.1V8.9l5.6 3.1z"/></svg></a><a href="https://www.instagram.com/bradleycgrimm/" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></svg></a><a href="https://www.tiktok.com/@grimms.guitar" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12.53.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a></div>
+<div id="beyond"><a href="/work/">Research, books &amp; other projects →</a></div>
+<small>© 2026 Brad Grimm · Riverton, Utah</small>
+</footer></div>
+</body></html>

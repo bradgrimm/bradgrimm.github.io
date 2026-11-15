@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bradgrimm.com/sitemap.xml

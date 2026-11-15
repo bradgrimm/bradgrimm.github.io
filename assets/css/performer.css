@@ -26,6 +26,11 @@ main{overflow-x:clip}
 .site-footer div{display:flex;flex-wrap:wrap;gap:0 22px;align-items:center}
 .site-footer a,.site-footer b{display:inline-flex;align-items:center;min-height:40px}
 .site-footer small{display:block;margin-top:10px;color:var(--soft)}
+.site-footer .social{gap:0 6px;margin-left:-10px}
+.site-footer .social a{justify-content:center;min-width:44px;min-height:44px;color:var(--ink)}
+.site-footer .social a:hover{color:var(--teal)}
+.site-footer svg{width:24px;height:24px}
+.site-footer #beyond a{color:var(--soft)}
 
 /* type */
 h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.02;letter-spacing:-.03em;margin:0}

@@ -75,6 +75,8 @@ if (form && window.fetch && window.FormData) {
   const status = form.querySelector('.form-status');
   const button = form.querySelector('button[type=submit]');
   const label = button.textContent;
+  const ref = form.querySelector('input[name=ref]');
+  if (ref) ref.value = new URLSearchParams(location.search).get('ref') || 'direct';
   const say = (text, ok) => {
     status.textContent = text;
     status.classList.toggle('ok', Boolean(ok));
@@ -89,12 +91,12 @@ if (form && window.fetch && window.FormData) {
         if (!response.ok) throw new Error(String(response.status));
         form.reset();
         button.hidden = true;
-        say('Thanks, I got it. I’ll reply by email.', true);
+        say(form.dataset.ok || 'Thanks, I got it. I’ll reply by email.', true);
       })
       .catch(() => {
         button.disabled = false;
         button.textContent = label;
-        say('That didn’t go through. Try again, or email me at booking@bradgrimm.com.');
+        say(form.dataset.fail || 'That didn’t go through. Try again, or email me at booking@bradgrimm.com.');
       });
   });
 }

@@ -32,6 +32,13 @@ main{overflow-x:clip}
 .site-footer svg{width:24px;height:24px}
 .site-footer #beyond a{color:var(--soft)}
 
+.ar-pointer{display:flex;flex-wrap:wrap;align-items:center;gap:0 18px;margin:0;padding:6px 0;border-bottom:1.5px dashed var(--line-soft);font-size:15px;color:var(--soft)}
+.ar-pointer .hand{color:var(--teal);font-size:16px;margin-right:4px}
+.ar-pointer a{display:inline-flex;align-items:center;min-height:40px;font-weight:500;color:var(--ink);text-decoration-color:var(--line);text-underline-offset:3px}
+.ar-pointer a:hover{color:var(--teal);text-decoration-color:currentColor}
+.ar-pointer .all{font-weight:700;color:var(--teal)}
+@media(max-width:760px){.ar-pointer{gap:0 12px}.ar-pointer .t{display:none}}
+
 /* type */
 h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.02;letter-spacing:-.03em;margin:0}
 h1{font-size:clamp(44px,7.4vw,104px);margin:14px 0 18px}
